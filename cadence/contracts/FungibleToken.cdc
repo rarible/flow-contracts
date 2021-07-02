@@ -1,0 +1,1 @@
+../../flow-ft/contracts/FungibleToken.cdc

@@ -1,0 +1,1 @@
+../../flow-core-contracts/contracts/FlowToken.cdc
