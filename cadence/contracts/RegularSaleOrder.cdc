@@ -6,7 +6,7 @@ import AssetBound from "AssetBound.cdc"
 
 pub contract RegularSaleOrder : SaleOrder {
 
-    pub event OrderOpened(id: UInt64, askType: Type, askId: UInt64, bidType: Type, bidAmount: UFix64, buyerFee: UFix64, sellerFee: UFix64)
+    pub event OrderOpened(id: UInt64, askType: String, askId: UInt64, bidType: String, bidAmount: UFix64, buyerFee: UFix64, sellerFee: UFix64)
     pub event OrderClosed(id: UInt64)
     pub event OrderWithdrawn(id: UInt64)
 
@@ -28,7 +28,7 @@ pub contract RegularSaleOrder : SaleOrder {
             self.receiver = receiver
             self.fee = fee
 
-            emit OrderOpened(id: self.uuid, askType: ref.getType(), askId: ref.id, bidType: bid.type, bidAmount: bid.amount, buyerFee: self.fee.buyerFee, sellerFee: self.fee.sellerFee)
+            emit OrderOpened(id: self.uuid, askType: ref.getType().identifier, askId: ref.id, bidType: bid.type.identifier, bidAmount: bid.amount, buyerFee: self.fee.buyerFee, sellerFee: self.fee.sellerFee)
         }
         pub fun isActive(): Bool {
             return true
