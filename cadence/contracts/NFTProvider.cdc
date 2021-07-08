@@ -7,8 +7,22 @@ pub contract NFTProvider: NonFungibleToken {
     pub event ContractInitialized()
     pub event Withdraw(id: UInt64, from: Address?)
     pub event Deposit(id: UInt64, to: Address?)
-    pub event Mint(id: UInt64, to: Address?)
+    pub event Mint(id: UInt64, collection: String, creator: Address, royalties: [Royalties], metadata: Metadata)
     pub event Destroy(id: UInt64)
+
+    pub struct Metadata {
+        pub let uri: String
+        pub let title: String
+        pub let description: String?
+        pub let properties: {String:String}
+
+        init(uri: String, title: String, description: String?, properties: {String:String}) {
+            self.uri = uri
+            self.title = title
+            self.description = description
+            self.properties = properties
+        }
+    }
 
     pub struct Royalties {
         pub let address: Address
@@ -20,35 +34,17 @@ pub contract NFTProvider: NonFungibleToken {
         }
     }
 
-    pub struct Metadata {
-        pub let uri: String
-        pub let title: String
-        pub let description: String
-        pub let data: [UInt8]
-        pub let properties: {String: String}
-
-        init(uri: String, title: String, description: String?, data: [UInt8], properties: {String: String}) {
-            self.uri = uri
-            self.title = title
-            self.description = description ?? "" // todo replace empty string with nil
-            self.data = data
-            self.properties = properties
-        }
-    }
-
     pub resource NFT: NonFungibleToken.INFT {
         pub let id: UInt64
         pub let collection: String
         pub let creator: Address
-        pub let createDate: UFix64
         pub let royalties: [Royalties]
         pub let metadata: Metadata
 
-        init(id: UInt64, collection: String, creator: Address, createDate: UFix64, royalties: [Royalties], metadata: Metadata) {
+        init(id: UInt64, collection: String, creator: Address, royalties: [Royalties], metadata: Metadata) {
             self.id = id
             self.collection = collection
             self.creator = creator
-            self.createDate = createDate
             self.royalties = royalties
             self.metadata = metadata
         }
@@ -113,7 +109,7 @@ pub contract NFTProvider: NonFungibleToken {
     }
 
     pub resource interface Minter {
-        pub fun mint(collection: String, creator: Address, createDate: UFix64, royalties: [Royalties], metadata: Metadata): @NonFungibleToken.NFT
+        pub fun mint(collection: String, creator: Address, royalties: [Royalties], metadata: Metadata): @NonFungibleToken.NFT
     }
 
     // Resource that an admin or something similar would own to be
@@ -121,17 +117,16 @@ pub contract NFTProvider: NonFungibleToken {
     //
     pub resource NFTMinter : Minter {
 
-        pub fun mint(collection: String, creator: Address, createDate: UFix64, royalties: [Royalties], metadata: Metadata): @NonFungibleToken.NFT {
+        pub fun mint(collection: String, creator: Address, royalties: [Royalties], metadata: Metadata): @NonFungibleToken.NFT {
             let nft <- create NFT(
                 id: NFTProvider.totalSupply,
                 collection: collection,
                 creator: creator,
-                createDate: createDate,
                 royalties: royalties,
-                metadata: metadata
+                metadata: metadata,
             )
             NFTProvider.totalSupply = NFTProvider.totalSupply + 1 as UInt64
-            emit Mint(id: nft.id, to: creator)
+            emit Mint(id: nft.id, collection: collection, creator: creator, royalties: royalties, metadata: metadata)
             return <-nft
         }
     }
@@ -166,3 +161,4 @@ pub contract NFTProvider: NonFungibleToken {
         emit ContractInitialized()
     }
 }
+ 
