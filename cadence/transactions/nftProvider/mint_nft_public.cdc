@@ -4,7 +4,7 @@
 import NonFungibleToken from "../../contracts/NonFungibleToken.cdc"
 import NFTProvider from "../../contracts/NFTProvider.cdc"
 
-transaction(collection: String, uri: String, title: String, description: String?, data: [UInt8]?, properties: {String:String}?, royalties: [NFTProvider.Royalties]?) {
+transaction(collection: String, royalties: [NFTProvider.Royalties]?, metadata: NFTProvider.Metadata) {
     
     let signerAddress: Address
     let receiver: &{NonFungibleToken.CollectionPublic}
@@ -22,19 +22,11 @@ transaction(collection: String, uri: String, title: String, description: String?
     }
 
     execute {
-        let metadata = NFTProvider.Metadata(
-            uri: uri,
-            title: title,
-            description: description,
-            data: data ?? [],
-            properties: properties ?? {}
-        )
         let nft <- self.minter.mint(
             collection: collection,
             creator: self.signerAddress,
-            createDate: getCurrentBlock().timestamp,
             royalties: royalties ?? [],
-            metadata: metadata
+            metadata: metadata,
         )
         self.receiver.deposit(token: <-nft)
     }

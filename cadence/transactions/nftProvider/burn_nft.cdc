@@ -5,7 +5,6 @@
  * @param id NFT identifier
  */
 import NonFungibleToken from "../../contracts/NonFungibleToken.cdc"
-import NFTProvider from "../../contracts/NFTProvider.cdc"
 
 transaction (id: UInt64) {
 
