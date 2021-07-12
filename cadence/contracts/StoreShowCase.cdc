@@ -5,7 +5,7 @@ pub contract StoreShowCase {
     pub resource interface ShowCasePublic {
         pub fun getIDs(): [UInt64]
         pub fun close(id: UInt64, item: @AnyResource): @AnyResource
-        pub fun borrow(id: UInt64): &SaleOrder.Order
+        pub fun borrow(id: UInt64): auth &SaleOrder.Order
     }
 
     pub resource ShowCase : ShowCasePublic {
@@ -25,8 +25,8 @@ pub contract StoreShowCase {
             destroy dummy
         }
 
-        pub fun borrow(id: UInt64): &SaleOrder.Order {
-            let order = &self.orders[id] as &SaleOrder.Order 
+        pub fun borrow(id: UInt64): auth &SaleOrder.Order {
+            let order = &self.orders[id] as auth &SaleOrder.Order 
             return order
         }
 
