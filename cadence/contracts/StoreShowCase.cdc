@@ -2,6 +2,8 @@ import SaleOrder from "SaleOrder.cdc"
 
 pub contract StoreShowCase {
 
+    pub event OrderAssigned(id: UInt64, to: Address?)
+
     pub resource interface ShowCasePublic {
         pub fun getIDs(): [UInt64]
         pub fun close(id: UInt64, item: @AnyResource): @AnyResource
@@ -20,9 +22,11 @@ pub contract StoreShowCase {
         }
 
         pub fun add(order: @SaleOrder.Order) {
+            let ref = &order as &SaleOrder.Order
             let dummy <- self.orders[order.uuid] <- order
             assert(dummy == nil, message: "unexpected dublicate uuid!")
             destroy dummy
+            emit OrderAssigned(id: ref.uuid, to: ref.owner?.address)
         }
 
         pub fun borrow(id: UInt64): auth &SaleOrder.Order {
