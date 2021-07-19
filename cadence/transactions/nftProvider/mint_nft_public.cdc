@@ -4,7 +4,7 @@
 import NonFungibleToken from "../../contracts/NonFungibleToken.cdc"
 import NFTProvider from "../../contracts/NFTProvider.cdc"
 
-transaction(collection: String, royalties: [NFTProvider.Royalties]?, metadata: NFTProvider.Metadata) {
+transaction(royalties: [NFTProvider.Royalties]?, metadata: String) {
     
     let signerAddress: Address
     let receiver: &{NonFungibleToken.CollectionPublic}
