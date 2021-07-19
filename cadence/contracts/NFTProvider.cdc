@@ -7,22 +7,8 @@ pub contract NFTProvider: NonFungibleToken {
     pub event ContractInitialized()
     pub event Withdraw(id: UInt64, from: Address?)
     pub event Deposit(id: UInt64, to: Address?)
-    pub event Mint(id: UInt64, collection: String, creator: Address, royalties: [Royalties], metadata: Metadata)
+    pub event Mint(id: UInt64, collection: String, creator: Address, royalties: [Royalties], metadata: String)
     pub event Destroy(id: UInt64)
-
-    pub struct Metadata {
-        pub let uri: String
-        pub let title: String
-        pub let description: String?
-        pub let properties: {String:String}
-
-        init(uri: String, title: String, description: String?, properties: {String:String}) {
-            self.uri = uri
-            self.title = title
-            self.description = description
-            self.properties = properties
-        }
-    }
 
     pub struct Royalties {
         pub let address: Address
@@ -36,14 +22,12 @@ pub contract NFTProvider: NonFungibleToken {
 
     pub resource NFT: NonFungibleToken.INFT {
         pub let id: UInt64
-        pub let collection: String
         pub let creator: Address
         pub let royalties: [Royalties]
-        pub let metadata: Metadata
+        pub let metadata: String
 
-        init(id: UInt64, collection: String, creator: Address, royalties: [Royalties], metadata: Metadata) {
+        init(id: UInt64, creator: Address, royalties: [Royalties], metadata: String) {
             self.id = id
-            self.collection = collection
             self.creator = creator
             self.royalties = royalties
             self.metadata = metadata
@@ -109,7 +93,7 @@ pub contract NFTProvider: NonFungibleToken {
     }
 
     pub resource interface Minter {
-        pub fun mint(collection: String, creator: Address, royalties: [Royalties], metadata: Metadata): @NonFungibleToken.NFT
+        pub fun mint(creator: Address, royalties: [Royalties], metadata: String): @NonFungibleToken.NFT
     }
 
     // Resource that an admin or something similar would own to be
@@ -117,16 +101,15 @@ pub contract NFTProvider: NonFungibleToken {
     //
     pub resource NFTMinter : Minter {
 
-        pub fun mint(collection: String, creator: Address, royalties: [Royalties], metadata: Metadata): @NonFungibleToken.NFT {
+        pub fun mint(creator: Address, royalties: [Royalties], metadata: String): @NonFungibleToken.NFT {
             let nft <- create NFT(
                 id: NFTProvider.totalSupply,
-                collection: collection,
                 creator: creator,
                 royalties: royalties,
                 metadata: metadata,
             )
             NFTProvider.totalSupply = NFTProvider.totalSupply + 1 as UInt64
-            emit Mint(id: nft.id, collection: collection, creator: creator, royalties: royalties, metadata: metadata)
+            emit Mint(id: nft.id, collection: nft.getType().identifier, creator: creator, royalties: royalties, metadata: metadata)
             return <-nft
         }
     }
