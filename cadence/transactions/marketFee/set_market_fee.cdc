@@ -4,8 +4,8 @@
  * @param buyerFee [UFix64] buyer fee
  * @param sellerFee [UFix64] seller fee
  */
-import MarketFee from "../../contracts/MarketFee.cdc"
-import FungibleToken from "../../contracts/FungibleToken.cdc"
+import MarketFee from 0xMARKETFEEADDRESS
+import FungibleToken from 0xFUNGIBLETOKENADDRESS
 
 transaction (buyerFee: UFix64, sellerFee: UFix64) {
     prepare(account: AuthAccount) {

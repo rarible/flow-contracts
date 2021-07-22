@@ -1,6 +1,6 @@
-import FungibleToken from "FungibleToken.cdc"
-import NonFungibleToken from "NonFungibleToken.cdc"
-import FlowToken from "FlowToken.cdc"
+import FungibleToken from 0xFUNGIBLETOKENADDRESS
+import NonFungibleToken from 0xNONFUNGIBLETOKENADDRESS
+import FlowToken from 0xFLOWTOKENADDRESS
 
 pub contract MarketFee {
 

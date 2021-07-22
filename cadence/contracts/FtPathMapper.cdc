@@ -1,5 +1,5 @@
-import FungibleToken from "FungibleToken.cdc"
-import FlowToken from "FlowToken.cdc"
+import FungibleToken from 0xFUNGIBLETOKENADDRESS
+import FlowToken from 0xFLOWTOKENADDRESS
 // import FUSD from "FUSD.cdc"
 
 pub contract FtPathMapper {

@@ -1,8 +1,8 @@
 /**
  * Mint NFT through public interface of main account
  */
-import NonFungibleToken from "../../contracts/NonFungibleToken.cdc"
-import NFTProvider from "../../contracts/NFTProvider.cdc"
+import NonFungibleToken from 0xNONFUNGIBLETOKENADDRESS
+import NFTProvider from 0xNFTPROVIDERADDRESS
 
 transaction(royalties: [NFTProvider.Royalties]?, metadata: String) {
     
@@ -23,7 +23,6 @@ transaction(royalties: [NFTProvider.Royalties]?, metadata: String) {
 
     execute {
         let nft <- self.minter.mint(
-            collection: collection,
             creator: self.signerAddress,
             royalties: royalties ?? [],
             metadata: metadata,

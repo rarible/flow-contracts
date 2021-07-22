@@ -1,4 +1,4 @@
-import SaleOrder from "SaleOrder.cdc"
+import SaleOrder from 0xSALEORDERADDRESS
 
 pub contract StoreShowCase {
 
