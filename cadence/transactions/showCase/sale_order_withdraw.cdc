@@ -4,9 +4,9 @@
  *
  * @param saleId: sale id for sale
  */
-import NonFungibleToken from "../../contracts/NonFungibleToken.cdc"
-import FungibleToken from "../../contracts/FungibleToken.cdc"
-import StoreShowCase from "../../contracts/StoreShowCase.cdc"
+import NonFungibleToken from 0xNONFUNGIBLETOKENADDRESS
+import FungibleToken from 0xFUNGIBLETOKENADDRESS
+import StoreShowCase from 0xSTORESHOWCASEADDRESS
 
 transaction(saleId: UInt64) {
 

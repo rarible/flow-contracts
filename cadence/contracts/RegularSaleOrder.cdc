@@ -1,8 +1,8 @@
-import FungibleToken from "FungibleToken.cdc"
-import NonFungibleToken from "NonFungibleToken.cdc"
-import SaleOrder from "SaleOrder.cdc"
-import MarketFee from "MarketFee.cdc"
-import AssetBound from "AssetBound.cdc"
+import FungibleToken from 0xFUNGIBLETOKENADDRESS
+import NonFungibleToken from 0xNONFUNGIBLETOKENADDRESS
+import SaleOrder from 0xSALEORDERADDRESS
+import MarketFee from 0xMARKETFEEADDRESS
+import AssetBound from 0xASSETBOUNDADDRESS
 
 pub contract RegularSaleOrder : SaleOrder {
 

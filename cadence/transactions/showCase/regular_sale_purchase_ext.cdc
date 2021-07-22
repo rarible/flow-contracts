@@ -6,15 +6,15 @@
  * @param tokenId: NFT id for sale
  * @param amount: NFT price in flow
  */
-import RegularSaleOrder from "../../contracts/RegularSaleOrder.cdc"
-import NonFungibleToken from "../../contracts/NonFungibleToken.cdc"
-import FungibleToken from "../../contracts/FungibleToken.cdc"
-import StoreShowCase from "../../contracts/StoreShowCase.cdc"
-import AssetBound from "../../contracts/AssetBound.cdc"
-import FlowToken from "../../contracts/FlowToken.cdc"
-import FtPathMapper from "../../contracts/FtPathMapper.cdc"
-import NFTProvider from "../../contracts/NFTProvider.cdc"
-import SaleOrder from "../../contracts/SaleOrder.cdc"
+import RegularSaleOrder from 0xREGULARSALEORDERADDRESS
+import NonFungibleToken from 0xNONFUNGIBLETOKENADDRESS
+import FungibleToken from 0xFUNGIBLETOKENADDRESS
+import StoreShowCase from 0xSTORESHOWCASEADDRESS
+import AssetBound from 0xASSETBOUNDADDRESS
+import FlowToken from 0xFLOWTOKENADDRESS
+import FtPathMapper from 0xFTPATHMAPPERADDRESS
+import NFTProvider from 0xNFTPROVIDERADDRESS
+import SaleOrder from 0xSALEORDERADDRESS
 
 transaction(sellerAddress: Address, saleId: UInt64) {
 

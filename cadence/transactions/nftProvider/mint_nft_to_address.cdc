@@ -1,8 +1,8 @@
 /**
  * Mint NFT from main account to address
  */
-import NonFungibleToken from "../../contracts/NonFungibleToken.cdc"
-import NFTProvider from "../../contracts/NFTProvider.cdc"
+import NonFungibleToken from 0xNONFUNGIBLETOKENADDRESS
+import NFTProvider from 0xNFTPROVIDERADDRESS
 
 transaction(address: Address, royalties: [NFTProvider.Royalties]?, metadata: String) {
 

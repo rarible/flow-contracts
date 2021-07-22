@@ -1,8 +1,8 @@
 /**
  * Returns flow amount on fee vault
  */
-import MarketFee from "../../contracts/MarketFee.cdc"
-import FungibleToken from "../../contracts/FungibleToken.cdc"
+import MarketFee from 0xMARKETFEEADDRESS
+import FungibleToken from 0xFUNGIBLETOKENADDRESS
 
 pub fun main(): UFix64 {
     return MarketFee.feeBalance.borrow()!.balance

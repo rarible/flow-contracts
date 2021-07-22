@@ -4,8 +4,8 @@
  *
  * @param address flow account address
  */
-import NonFungibleToken from "../../contracts/NonFungibleToken.cdc"
-import NFTProvider from "../../contracts/NFTProvider.cdc"
+import NonFungibleToken from 0xNONFUNGIBLETOKENADDRESS
+import NFTProvider from 0xNFTPROVIDERADDRESS
 
 transaction (id: UInt64, recipientAddress: Address) {
     let receiver: &{NonFungibleToken.CollectionPublic}

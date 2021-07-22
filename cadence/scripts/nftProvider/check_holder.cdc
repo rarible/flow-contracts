@@ -3,7 +3,7 @@
  *
  * @param address flow account address
  */
-import NonFungibleToken from "../../contracts/NonFungibleToken.cdc"
+import NonFungibleToken from 0xNONFUNGIBLETOKENADDRESS
 
 pub fun main(address: Address): Bool {
     let account = getAccount(address)
