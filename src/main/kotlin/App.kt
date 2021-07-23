@@ -32,6 +32,8 @@ class App {
                         "MarketFee",
                         "StoreShowCase",
                         "FtPathMapper",
+                        "NFTPlus",
+                        "CommonNFT",
                     )
                 ).flatMap { (address, contracts) -> contracts.map { it to address } }.toMap()
             )
