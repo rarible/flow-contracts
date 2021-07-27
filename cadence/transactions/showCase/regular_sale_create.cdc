@@ -5,13 +5,14 @@
  * @param tokenId: NFT id for sale
  * @param amount: NFT price in flow
  */
-import RegularSaleOrder from 0xREGULARSALEORDERADDRESS
-import NonFungibleToken from 0xNONFUNGIBLETOKENADDRESS
-import FungibleToken from 0xFUNGIBLETOKENADDRESS
-import StoreShowCase from 0xSTORESHOWCASEADDRESS
-import AssetBound from 0xASSETBOUNDADDRESS
-import FlowToken from 0xFLOWTOKENADDRESS
-import FtPathMapper from 0xFTPATHMAPPERADDRESS
+import RegularSaleOrder from 0xREGULARSALEORDER
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import FungibleToken from 0xFUNGIBLETOKEN
+import StoreShowCase from 0xSTORESHOWCASE
+import AssetBound from 0xASSETBOUND
+import FlowToken from 0xFLOWTOKEN
+import FtPathMapper from 0xFTPATHMAPPER
+import CommonNFT from 0xCOMMONNFT
 
 transaction(tokenId: UInt64, amount: UFix64) {
 
@@ -20,10 +21,12 @@ transaction(tokenId: UInt64, amount: UFix64) {
     let receiver: Capability<&{FungibleToken.Receiver}>
 
     prepare(signer: AuthAccount) {
-        let sender = signer.borrow<&{NonFungibleToken.Provider}>(from: /storage/NFTCollection)
-            ?? panic("Could not borrow sender reference")
-        self.nft <- sender.withdraw(withdrawID: tokenId)
-        self.showCase = signer.borrow<&StoreShowCase.ShowCase>(from: StoreShowCase.storeShowCaseStoragePath)!
+        // let sender = signer.borrow<&{NonFungibleToken.Provider}>(from: /storage/NFTCollection)
+            // ?? panic("Could not borrow sender reference")
+        // self.nft <- sender.withdraw(withdrawID: tokenId)
+        // self.showCase = signer.borrow<&StoreShowCase.ShowCase>(from: StoreShowCase.storeShowCaseStoragePath)!
+        self.nft <- CommonNFT.collectionRef(signer).withdraw(withdrawID: tokenId)
+        self.showCase = StoreShowCase.showCase(signer)
         self.receiver = FtPathMapper.getReceiver(type: Type<&FlowToken.Vault>(), address: signer.address)
     }
 

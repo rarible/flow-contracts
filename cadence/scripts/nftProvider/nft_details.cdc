@@ -4,7 +4,7 @@
  * @param id NFT identifier
  * @param address flow account address
  */
-import NonFungibleToken from 0xNONFUNGIBLETOKENADDRESS
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
 
 pub fun main(id: UInt64, address: Address): &NonFungibleToken.NFT {
     let account = getAccount(address)

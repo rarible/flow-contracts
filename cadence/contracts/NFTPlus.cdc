@@ -1,10 +1,9 @@
-import NonFungibleToken from 0xNONFUNGIBLETOKENADDRESS
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
 
 pub contract interface NFTPlus {
 
     pub event Transfer(id: UInt64, from: Address?, to: Address)
 
-    pub fun configureAccount(account: AuthAccount)
     pub fun receiver(address: Address): Capability<&{NonFungibleToken.Receiver}>
     pub fun collectionPublic(address: Address): Capability<&{NonFungibleToken.CollectionPublic}>
 

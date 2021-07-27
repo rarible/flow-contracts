@@ -1,8 +1,12 @@
-import FungibleToken from 0xFUNGIBLETOKENADDRESS
-import NonFungibleToken from 0xNONFUNGIBLETOKENADDRESS
-import SaleOrder from 0xSALEORDERADDRESS
-import MarketFee from 0xMARKETFEEADDRESS
-import AssetBound from 0xASSETBOUNDADDRESS
+import FungibleToken from 0xFUNGIBLETOKEN
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import SaleOrder from 0xSALEORDER
+import MarketFee from 0xMARKETFEE
+import AssetBound from 0xASSETBOUND
+import NFTPlus from 0xNFTPLUS
+import CommonNFT from 0xCOMMONNFT
+import FtPathMapper from 0xFTPATHMAPPER
+import FlowToken from 0xFLOWTOKEN
 
 pub contract RegularSaleOrder : SaleOrder {
 
@@ -44,10 +48,24 @@ pub contract RegularSaleOrder : SaleOrder {
             assert(self.fee.check(price: self.bid.amount, vault: &vault as &FungibleToken.Vault), message: "Vault check failed")
             self.fee.charge(price: self.bid.amount, vault: &vault as &FungibleToken.Vault)
             let receiver = self.receiver.borrow()!
-            receiver.deposit(from: <- vault)
 
-            let token <- self.ask <- nil
+            let tokenOrNil <- self.ask <- nil
+            let token <- tokenOrNil!
+            if (token.isInstance(Type<@CommonNFT.NFT>())) {
+                let ref = &token as! auth &NonFungibleToken.NFT
+                let ref2 = ref as! &CommonNFT.NFT
+                let royalties = ref2.royalties
+                for royalty in royalties {
+                    let v = self.bid.amount * royalty.fee / 100.0
+                    let r = FtPathMapper.getReceiver(type: vault.getType(), address: royalty.address).borrow()!
+                    r.deposit(from: <- vault.withdraw(amount: v))
+                }
+
+            }
+
+            receiver.deposit(from: <- vault)
             emit OrderClosed(id: self.uuid)
+
             return <- token
         }
 

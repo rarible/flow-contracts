@@ -4,8 +4,8 @@
  * @param id sale identifier
  * @param address flow account address
  */
-import StoreShowCase from 0xSTORESHOWCASEADDRESS
-import SaleOrder from 0xSALEORDERADDRESS
+import StoreShowCase from 0xSTORESHOWCASE
+import SaleOrder from 0xSALEORDER
 
 pub fun main(id: UInt64, address: Address): &SaleOrder.Order {
     let account = getAccount(address)

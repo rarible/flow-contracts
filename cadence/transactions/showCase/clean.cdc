@@ -2,7 +2,7 @@
  * Deinitialize ShowCase account
  * !!! BURNS ALL NFT !!!
  */
-import StoreShowCase from 0xSTORESHOWCASEADDRESS
+import StoreShowCase from 0xSTORESHOWCASE
 
 transaction {
     prepare (signer: AuthAccount) {

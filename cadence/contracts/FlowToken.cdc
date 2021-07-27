@@ -1,4 +1,4 @@
-import FungibleToken from 0xFUNGIBLETOKENADDRESS
+import FungibleToken from 0xFUNGIBLETOKEN
 
 pub contract FlowToken: FungibleToken {
 

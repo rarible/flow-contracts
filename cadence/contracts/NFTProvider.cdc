@@ -1,4 +1,4 @@
-import NonFungibleToken from 0xNONFUNGIBLETOKENADDRESS
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
 
 pub contract NFTProvider: NonFungibleToken {
 

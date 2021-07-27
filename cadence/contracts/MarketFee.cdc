@@ -1,6 +1,6 @@
-import FungibleToken from 0xFUNGIBLETOKENADDRESS
-import NonFungibleToken from 0xNONFUNGIBLETOKENADDRESS
-import FlowToken from 0xFLOWTOKENADDRESS
+import FungibleToken from 0xFUNGIBLETOKEN
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import FlowToken from 0xFLOWTOKEN
 
 pub contract MarketFee {
 

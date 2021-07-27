@@ -5,13 +5,13 @@
  * @param tokenId: NFT id for sale
  * @param amount: NFT price in flow
  */
-import RegularSaleOrder from 0xREGULARSALEORDERADDRESS
-import NonFungibleToken from 0xNONFUNGIBLETOKENADDRESS
-import FungibleToken from 0xFUNGIBLETOKENADDRESS
-import StoreShowCase from 0xSTORESHOWCASEADDRESS
-import AssetBound from 0xASSETBOUNDADDRESS
-import FlowToken from 0xFLOWTOKENADDRESS
-import FtPathMapper from 0xFTPATHMAPPERADDRESS
+import RegularSaleOrder from 0xREGULARSALEORDER
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import FungibleToken from 0xFUNGIBLETOKEN
+import StoreShowCase from 0xSTORESHOWCASE
+import AssetBound from 0xASSETBOUND
+import FlowToken from 0xFLOWTOKEN
+import FtPathMapper from 0xFTPATHMAPPER
 
 transaction(tokenId: UInt64, amount: UFix64) {
 
