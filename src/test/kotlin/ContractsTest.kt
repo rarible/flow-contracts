@@ -38,27 +38,27 @@ internal class ContractsTest {
 
     @Test
     fun contractAlias() {
-        assertEquals(contracts.contractAlias("Name"), "0xNAMEADDRESS")
+        assertEquals(contracts.contractAlias("Name"), "0xNAME")
     }
 
     @Test
     fun replaceImports() {
         val script = """
-            import FungibleToken from 0xFUNGIBLETOKENADDRESS 
-            import FlowToken from 0xFLOWTOKENADDRESS
+            import FungibleToken from 0xFUNGIBLETOKEN 
+            import FlowToken from 0xFLOWTOKEN
         """.trimIndent()
         val result = """
             import FungibleToken from 0xee82856bf20e2aa6 
             import FlowToken from 0x0ae53cb6e3f42a79
         """.trimIndent()
         val invalidScript = """
-            import NonExistent from 0xNONEXISTENTADDRESS 
+            import NonExistent from 0xNONEXISTENT 
         """.trimIndent()
         assertEquals(contracts.replaceImports(script), result)
         val exception = assertThrows<IllegalStateException> {
             contracts.replaceImports(invalidScript)
         }
-        assertEquals(exception.message, "Not found address for alias: 0xNONEXISTENTADDRESS")
+        assertEquals(exception.message, "Not found address for alias: 0xNONEXISTENT")
     }
 
     @Test

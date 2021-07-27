@@ -16,13 +16,6 @@ class Accounts(private val api: FlowAccessApi, load: List<AccountDef>, create: L
         val privateKey: String,
     )
 
-    data class Account(
-        val name: String,
-        val address: FlowAddress,
-        val keyPair: KeyPair,
-        val account: FlowAccount,
-    )
-
     val accounts: Map<String, Account>
     val byAddress: Map<String, Account>
     val serviceAccount: Account
@@ -48,13 +41,13 @@ class Accounts(private val api: FlowAccessApi, load: List<AccountDef>, create: L
     fun loadAccount(acc: AccountDef): Account {
         val keyPair = KeyPair(Crypto.decodePrivateKey(acc.privateKey), Crypto.decodePublicKey(acc.publicKey))
         val account = api.getAccountAtLatestBlock(FlowAddress(acc.addressHex))!!
-        return Account(acc.name, account.address, keyPair, account)
+        return Account(acc.name, keyPair, account)
     }
 
     fun createAndLoadAccount(name: String): Account {
         val keyPair = Crypto.generateKeyPair()
         val flowAccount = getAccount(createAccount(keyPair.public))!!
-        return Account(name, flowAccount.address, keyPair, flowAccount)
+        return Account(name, keyPair, flowAccount)
     }
 
     fun createAccount(publicKey: PublicKey): FlowAddress {
