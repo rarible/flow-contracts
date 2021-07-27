@@ -4,8 +4,8 @@
  * @param buyerFee [UFix64] buyer fee
  * @param sellerFee [UFix64] seller fee
  */
-import MarketFee from 0xMARKETFEEADDRESS
-import FungibleToken from 0xFUNGIBLETOKENADDRESS
+import MarketFee from 0xMARKETFEE
+import FungibleToken from 0xFUNGIBLETOKEN
 
 transaction (buyerFee: UFix64, sellerFee: UFix64) {
     prepare(account: AuthAccount) {

@@ -1,4 +1,4 @@
-import SaleOrder from 0xSALEORDERADDRESS
+import SaleOrder from 0xSALEORDER
 
 pub contract AssetBound {
 

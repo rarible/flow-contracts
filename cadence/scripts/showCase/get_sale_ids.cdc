@@ -3,7 +3,7 @@
  *
  * @param address flow account address
  */
-import StoreShowCase from 0xSTORESHOWCASEADDRESS
+import StoreShowCase from 0xSTORESHOWCASE
 
 pub fun main(address: Address): [UInt64] {
     let account = getAccount(address)

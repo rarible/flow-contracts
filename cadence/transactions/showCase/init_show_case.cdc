@@ -1,7 +1,7 @@
 /**
  * Initialize showCase on signer account
  */
-import StoreShowCase from 0xSTORESHOWCASEADDRESS
+import StoreShowCase from 0xSTORESHOWCASE
 
 transaction {
     prepare(account: AuthAccount) {

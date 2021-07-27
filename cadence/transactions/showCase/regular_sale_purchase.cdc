@@ -6,13 +6,14 @@
  * @param tokenId: NFT id for sale
  * @param amount: NFT price in flow
  */
-import RegularSaleOrder from 0xREGULARSALEORDERADDRESS
-import NonFungibleToken from 0xNONFUNGIBLETOKENADDRESS
-import FungibleToken from 0xFUNGIBLETOKENADDRESS
-import StoreShowCase from 0xSTORESHOWCASEADDRESS
-import AssetBound from 0xASSETBOUNDADDRESS
-import FlowToken from 0xFLOWTOKENADDRESS
-import FtPathMapper from 0xFTPATHMAPPERADDRESS
+import RegularSaleOrder from 0xREGULARSALEORDER
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import FungibleToken from 0xFUNGIBLETOKEN
+import StoreShowCase from 0xSTORESHOWCASE
+import AssetBound from 0xASSETBOUND
+import FlowToken from 0xFLOWTOKEN
+import FtPathMapper from 0xFTPATHMAPPER
+import CommonNFT from 0xCOMMONNFT
 
 transaction(sellerAddress: Address, saleId: UInt64, amount: UFix64) {
 
@@ -27,7 +28,8 @@ transaction(sellerAddress: Address, saleId: UInt64, amount: UFix64) {
         let seller = getAccount(sellerAddress)
         self.showCase = seller.getCapability<&{StoreShowCase.ShowCasePublic}>(StoreShowCase.storeShowCasePublicPath).borrow()
             ?? panic("Could not borrow showCase reference")
-        self.receiver = signer.getCapability<&{NonFungibleToken.CollectionPublic}>(/public/NFTCollection).borrow()
+        self.receiver = CommonNFT.collectionPublic(address: signer.address).borrow()
+        // self.receiver = signer.getCapability<&{NonFungibleToken.CollectionPublic}>(/public/NFTCollection).borrow()
             ?? panic("Could not borrow receiver reference")
     }
 

@@ -1,5 +1,5 @@
-import FungibleToken from 0xFUNGIBLETOKENADDRESS
-import FlowToken from 0xFLOWTOKENADDRESS
+import FungibleToken from 0xFUNGIBLETOKEN
+import FlowToken from 0xFLOWTOKEN
 // import FUSD from "FUSD.cdc"
 
 pub contract FtPathMapper {
@@ -9,13 +9,16 @@ pub contract FtPathMapper {
 
     init() {
         self.balance = {
-            Type<&FlowToken.Vault>().identifier: /public/flowTokenBalance
+            Type<&FlowToken.Vault>().identifier: /public/flowTokenBalance,
+            Type<@FlowToken.Vault>().identifier: /public/flowTokenBalance
         }
         self.receiver = {
-            Type<&FlowToken.Vault>().identifier: /public/flowTokenReceiver
+            Type<&FlowToken.Vault>().identifier: /public/flowTokenReceiver,
+            Type<@FlowToken.Vault>().identifier: /public/flowTokenReceiver
         }
         self.storage = {
-            Type<&FlowToken.Vault>().identifier: /storage/flowTokenVault
+            Type<&FlowToken.Vault>().identifier: /storage/flowTokenVault,
+            Type<@FlowToken.Vault>().identifier: /storage/flowTokenVault
         }
     }
 

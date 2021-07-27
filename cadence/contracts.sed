@@ -1,0 +1,15 @@
+s/0xFLOWFEES/"../../contracts/FlowFees.cdc"/g
+s/0xFLOWSERVICEACCOUNT/"../../contracts/FlowServiceAccount.cdc"/g
+s/0xFLOWSTORAGEFEES/"../../contracts/FlowStorageFees.cdc"/g
+s/0xFLOWTOKEN/"../../contracts/FlowToken.cdc"/g
+s/0xFUNGIBLETOKEN/"../../contracts/FungibleToken.cdc"/g
+s/0xNONFUNGIBLETOKEN/"../../contracts/NonFungibleToken.cdc"/g
+s/0xSALEORDER/"../../contracts/SaleOrder.cdc"/g
+s/0xFTPATHMAPPER/"../../contracts/FtPathMapper.cdc"/g
+s/0xNFTPROVIDER/"../../contracts/NFTProvider.cdc"/g
+s/0xASSETBOUND/"../../contracts/AssetBound.cdc"/g
+s/0xMARKETFEE/"../../contracts/MarketFee.cdc"/g
+s/0xSTORESHOWCASE/"../../contracts/StoreShowCase.cdc"/g
+s/0xNFTPLUS/"../../contracts/NFTPlus.cdc"/g
+s/0xCOMMONNFT/"../../contracts/CommonNFT.cdc"/g
+s/0xREGULARSALEORDER/"../../contracts/RegularSaleOrder.cdc"/g

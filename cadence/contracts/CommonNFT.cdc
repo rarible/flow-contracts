@@ -1,5 +1,5 @@
-import NonFungibleToken from 0xNONFUNGIBLETOKENADDRESS
-import NFTPlus from 0xNFTPLUSADDRESS
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import NFTPlus from 0xNFTPLUS
 
 /**
  * CommonNFT token contract
@@ -73,6 +73,7 @@ pub contract CommonNFT : NonFungibleToken, NFTPlus {
 
         pub fun transfer(tokenId: UInt64, to: Capability<&{NonFungibleToken.Receiver}>) {
             let token <- self.ownedNFTs.remove(key: tokenId) ?? panic("Missed NFT")
+            emit Withdraw(id: tokenId, from: self.owner?.address)
             to.borrow()!.deposit(token: <- token)
             emit Transfer(id: tokenId, from: self.owner?.address, to: to.address)
         }
@@ -122,10 +123,23 @@ pub contract CommonNFT : NonFungibleToken, NFTPlus {
         }
     }
 
-    pub fun configureAccount(account: AuthAccount) {
-        account.save(<- self.createEmptyCollection(), to: self.collectionStoragePath)
+    pub fun configureAccount(account: AuthAccount): &Collection {
+        let collection <- self.createEmptyCollection() as! @Collection
+        let ref = &collection as &Collection
+        account.save(<- collection, to: self.collectionStoragePath)
         account.link<&{NonFungibleToken.Receiver}>(self.collectionReceiverPath, target: self.collectionStoragePath)
         account.link<&{NonFungibleToken.CollectionPublic}>(self.collectionPublicPath, target: self.collectionStoragePath)
+        return ref
+    }
+
+    pub fun cleanAccount(_ account: AuthAccount) {
+        account.unlink(self.collectionPublicPath)
+        account.unlink(self.collectionReceiverPath)
+        destroy <- account.load<@Collection>(from: self.collectionStoragePath)
+    }
+
+    pub fun collectionRef(_ account: AuthAccount): &Collection {
+        return account.borrow<&Collection>(from: self.collectionStoragePath) ?? self.configureAccount(account: account)
     }
 
     pub fun receiver(address: Address): Capability<&{NonFungibleToken.Receiver}> {
@@ -140,13 +154,13 @@ pub contract CommonNFT : NonFungibleToken, NFTPlus {
         return self.account.getCapability<&Minter>(self.minterPublicPath)
     }
 
-    pub fun deinit() {
-        self.account.unlink(self.minterPublicPath)
-        destroy <- self.account.load<@AnyResource>(from: self.minterStoragePath)
+    pub fun deinit(_ account: AuthAccount) {
+        account.unlink(self.minterPublicPath)
+        destroy <- account.load<@AnyResource>(from: self.minterStoragePath)
 
-        self.account.unlink(self.collectionPublicPath)
-        self.account.unlink(self.collectionReceiverPath)
-        destroy <- self.account.load<@AnyResource>(from: self.collectionStoragePath)
+        account.unlink(self.collectionPublicPath)
+        account.unlink(self.collectionReceiverPath)
+        destroy <- account.load<@AnyResource>(from: self.collectionStoragePath)
     }
 
     init() {

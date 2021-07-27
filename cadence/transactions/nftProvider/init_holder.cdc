@@ -1,8 +1,8 @@
 /**
  * Initialize storage of signer account as NFT holder
  */
-import NonFungibleToken from 0xNONFUNGIBLETOKENADDRESS
-import NFTProvider from 0xNFTPROVIDERADDRESS
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import NFTProvider from 0xNFTPROVIDER
 
 transaction {
     prepare(signer: AuthAccount) {
