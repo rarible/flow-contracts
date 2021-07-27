@@ -1,8 +1,8 @@
 import java.io.File
 
 class Contracts(
-    val cadenceRoot: String,
-    val contractsPath: String,
+    private val cadenceRoot: String,
+    private val contractsPath: String,
     val deployedAddresses: Map<String, String>,
     val deployAddresses: Map<String, String>,
 ) {
@@ -24,7 +24,7 @@ class Contracts(
         )
     }
 
-    val dependencies: List<Pair<String, Set<String>>> =
+    private val dependencies: List<Pair<String, Set<String>>> =
         calculateDependencies(deployAddresses.keys.toList(), deployedAddresses.keys.toList())
 
     val ordered: List<String> =
@@ -34,7 +34,7 @@ class Contracts(
         .map { (name, address) -> contractAlias(name) to address }
         .toMap()
 
-    fun contractTextRaw(name: String) = File("${cadenceRoot}/${contractSource(name)}").readText()
+    private fun contractTextRaw(name: String) = File("${cadenceRoot}/${contractSource(name)}").readText()
 
     fun contractText(name: String) = replaceImports(contractTextRaw(name))
 
@@ -42,7 +42,7 @@ class Contracts(
 
     fun contractSource(name: String) = "${contractsPath}/$name.cdc"
 
-    fun contractAlias(name: String) = "0x${name.uppercase()}ADDRESS"
+    fun contractAlias(name: String) = "0x${name.uppercase()}"
 
     fun replaceImports(script: String): String =
         importRe.replace(script) {
@@ -58,7 +58,7 @@ class Contracts(
     fun calculateDependencies(deployList: List<String>, deployed: List<String>): List<Pair<String, Set<String>>> {
         val deployedMap = deployed.associateBy { contractAlias(it) }
         val contractMapping = deployList.associateBy { contractAlias(it) }
-        val map = deployList.map { name ->
+        return deployList.map { name ->
             name to importRe.findAll(contractTextRaw(name))
                 .map(MatchResult::value)
                 .mapNotNull {
@@ -68,7 +68,6 @@ class Contracts(
                 }
                 .toSet()
         }
-        return map
     }
 
     /**
@@ -91,7 +90,10 @@ class Contracts(
 
     fun saveSedConfig() {
         with(File("$cadenceRoot/contracts.sed")) {
-            writeText((deployedAddresses.keys + ordered).joinToString("\n") { "s/\"$it.cdc\"/${contractAlias(it)}/g" } + "\n")
+            writeText(
+                (deployedAddresses.keys + ordered)
+                    .joinToString("\n") { "s/${contractAlias(it)}/\"../../contracts/$it.cdc\"/g" } + "\n"
+            )
         }
     }
 }

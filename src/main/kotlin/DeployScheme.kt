@@ -9,9 +9,9 @@ class DeployScheme(val api: FlowAccessApi, val contracts: Contracts, val account
         }
     }
 
-    fun deployContract(account: Accounts.Account, contractName: String, contractSource: String): FlowEvent {
+    fun deployContract(account: Account, contractName: String, contractSource: String): FlowEvent {
         val source = fromResource(
-            if (contractName in account.account.contracts.keys) "contract_update.cdc" else "contract_add.cdc"
+            if (contractName in account.flow.contracts.keys) "contract_update.cdc" else "contract_add.cdc"
         )
         val (txId, result) = sendTx(account, source) {
             arg { string(contractName) }
@@ -25,10 +25,10 @@ class DeployScheme(val api: FlowAccessApi, val contracts: Contracts, val account
         javaClass.classLoader.getResourceAsStream(name)!!
             .use { it.bufferedReader().readText() }
 
-    fun signer(account: Accounts.Account) = Crypto.getSigner(account.keyPair.private)
+    fun signer(account: Account) = Crypto.getSigner(account.keyPair.private)
 
     fun sendTx(
-        account: Accounts.Account,
+        account: Account,
         source: String,
         argBuilder: FlowArgumentsBuilder.() -> Unit
     ): Pair<FlowId, FlowTransactionResult> =

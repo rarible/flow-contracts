@@ -1,3 +1,3 @@
 
-rootProject.name = "utest"
+rootProject.name = "flow-contracts"
 
