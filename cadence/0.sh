@@ -8,6 +8,7 @@ NFT2='[{"type":"Address","value":"0xf8d6e0586b0a20c7"},{"type":"String","value":
 NFT3='[{"type":"Address","value":"0xf8d6e0586b0a20c7"},{"type":"String","value":"rarible"},{"type":"Optional","value":null},{"type":"Struct","value":"blablabla"}]'
 NFT4='[{"type":"Address","value":"0xf8d6e0586b0a20c7"},{"type":"Optional","value":null},{"type":"String","value":"url://"}]'
 NFT5='[{"type":"Address","value":"0xe4e5f90bf7e2a25f"},{"type":"Optional","value":null},{"type":"String","value":"url://"}]'
+NFT5='[{"type":"String","value":"url://"},{"type":"Array","value":[]]'
 
 #flow transactions send transactions/nftProvider/init_holder.cdc --signer alice
 #flow transactions send transactions/nftProvider/init_holder.cdc --signer bob
