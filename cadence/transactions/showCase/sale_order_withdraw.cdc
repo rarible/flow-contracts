@@ -7,16 +7,16 @@
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
 import FungibleToken from 0xFUNGIBLETOKEN
 import StoreShowCase from 0xSTORESHOWCASE
+import CommonNFT from 0xCOMMONNFT
 
 transaction(saleId: UInt64) {
 
     let showCase: &StoreShowCase.ShowCase
-    let receiver: &{NonFungibleToken.CollectionPublic}
+    let receiver: &{NonFungibleToken.Receiver}
 
     prepare(signer: AuthAccount) {
         self.showCase = signer.borrow<&StoreShowCase.ShowCase>(from: StoreShowCase.storeShowCaseStoragePath)!
-        self.receiver = signer.getCapability<&{NonFungibleToken.CollectionPublic}>(/public/NFTCollection).borrow()
-            ?? panic("Could not borrow receiver reference")
+        self.receiver = CommonNFT.receiver(address: signer.address).borrow()!
     }
 
     execute {
