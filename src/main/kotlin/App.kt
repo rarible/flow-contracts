@@ -1,7 +1,11 @@
 import contracts.CommonNFT
 import contracts.FlowToken
 import contracts.StoreShowCase
-import org.onflow.sdk.Flow
+import org.onflow.sdk.*
+import org.onflow.sdk.cadence.AddressField
+import org.onflow.sdk.cadence.Field
+import org.onflow.sdk.cadence.OptionalField
+import org.onflow.sdk.cadence.UInt64NumberField
 
 class App {
     companion object {
@@ -41,6 +45,7 @@ class App {
                         "StoreShowCase",
                         "FtPathMapper",
                         "NFTPlus",
+                        "CommonNFTDraft",
                         "CommonNFT",
                     )
                 ).flatMap { (address, contracts) -> contracts.map { it to address } }.toMap()
@@ -68,22 +73,69 @@ class App {
             commonNFT.check("0xf8d6e0586b0a20c7")
             commonNFT.getIds("0xf8d6e0586b0a20c7")
 
-            commonNFT.mint(accounts.serviceAccount, "Hello, world!", mapOf(
+
+            val royalties = mapOf(
                 alice.addressHex to 2.0,
                 bob.addressHex to 3.0,
                 eve.addressHex to 5.0,
-            ))
-//            commonNFT.borrowNft("0xf8d6e0586b0a20c7", 1U)
+            )
+            val draftId = commonNFT.mintS1(service, alice.addressHex, royalties)
+                .e("CommonNFT.MintDraft")!!.field("id").asULong()
+            val tokenId = commonNFT.mintS2(service, draftId, alice.addressHex, "ipfs://metadata")
+                .e("CommonNFT.Mint")!!.field("id").asULong()
+            commonNFT.getIds(alice.addressHex)
+            val draftId2 = commonNFT.mintS1(alice, alice.addressHex, royalties)
+                .e("CommonNFT.MintDraft")!!.field("id").asULong()
+            val tokenId2 = commonNFT.mintS2(service, draftId2, alice.addressHex, "ipfs://metadata")
+                .e("CommonNFT.Mint")!!.field("id").asULong()
+            commonNFT.getIds(alice.addressHex)
+//            val tokenId = commonNFT.mint(accounts.serviceAccount, "Hello, world!", mapOf(
+//                alice.addressHex to 2.0,
+//                bob.addressHex to 3.0,
+//                eve.addressHex to 5.0,
+//            )).e("CommonNFTDraft.Mint")!!.field("id").asULong()
+//            val tokenId = commonNFT.mint(accounts.serviceAccount, "Hello, world!", mapOf(
+//                alice.addressHex to 2.0,
+//                bob.addressHex to 3.0,
+//                eve.addressHex to 5.0,
+//            )).e("CommonNFT.Mint")!!.field("id").asULong()
+            commonNFT.borrowNft(alice.addressHex, tokenId)
 //            commonNFT.transfer(accounts.serviceAccount, 1U, accounts.serviceAccount.address.formatted)
 //            val r4 = commonNFT.burn(accounts.serviceAccount, 5U)
 //            println(r4)
 
 //            showCase.getSaleIds(alice.addressHex)
-            showCase.regularSaleCreate(accounts.serviceAccount, 7U, 0.2045)
-            showCase.regularSalePurchaseExt(alice, service.addressHex, 108U)
+            val saleId = showCase.regularSaleCreate(alice, tokenId, 0.2045)
+                .e("RegularSaleOrder.OrderOpened")!!.field("id").asULong()
+//            showCase.saleOrderWithdraw(service, saleId)
+            val address = showCase.regularSalePurchaseExt(service, alice.addressHex, saleId)
+                .e("CommonNFT.Deposit")!!.field("to").asAddress()
 //            commonNFT.transfer(accounts.serviceAccount, 2U, alice.addressHex)
 //            commonNFT.clean(alice)
-            showCase.getSaleIds(service.addressHex)
+//            println("tokenId: $tokenId, saleId: $saleId, address: address")
+//            showCase.getSaleIds(service.addressHex).asULongArray()
         }
     }
 }
+
+private fun FlowScriptResponse.asULongArray() {
+    TODO("Not yet implemented")
+}
+
+private fun Pair<FlowId, FlowTransactionResult>.e(s: String): FlowEvent? {
+    return second.events.find { it.type.endsWith(s) }
+}
+
+private fun FlowEvent.field(name: String): Field<*> =
+    event.value!!.fields.find { it.name == name }!!.value
+
+private fun Field<*>.asULong() =
+    (this as UInt64NumberField).value!!.toULong()
+
+private fun Field<*>.asAddress() = (value as AddressField).value!!
+private fun Field<*>.optional() = (value as OptionalField).value
+
+private fun <T> FlowEvent.f(s: String): T {
+    return event.value!!.fields.find { it.name == s }!!.value.value as T
+}
+

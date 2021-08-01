@@ -21,6 +21,33 @@ class CommonNFT(override val api: FlowAccessApi, override val converter: SourceC
         arg { uint64(tokenId) }
     }
 
+    fun mintS1(account: Account, creator: String, royalties: Map<String, Double>) =
+        tx(account, "mint-draft") {
+            arg { address(creator) }
+            arg {
+                array {
+                    royalties.map { (k, v) ->
+                        struct(
+                            composite(
+                                "A.f8d6e0586b0a20c7.CommonNFT.Royalties",
+                                listOf(
+                                    "address" to address(k),
+                                    "fee" to ufix64(v),
+                                )
+                            )
+                        )
+                    }
+                }
+            }
+        }
+
+    fun mintS2(account: Account, draftId: ULong, creator: String, metadata: String) =
+        tx(account, "mint-item") {
+            arg { uint64(draftId) }
+            arg { address(creator) }
+            arg { string(metadata) }
+        }
+
     fun mint(account: Account, metadata: String, royalties: Map<String, Double>) = tx(account, "mint") {
         arg { string(metadata) }
         arg {
