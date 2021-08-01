@@ -10,11 +10,18 @@ F="flow -n testnet"
 
 
 #
-# Mint
+# Mint draft
 #  metadata: url://
-#  royalties: [{"0xfcfb23c627a63d40": 2.0}, {"0xfcfb23c627a63d40": 5.0}]
+#  royalties: [{"0xff1201e3a53ee578": 2.0}, {"0xff1201e3a53ee578": 5.0}]
 #
-#$F transactions send transactions/commonNft/mint.cdc --signer master --args-json '[{"type":"String","value":"url://"},{"type":"Array","value":[{"type":"Struct","value":{"id":"A.fcfb23c627a63d40.CommonNFT.Royalties","fields":[{"name":"address","value":{"type":"Address","value":"0xfcfb23c627a63d40"}},{"name":"fee","value":{"type":"UFix64","value":"2.0"}}]}},{"type":"Struct","value":{"id":"A.fcfb23c627a63d40.CommonNFT.Royalties","fields":[{"name":"address","value":{"type":"Address","value":"0xfcfb23c627a63d40"}},{"name":"fee","value":{"type":"UFix64","value":"5.0"}}]}}]}]'
+#$F transactions send transactions/commonNft/mint-draft.cdc --signer master --args-json '[{"type":"Address","value":"0xff1201e3a53ee578"},{"type":"Array","value":[{"type":"Struct","value":{"id":"A.ff1201e3a53ee578.CommonNFT.Royalties","fields":[{"name":"address","value":{"type":"Address","value":"0xff1201e3a53ee578"}},{"name":"fee","value":{"type":"UFix64","value":"2.0"}}]}},{"type":"Struct","value":{"id":"A.ff1201e3a53ee578.CommonNFT.Royalties","fields":[{"name":"address","value":{"type":"Address","value":"0xff1201e3a53ee578"}},{"name":"fee","value":{"type":"UFix64","value":"5.0"}}]}}]}]'
+
+#
+# Mint item
+#  metadata: url://
+#  royalties: [{"0xff1201e3a53ee578": 2.0}, {"0xff1201e3a53ee578": 5.0}]
+#
+#$F transactions send transactions/commonNft/mint-item.cdc --signer master --args-json '[{"type":"UInt64","value":"0"},{"type":"Address","value":"0xff1201e3a53ee578"},{"type":"String","value":"url://"}]'
 
 #
 # Burn
@@ -25,9 +32,9 @@ F="flow -n testnet"
 #
 # Transfer
 #  tokenId: 2
-#  address: 0xfcfb23c627a63d40
+#  address: 0xff1201e3a53ee578
 #
-#$F transactions send transactions/commonNft/transfer.cdc --signer master --arg UInt64:2 --arg Address:0xfcfb23c627a63d40
+#$F transactions send transactions/commonNft/transfer.cdc --signer master --arg UInt64:2 --arg Address:0xff1201e3a53ee578
 
 #
 # Sell
@@ -38,10 +45,10 @@ F="flow -n testnet"
 
 #
 # Buy
-#  address: 0xfcfb23c627a63d40
+#  address: 0xff1201e3a53ee578
 #  saleId: 10671852
 #
-#$F transactions send transactions/showCase/regular_sale_purchase_ext.cdc --signer master --arg Address:0xfcfb23c627a63d40 --arg UInt64:10671852
+#$F transactions send transactions/showCase/regular_sale_purchase_ext.cdc --signer master --arg Address:0xff1201e3a53ee578 --arg UInt64:10671852
 
 #
 # Cancel sale
@@ -51,20 +58,20 @@ F="flow -n testnet"
 
 #
 # Owned NFT list
-#  address: 0xfcfb23c627a63d40
+#  address: 0xff1201e3a53ee578
 #
-$F scripts execute scripts/commonNft/get_ids.cdc --arg Address:0xfcfb23c627a63d40
+$F scripts execute scripts/commonNft/get_ids.cdc --arg Address:0xff1201e3a53ee578
 
 #
 # Owned NFT attributes
-#  address: 0xfcfb23c627a63d40
+#  address: 0xff1201e3a53ee578
 #  tokenId: 4
 #  
-#$F scripts execute scripts/commonNft/borrow_nft.cdc --arg Address:0xfcfb23c627a63d40 --arg UInt64:4
+#$F scripts execute scripts/commonNft/borrow_nft.cdc --arg Address:0xff1201e3a53ee578 --arg UInt64:4
 
 #
 # Opened sales
-#  address: 0xfcfb23c627a63d40
+#  address: 0xff1201e3a53ee578
 #
-$F scripts execute scripts/showCase/get_sale_ids.cdc --arg Address:0xfcfb23c627a63d40
+#$F scripts execute scripts/showCase/get_sale_ids.cdc --arg Address:0xff1201e3a53ee578
 
