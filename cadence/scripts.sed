@@ -11,5 +11,6 @@ s/0xASSETBOUND/"..\/..\/contracts\/AssetBound.cdc"/g
 s/0xMARKETFEE/"..\/..\/contracts\/MarketFee.cdc"/g
 s/0xSTORESHOWCASE/"..\/..\/contracts\/StoreShowCase.cdc"/g
 s/0xNFTPLUS/"..\/..\/contracts\/NFTPlus.cdc"/g
+s/0xCOMMONNFTDRAFT/"..\/..\/contracts\/CommonNFTDraft.cdc"/g
 s/0xCOMMONNFT/"..\/..\/contracts\/CommonNFT.cdc"/g
 s/0xREGULARSALEORDER/"..\/..\/contracts\/RegularSaleOrder.cdc"/g

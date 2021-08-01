@@ -34,7 +34,7 @@ transaction(sellerAddress: Address, saleId: UInt64) {
         self.showCase = seller.getCapability<&{StoreShowCase.ShowCasePublic}>(StoreShowCase.storeShowCasePublicPath).borrow()
             ?? panic("Could not borrow showCase reference")
         // self.receiver = signer.getCapability<&{NonFungibleToken.CollectionPublic}>(/public/NFTCollection).borrow()
-        self.receiver = CommonNFT.collectionPublic(address: signer.address).borrow()
+        self.receiver = CommonNFT.collectionPublic(signer.address).borrow()
             ?? panic("Could not borrow receiver reference")
 
         let provider = signer.borrow<&{FungibleToken.Provider}>(from: FtPathMapper.storage[Type<&FlowToken.Vault>().identifier]!)!

@@ -11,5 +11,6 @@ s/0xASSETBOUND/"AssetBound.cdc"/g
 s/0xMARKETFEE/"MarketFee.cdc"/g
 s/0xSTORESHOWCASE/"StoreShowCase.cdc"/g
 s/0xNFTPLUS/"NFTPlus.cdc"/g
+s/0xCOMMONNFTDRAFT/"CommonNFTDraft.cdc"/g
 s/0xCOMMONNFT/"CommonNFT.cdc"/g
 s/0xREGULARSALEORDER/"RegularSaleOrder.cdc"/g
