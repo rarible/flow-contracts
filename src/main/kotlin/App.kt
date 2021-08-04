@@ -1,7 +1,8 @@
 import contracts.CommonNFT
 import contracts.FlowToken
 import contracts.StoreShowCase
-import org.onflow.sdk.Flow
+import org.onflow.sdk.*
+import org.onflow.sdk.cadence.*
 
 class App {
     companion object {
@@ -52,38 +53,74 @@ class App {
             val alice = accounts.accounts["alice"]!!
             val bob = accounts.accounts["bob"]!!
             val eve = accounts.accounts["eve"]!!
+            val all = listOf(alice, bob, eve)
 
             val converter = SourceConverter(emulatorCoreContracts + contracts.deployAddresses)
             val flowToken = FlowToken(api, converter)
             val commonNFT = CommonNFT(api, converter)
             val showCase = StoreShowCase(api, converter)
 
-            listOf(alice, bob, eve).forEach {
-                commonNFT.init(it)
+            all.forEach {
+//                commonNFT.init(it)
                 flowToken.transferFlow(service, 10.0, it.addressHex)
                 flowToken.getBalance(it.addressHex)
             }
             commonNFT.check(alice.addressHex)
-            commonNFT.getIds(alice.addressHex)
-            commonNFT.check("0xf8d6e0586b0a20c7")
-            commonNFT.getIds("0xf8d6e0586b0a20c7")
+//            commonNFT.getIds(alice.addressHex)
+            commonNFT.check(service.addressHex)
+            commonNFT.getIds(service.addressHex)
 
-            commonNFT.mint(accounts.serviceAccount, "Hello, world!", mapOf(
+            val royalties = mapOf(
                 alice.addressHex to 2.0,
                 bob.addressHex to 3.0,
                 eve.addressHex to 5.0,
-            ))
-//            commonNFT.borrowNft("0xf8d6e0586b0a20c7", 1U)
+            )
+            val tokenId = commonNFT.mint(alice, "ipfs://metadata", royalties)
+                .uLongValue("CommonNFT.Mint", "id")!!
+            commonNFT.borrowNft(alice.addressHex, tokenId)
+            val res = commonNFT.getIds(alice.addressHex).asULongArray()
 //            commonNFT.transfer(accounts.serviceAccount, 1U, accounts.serviceAccount.address.formatted)
 //            val r4 = commonNFT.burn(accounts.serviceAccount, 5U)
 //            println(r4)
 
 //            showCase.getSaleIds(alice.addressHex)
-            showCase.regularSaleCreate(accounts.serviceAccount, 7U, 0.2045)
-            showCase.regularSalePurchaseExt(alice, service.addressHex, 108U)
+            val saleId = showCase.regularSaleCreate(alice, tokenId, 0.2045)
+                .uLongValue("RegularSaleOrder.OrderOpened", "id")!!
+//            showCase.saleOrderWithdraw(service, saleId)
+            val address = showCase.regularSalePurchaseExt(service, alice.addressHex, saleId)
+                .addressValue("CommonNFT.Deposit", "to")!!
 //            commonNFT.transfer(accounts.serviceAccount, 2U, alice.addressHex)
 //            commonNFT.clean(alice)
-            showCase.getSaleIds(service.addressHex)
+//            println("tokenId: $tokenId, saleId: $saleId, address: address")
+//            showCase.getSaleIds(service.addressHex).asULongArray()
         }
     }
 }
+
+private fun FlowScriptResponse.optional() =
+    if (jsonCadence.type == "Optional") jsonCadence.value
+    else (jsonCadence.value as OptionalField).value
+
+private fun FlowScriptResponse.asULongArray() =
+    (optional() as ArrayField).value?.map { it.asULong() }
+
+private fun Pair<FlowId, FlowTransactionResult>.uLongValue(event: String, field: String) =
+    e(event)?.field(field)?.asULong()
+
+private fun Pair<FlowId, FlowTransactionResult>.addressValue(event: String, field: String) =
+    e(event)?.field(field)?.asAddress()
+
+private fun Pair<FlowId, FlowTransactionResult>.e(s: String) =
+    second.events.find { it.type.endsWith(s) }
+
+private fun FlowEvent.field(name: String): Field<*> =
+    event.value!!.fields.find { it.name == name }!!.value
+
+private fun Field<*>.asULong() =
+    (this as UInt64NumberField).value!!.toULong()
+
+private fun Field<*>.asAddress() =
+    (value as AddressField).value!!
+
+private fun Field<*>.optional() =
+    (value as OptionalField).value

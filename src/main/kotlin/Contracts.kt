@@ -92,7 +92,13 @@ class Contracts(
         with(File("$cadenceRoot/contracts.sed")) {
             writeText(
                 (deployedAddresses.keys + ordered)
-                    .joinToString("\n") { "s/${contractAlias(it)}/\"../../contracts/$it.cdc\"/g" } + "\n"
+                    .joinToString("\n") { "s/${contractAlias(it)}/\"$it.cdc\"/g" } + "\n"
+            )
+        }
+        with(File("$cadenceRoot/scripts.sed")) {
+            writeText(
+                (deployedAddresses.keys + ordered)
+                    .joinToString("\n") { "s/${contractAlias(it)}/\"..\\/..\\/contracts\\/$it.cdc\"/g" } + "\n"
             )
         }
     }
