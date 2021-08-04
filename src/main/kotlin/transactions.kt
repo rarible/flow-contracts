@@ -14,7 +14,7 @@ fun FlowAccessApi.tx(account: Account, source: String, block: FlowArgumentsBuild
     simpleFlowTransaction(account.address, signer(account), gasLimit = 400L) {
         script(source)
         arguments.addAll(FlowArgumentsBuilder().apply(block).build())
-    }.sendAndGetResult()
+    }.sendAndGetResult(timeoutMs = 100_000L)
 
 fun Pair<FlowId, FlowTransactionResult>.traceTxResult(name: String) = apply {
     println("$name  txID=${first.base16Value}  status=${second.status} (code=${second.statusCode})")

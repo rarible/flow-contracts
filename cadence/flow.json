@@ -69,9 +69,13 @@
 			"address": "0xe4e5f90bf7e2a25f",
 			"key": "a3a8e3a9ef712083caebb4c551bd58e2ed6eb40ad3d49fb6ab38495e89475160"
 		},
-		"master": {
+		"master_old2": {
 			"address": "0xfcfb23c627a63d40",
 			"key": "b369570e5df2c9439364f0cff0f6bf64f1a2ce2d7c85a9e6dc4ebebfe61c561c"
+		},
+		"master": {
+			"address": "0xe91e497115b9731b",
+			"key": "780e9ad4acbc6f07f08f0c817792cb76a2b7ac564c149b166db6323a70f849fe"
 		}
 	},
 	"deployments": {

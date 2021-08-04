@@ -35,6 +35,6 @@ class DeployScheme(val api: FlowAccessApi, val contracts: Contracts, val account
         api.simpleFlowTransaction(account.address, signer(account)) {
             script(source)
             arguments.addAll(FlowArgumentsBuilder().apply(argBuilder).build())
-        }.sendAndGetResult()
+        }.sendAndGetResult(timeoutMs = 100_000L)
 
 }
