@@ -6,7 +6,6 @@ s/0xFUNGIBLETOKEN/"..\/..\/contracts\/FungibleToken.cdc"/g
 s/0xNONFUNGIBLETOKEN/"..\/..\/contracts\/NonFungibleToken.cdc"/g
 s/0xSALEORDER/"..\/..\/contracts\/SaleOrder.cdc"/g
 s/0xFTPATHMAPPER/"..\/..\/contracts\/FtPathMapper.cdc"/g
-s/0xNFTPROVIDER/"..\/..\/contracts\/NFTProvider.cdc"/g
 s/0xASSETBOUND/"..\/..\/contracts\/AssetBound.cdc"/g
 s/0xMARKETFEE/"..\/..\/contracts\/MarketFee.cdc"/g
 s/0xSTORESHOWCASE/"..\/..\/contracts\/StoreShowCase.cdc"/g

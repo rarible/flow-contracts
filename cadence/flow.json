@@ -6,7 +6,6 @@
 		}
 	},
 	"contracts": {
-		"NFTProvider": "contracts/NFTProvider.cdc",
 		"SaleOrder": "contracts/SaleOrder.cdc",
 		"AssetBound": "contracts/AssetBound.cdc",
 		"RegularSaleOrder": "contracts/RegularSaleOrder.cdc",
@@ -79,7 +78,6 @@
 		"emulator": {
 			"emulator-account": [
 				"NonFungibleToken",
-				"NFTProvider",
 				"SaleOrder",
 				"RegularSaleOrder",
 				"AssetBound",
@@ -90,7 +88,6 @@
 		},
 		"testnet": {
 			"master": [
-				"NFTProvider",
 				"SaleOrder",
 				"RegularSaleOrder",
 				"AssetBound",

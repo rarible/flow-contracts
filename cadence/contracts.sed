@@ -6,7 +6,6 @@ s/0xFUNGIBLETOKEN/"FungibleToken.cdc"/g
 s/0xNONFUNGIBLETOKEN/"NonFungibleToken.cdc"/g
 s/0xSALEORDER/"SaleOrder.cdc"/g
 s/0xFTPATHMAPPER/"FtPathMapper.cdc"/g
-s/0xNFTPROVIDER/"NFTProvider.cdc"/g
 s/0xASSETBOUND/"AssetBound.cdc"/g
 s/0xMARKETFEE/"MarketFee.cdc"/g
 s/0xSTORESHOWCASE/"StoreShowCase.cdc"/g
