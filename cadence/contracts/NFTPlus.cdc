@@ -4,8 +4,8 @@ pub contract interface NFTPlus {
 
     pub event Transfer(id: UInt64, from: Address?, to: Address)
 
-    pub fun receiver(address: Address): Capability<&{NonFungibleToken.Receiver}>
-    pub fun collectionPublic(address: Address): Capability<&{NonFungibleToken.CollectionPublic}>
+    pub fun receiver(_ address: Address): Capability<&{NonFungibleToken.Receiver}>
+    pub fun collectionPublic(_ address: Address): Capability<&{NonFungibleToken.CollectionPublic}>
 
     pub struct Royalties {
         pub let address: Address

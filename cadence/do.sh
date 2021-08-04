@@ -10,6 +10,11 @@ F="flow -n testnet"
 
 
 #
+# Init
+#
+#$F transactions send transactions/commonNft/init.cdc --signer master
+
+#
 # Mint
 #  metadata: url://
 #  royalties: [{"0xfcfb23c627a63d40": 2.0}, {"0xfcfb23c627a63d40": 5.0}]

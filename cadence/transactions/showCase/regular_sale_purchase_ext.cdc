@@ -20,22 +20,14 @@ import CommonNFT from 0xCOMMONNFT
 transaction(sellerAddress: Address, saleId: UInt64) {
 
     let showCase: &{StoreShowCase.ShowCasePublic}
-    let receiver: &{NonFungibleToken.CollectionPublic}
+    let receiver: &{NonFungibleToken.Receiver}
     let vault: @FungibleToken.Vault
 
     prepare(signer: AuthAccount) {
-        if !signer.getCapability<&{NonFungibleToken.CollectionPublic}>(/public/NFTCollection).check() {
-            let collection <- NFTProvider.createEmptyCollection()
-            signer.save<@NonFungibleToken.Collection>(<-collection, to: /storage/NFTCollection)
-            signer.link<&{NonFungibleToken.CollectionPublic}>(/public/NFTCollection, target: /storage/NFTCollection)
-        }
-
         let seller = getAccount(sellerAddress)
         self.showCase = seller.getCapability<&{StoreShowCase.ShowCasePublic}>(StoreShowCase.storeShowCasePublicPath).borrow()
             ?? panic("Could not borrow showCase reference")
-        // self.receiver = signer.getCapability<&{NonFungibleToken.CollectionPublic}>(/public/NFTCollection).borrow()
-        self.receiver = CommonNFT.collectionPublic(address: signer.address).borrow()
-            ?? panic("Could not borrow receiver reference")
+        self.receiver = CommonNFT.collectionRef(signer) as &{NonFungibleToken.Receiver}
 
         let provider = signer.borrow<&{FungibleToken.Provider}>(from: FtPathMapper.storage[Type<&FlowToken.Vault>().identifier]!)!
         let orderRef = self.showCase.borrow(id: saleId) as! &RegularSaleOrder.Order

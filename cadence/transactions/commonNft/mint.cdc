@@ -8,7 +8,7 @@ transaction(metadata: String, royalties: [CommonNFT.Royalties]) {
     prepare(account: AuthAccount) {
         self.minter = CommonNFT.minter()
         CommonNFT.collectionRef(account)
-        self.receiver = CommonNFT.receiver(address: account.address)
+        self.receiver = CommonNFT.receiver(account.address)
     }
 
     execute {

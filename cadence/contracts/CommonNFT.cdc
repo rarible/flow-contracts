@@ -9,7 +9,6 @@ pub contract CommonNFT : NonFungibleToken, NFTPlus {
     pub var totalSupply: UInt64
 
     pub var collectionPublicPath: PublicPath
-    pub var collectionReceiverPath: PublicPath
     pub var collectionStoragePath: StoragePath
     pub var minterPublicPath: PublicPath
     pub var minterStoragePath: StoragePath
@@ -123,30 +122,28 @@ pub contract CommonNFT : NonFungibleToken, NFTPlus {
         }
     }
 
-    pub fun configureAccount(account: AuthAccount): &Collection {
+    pub fun configureAccount(_ account: AuthAccount): &Collection {
         let collection <- self.createEmptyCollection() as! @Collection
         let ref = &collection as &Collection
         account.save(<- collection, to: self.collectionStoragePath)
-        account.link<&{NonFungibleToken.Receiver}>(self.collectionReceiverPath, target: self.collectionStoragePath)
-        account.link<&{NonFungibleToken.CollectionPublic}>(self.collectionPublicPath, target: self.collectionStoragePath)
+        account.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(self.collectionPublicPath, target: self.collectionStoragePath)
         return ref
     }
 
     pub fun cleanAccount(_ account: AuthAccount) {
         account.unlink(self.collectionPublicPath)
-        account.unlink(self.collectionReceiverPath)
         destroy <- account.load<@Collection>(from: self.collectionStoragePath)
     }
 
     pub fun collectionRef(_ account: AuthAccount): &Collection {
-        return account.borrow<&Collection>(from: self.collectionStoragePath) ?? self.configureAccount(account: account)
+        return account.borrow<&Collection>(from: self.collectionStoragePath) ?? self.configureAccount(account)
     }
 
-    pub fun receiver(address: Address): Capability<&{NonFungibleToken.Receiver}> {
-        return getAccount(address).getCapability<&{NonFungibleToken.Receiver}>(self.collectionReceiverPath)
+    pub fun receiver(_ address: Address): Capability<&{NonFungibleToken.Receiver}> {
+        return getAccount(address).getCapability<&{NonFungibleToken.Receiver}>(self.collectionPublicPath)
     }
 
-    pub fun collectionPublic(address: Address): Capability<&{NonFungibleToken.CollectionPublic}> {
+    pub fun collectionPublic(_ address: Address): Capability<&{NonFungibleToken.CollectionPublic}> {
         return getAccount(address).getCapability<&{NonFungibleToken.CollectionPublic}>(self.collectionPublicPath)
     }
 
@@ -159,14 +156,12 @@ pub contract CommonNFT : NonFungibleToken, NFTPlus {
         destroy <- account.load<@AnyResource>(from: self.minterStoragePath)
 
         account.unlink(self.collectionPublicPath)
-        account.unlink(self.collectionReceiverPath)
         destroy <- account.load<@AnyResource>(from: self.collectionStoragePath)
     }
 
     init() {
         self.totalSupply = 1
         self.collectionPublicPath = /public/CommonNFTCollection
-        self.collectionReceiverPath = /public/CommonNFTReceiver
         self.collectionStoragePath = /storage/CommonNFTCollection
         self.minterPublicPath = /public/CommonNFTMinter
         self.minterStoragePath = /storage/CommonNFTMinter
@@ -177,8 +172,7 @@ pub contract CommonNFT : NonFungibleToken, NFTPlus {
 
         let collection <- self.createEmptyCollection()
         self.account.save(<- collection, to: self.collectionStoragePath)
-        self.account.link<&{NonFungibleToken.CollectionPublic}>(self.collectionPublicPath, target: self.collectionStoragePath)
-        self.account.link<&{NonFungibleToken.Receiver}>(self.collectionReceiverPath, target: self.collectionStoragePath)
+        self.account.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(self.collectionPublicPath, target: self.collectionStoragePath)
 
         emit ContractInitialized()
     }
