@@ -13,7 +13,6 @@ import StoreShowCase from 0xSTORESHOWCASE
 import AssetBound from 0xASSETBOUND
 import FlowToken from 0xFLOWTOKEN
 import FtPathMapper from 0xFTPATHMAPPER
-import NFTProvider from 0xNFTPROVIDER
 import SaleOrder from 0xSALEORDER
 import CommonNFT from 0xCOMMONNFT
 
