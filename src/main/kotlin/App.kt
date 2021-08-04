@@ -8,8 +8,6 @@ class App {
     companion object {
         private val emulatorCoreContracts = mapOf(
             "FlowFees" to "0xe5a8b7f23e8b548f",
-            "FlowServiceAccount" to "0xf8d6e0586b0a20c7",
-            "FlowStorageFees" to "0xf8d6e0586b0a20c7",
             "FlowToken" to "0x0ae53cb6e3f42a79",
             "FungibleToken" to "0xee82856bf20e2aa6",
         )
@@ -103,7 +101,7 @@ private fun FlowScriptResponse.optional() =
 private fun FlowScriptResponse.asULongArray() =
     (optional() as ArrayField).value?.map { it.asULong() }
 
-private fun Pair<FlowId, FlowTransactionResult>.uLongValue(event: String, field: String) =
+fun Pair<FlowId, FlowTransactionResult>.uLongValue(event: String, field: String) =
     e(event)?.field(field)?.asULong()
 
 private fun Pair<FlowId, FlowTransactionResult>.addressValue(event: String, field: String) =
