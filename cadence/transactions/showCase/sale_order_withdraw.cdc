@@ -16,7 +16,7 @@ transaction(saleId: UInt64) {
 
     prepare(signer: AuthAccount) {
         self.showCase = signer.borrow<&StoreShowCase.ShowCase>(from: StoreShowCase.storeShowCaseStoragePath)!
-        self.receiver = CommonNFT.receiver(address: signer.address).borrow()!
+        self.receiver = CommonNFT.receiver(signer.address).borrow()!
     }
 
     execute {
