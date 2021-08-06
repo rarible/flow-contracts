@@ -21,10 +21,6 @@ transaction(tokenId: UInt64, amount: UFix64) {
     let receiver: Capability<&{FungibleToken.Receiver}>
 
     prepare(signer: AuthAccount) {
-        // let sender = signer.borrow<&{NonFungibleToken.Provider}>(from: /storage/NFTCollection)
-            // ?? panic("Could not borrow sender reference")
-        // self.nft <- sender.withdraw(withdrawID: tokenId)
-        // self.showCase = signer.borrow<&StoreShowCase.ShowCase>(from: StoreShowCase.storeShowCaseStoragePath)!
         self.nft <- CommonNFT.collectionRef(signer).withdraw(withdrawID: tokenId)
         self.showCase = StoreShowCase.showCase(signer)
         self.receiver = FtPathMapper.getReceiver(type: Type<&FlowToken.Vault>(), address: signer.address)
