@@ -19,7 +19,7 @@ F="flow -n testnet"
 #  metadata: url://
 #  royalties: [{"0xe91e497115b9731b": 2.0}, {"0xe91e497115b9731b": 5.0}]
 #
-#$F transactions send transactions/commonNft/mint.cdc --signer master --args-json '[{"type":"String","value":"url://"},{"type":"Array","value":[{"type":"Struct","value":{"id":"A.fcfb23c627a63d40.CommonNFT.Royalties","fields":[{"name":"address","value":{"type":"Address","value":"0xe91e497115b9731b"}},{"name":"fee","value":{"type":"UFix64","value":"2.0"}}]}},{"type":"Struct","value":{"id":"A.fcfb23c627a63d40.CommonNFT.Royalties","fields":[{"name":"address","value":{"type":"Address","value":"0xe91e497115b9731b"}},{"name":"fee","value":{"type":"UFix64","value":"5.0"}}]}}]}]'
+#$F transactions send transactions/commonNft/mint.cdc --signer master --args-json '[{"type":"String","value":"url://"},{"type":"Array","value":[{"type":"Struct","value":{"id":"A.e91e497115b9731b.CommonNFT.Royalties","fields":[{"name":"address","value":{"type":"Address","value":"0xe91e497115b9731b"}},{"name":"fee","value":{"type":"UFix64","value":"2.0"}}]}},{"type":"Struct","value":{"id":"A.e91e497115b9731b.CommonNFT.Royalties","fields":[{"name":"address","value":{"type":"Address","value":"0xe91e497115b9731b"}},{"name":"fee","value":{"type":"UFix64","value":"5.0"}}]}}]}]'
 
 #
 # Burn
