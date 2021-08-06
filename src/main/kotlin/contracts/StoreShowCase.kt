@@ -31,21 +31,8 @@ class StoreShowCase(override val api: FlowAccessApi, override val converter: Sou
             arg { ufix64(amount) }
         }
 
-    fun regularSaleCreateExt(account: Account, tokenId: ULong, amount: Double) =
-        tx(account, "regular_sale_create_ext") {
-            arg { uint64(tokenId) }
-            arg { ufix64(amount) }
-        }
-
-    fun regularSalePurchase(account: Account, sellerAddress: String, saleId: ULong, amount: Double) =
+    fun regularSalePurchase(account: Account, sellerAddress: String, saleId: ULong) =
         tx(account, "regular_sale_purchase") {
-            arg { address(sellerAddress) }
-            arg { uint64(saleId) }
-            arg { ufix64(amount) }
-        }
-
-    fun regularSalePurchaseExt(account: Account, sellerAddress: String, saleId: ULong) =
-        tx(account, "regular_sale_purchase_ext") {
             arg { address(sellerAddress) }
             arg { uint64(saleId) }
         }

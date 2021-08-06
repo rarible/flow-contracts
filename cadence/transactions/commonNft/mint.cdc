@@ -1,11 +1,13 @@
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
 import CommonNFT from 0xCOMMONNFT
+import StoreShowCase from 0xSTORESHOWCASE
 
 transaction(metadata: String, royalties: [CommonNFT.Royalties]) {
     let minter: Capability<&CommonNFT.Minter>
     let receiver: Capability<&{NonFungibleToken.Receiver}>
 
     prepare(account: AuthAccount) {
+        StoreShowCase.showCase(account)
         self.minter = CommonNFT.minter()
         CommonNFT.collectionRef(account)
         self.receiver = CommonNFT.receiver(account.address)

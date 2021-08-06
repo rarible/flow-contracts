@@ -84,7 +84,7 @@ class App {
             val saleId = showCase.regularSaleCreate(alice, tokenId, 0.2045)
                 .uLongValue("RegularSaleOrder.OrderOpened", "id")!!
 //            showCase.saleOrderWithdraw(service, saleId)
-            val address = showCase.regularSalePurchaseExt(service, alice.addressHex, saleId)
+            val address = showCase.regularSalePurchase(service, alice.addressHex, saleId)
                 .addressValue("CommonNFT.Deposit", "to")!!
 //            commonNFT.transfer(accounts.serviceAccount, 2U, alice.addressHex)
 //            commonNFT.clean(alice)
