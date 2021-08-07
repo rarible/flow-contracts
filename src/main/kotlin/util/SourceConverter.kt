@@ -1,3 +1,5 @@
+package util
+
 class SourceConverter(contractNameToAddress: Map<String, String>) {
     companion object {
         private val importRe = Regex("0x\\w+")

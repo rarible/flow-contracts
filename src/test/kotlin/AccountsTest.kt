@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.onflow.sdk.Flow
+import util.Accounts
 import kotlin.test.assertEquals
 
 internal class AccountsTest {
@@ -29,6 +30,6 @@ internal class AccountsTest {
 
     @Test
     fun `test app`() {
-        assertDoesNotThrow { App.main(emptyArray()) }
+        assertDoesNotThrow { EmulatorApp.main(emptyArray()) }
     }
 }

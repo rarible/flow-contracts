@@ -1,3 +1,5 @@
+package util
+
 import org.onflow.sdk.FlowAccessApi
 import org.onflow.sdk.FlowArgumentsBuilder
 import org.onflow.sdk.ScriptBuilder
@@ -10,11 +12,11 @@ interface ContractWrapper {
 
     fun tx(account: Account, name: String, block: FlowArgumentsBuilder.() -> Unit = {}) =
         api.tx(account, converter.replaceImports(SourceLoader.transaction("$prefix/$name")), block)
-            .traceTxResult("tx:$prefix/$name.cdc")
+            .traceTxResult("util.tx:$prefix/$name.cdc")
 
     fun sc(name: String, vararg args: Any?, block: ScriptBuilder.() -> Unit) =
         api.sc(converter.replaceImports(SourceLoader.script("$prefix/$name")), block)
-            .traceScResult("sc:$prefix/$name.cdc", *args)
+            .traceScResult("util.sc:$prefix/$name.cdc", *args)
 
     fun rtx(account: Account, name: String, block: FlowArgumentsBuilder.() -> Unit = {}) =
         api.tx(account, converter.replaceImports(SourceLoader.fromResource("$prefix/$name.cdc")), block)

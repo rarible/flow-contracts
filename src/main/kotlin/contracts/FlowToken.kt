@@ -1,9 +1,9 @@
 package contracts
 
-import Account
-import ContractWrapper
-import SourceConverter
 import org.onflow.sdk.FlowAccessApi
+import util.Account
+import util.ContractWrapper
+import util.SourceConverter
 
 class FlowToken(override val api: FlowAccessApi, override val converter: SourceConverter) : ContractWrapper {
     override val prefix = "flowToken"
