@@ -1,5 +1,8 @@
-import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
+import org.junit.jupiter.api.assertThrows
+import util.Contracts
 import kotlin.test.assertTrue
 
 internal class ContractsTest {
@@ -10,7 +13,9 @@ internal class ContractsTest {
     )
     private val deployList = mapOf(
         "0xf8d6e0586b0a20c7" to listOf(
-            "NFTProvider",
+            "NFTPlus",
+            "CommonNFT",
+            "FtPathMapper",
             "AssetBound",
             "NonFungibleToken",
             "RegularSaleOrder",
@@ -64,10 +69,18 @@ internal class ContractsTest {
     @Test
     fun calculateDependencies() {
         val expect = listOf(
-            "NFTProvider" to setOf("NonFungibleToken"),
+            "NFTPlus" to setOf("NonFungibleToken"),
+            "CommonNFT" to setOf("NonFungibleToken", "NFTPlus"),
+            "FtPathMapper" to setOf(),
             "AssetBound" to setOf("SaleOrder"),
             "NonFungibleToken" to setOf(),
-            "RegularSaleOrder" to setOf("NonFungibleToken", "SaleOrder", "MarketFee", "AssetBound"),
+            "RegularSaleOrder" to setOf("NonFungibleToken",
+                "SaleOrder",
+                "MarketFee",
+                "AssetBound",
+                "NFTPlus",
+                "CommonNFT",
+                "FtPathMapper"),
             "SaleOrder" to setOf(),
             "MarketFee" to setOf("NonFungibleToken")
         )
@@ -81,7 +94,14 @@ internal class ContractsTest {
     @Test
     fun resolveDeployOrder() {
         val expect = listOf(
-            "NonFungibleToken", "SaleOrder", "NFTProvider", "AssetBound", "MarketFee", "RegularSaleOrder"
+            "FtPathMapper",
+            "NonFungibleToken",
+            "SaleOrder",
+            "NFTPlus",
+            "AssetBound",
+            "MarketFee",
+            "CommonNFT",
+            "RegularSaleOrder"
         )
         val deps = contracts.calculateDependencies(
             contracts.deployAddresses.keys.toList(),

@@ -1,8 +1,7 @@
+package util
+
 import org.onflow.sdk.*
-import org.onflow.sdk.cadence.ArrayField
-import org.onflow.sdk.cadence.CompositeValue
-import org.onflow.sdk.cadence.Field
-import org.onflow.sdk.cadence.OptionalField
+import org.onflow.sdk.cadence.*
 import org.onflow.sdk.crypto.Crypto
 
 fun FlowAccessApi.sc(source: String, args: ScriptBuilder.() -> Unit) = simpleFlowScript {
@@ -60,3 +59,39 @@ private fun traceValue(value: Field<*>): Pair<String, String> = when (value.type
     }
     else -> value.type to value.value.toString()
 }
+
+fun FlowScriptResponse.optional() =
+    if (jsonCadence.type == "Optional") jsonCadence.value
+    else (jsonCadence.value as OptionalField).value
+
+fun FlowScriptResponse.asULongArray() =
+    (optional() as ArrayField).value?.map { it.asULong() }
+
+fun FlowScriptResponse.asBoolean() = jsonCadence.run {
+    assert(type == "Bool")
+    value as Boolean
+}
+
+fun Pair<FlowId, FlowTransactionResult>.uLongValue(event: String, field: String) =
+    findField(event, field)?.asULong()
+
+fun Pair<FlowId, FlowTransactionResult>.addressValue(event: String, field: String) =
+    findField(event, field)?.asAddress()
+
+private fun Pair<FlowId, FlowTransactionResult>.findField(event: String, field: String) =
+    event(event)?.field(field)
+
+fun Pair<FlowId, FlowTransactionResult>.event(s: String) =
+    second.events.find { it.type.endsWith(s) }
+
+fun FlowEvent.field(name: String): Field<*> =
+    event.value!!.fields.find { it.name == name }!!.value
+
+fun Field<*>.asULong() =
+    (this as UInt64NumberField).value!!.toULong()
+
+fun Field<*>.asAddress() =
+    (value as AddressField).value!!
+
+fun Field<*>.optional() =
+    (value as OptionalField).value

@@ -1,16 +1,17 @@
 package contracts
 
-import Account
-import ContractWrapper
-import SourceConverter
 import org.onflow.sdk.FlowAccessApi
+import util.Account
+import util.ContractWrapper
+import util.SourceConverter
+import util.asBoolean
 
 class CommonNFT(override val api: FlowAccessApi, override val converter: SourceConverter) : ContractWrapper {
     override val prefix = "commonNft"
 
     fun check(address: String) = sc("check", address) {
         arg { address(address) }
-    }
+    }.asBoolean()
 
     fun getIds(address: String) = sc("get_ids", address) {
         arg { address(address) }

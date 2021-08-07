@@ -1,3 +1,5 @@
+package util
+
 import org.onflow.sdk.*
 import org.onflow.sdk.crypto.Crypto
 import org.onflow.sdk.crypto.KeyPair
@@ -27,6 +29,8 @@ class Accounts(private val api: FlowAccessApi, load: List<AccountDef>, create: L
         accounts = loaded + created
         byAddress = accounts.values.associateBy { it.address.formatted }
     }
+
+    operator fun get(key: String) = accounts[key]
 
     fun fromResource(name: String) =
         javaClass.classLoader.getResourceAsStream(name)!!
