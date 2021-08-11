@@ -1,12 +1,12 @@
 package contracts
 
-import org.onflow.sdk.FlowAccessApi
+import Context
 import util.Account
 import util.ContractWrapper
 import util.SourceConverter
 import util.asBoolean
 
-class CommonNFT(override val api: FlowAccessApi, override val converter: SourceConverter) : ContractWrapper {
+class CommonNFT(override val context: Context, override val converter: SourceConverter) : ContractWrapper {
     override val prefix = "commonNft"
 
     fun check(address: String) = sc("check", address) {
@@ -23,20 +23,17 @@ class CommonNFT(override val api: FlowAccessApi, override val converter: SourceC
     }
 
     fun mint(account: Account, metadata: String, royalties: Map<String, Double>) = tx(account, "mint") {
+        val commonNftAddress = context.contracts.deployAddresses["CommonNFT"]!!.drop(2)
         arg { string(metadata) }
         arg {
             array {
                 royalties.map { (k, v) ->
-                    val s = struct(
+                    struct(
                         composite(
-                            "A.f8d6e0586b0a20c7.CommonNFT.Royalties",
-                            listOf(
-                                "address" to address(k),
-                                "fee" to ufix64(v),
-                            )
+                            "A.$commonNftAddress.CommonNFT.Royalties",
+                            listOf("address" to address(k), "fee" to ufix64(v))
                         )
                     )
-                    s
                 }
             }
         }

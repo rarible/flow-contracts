@@ -1,11 +1,11 @@
 package contracts
 
-import org.onflow.sdk.FlowAccessApi
+import Context
 import util.Account
 import util.ContractWrapper
 import util.SourceConverter
 
-class FlowToken(override val api: FlowAccessApi, override val converter: SourceConverter) : ContractWrapper {
+class FlowToken(override val context: Context, override val converter: SourceConverter) : ContractWrapper {
     override val prefix = "flowToken"
 
     fun getBalance(address: String) =

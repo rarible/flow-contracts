@@ -1,42 +1,29 @@
 package util
 
-import org.onflow.sdk.*
-import org.onflow.sdk.crypto.Crypto
+import org.onflow.sdk.FlowAccessApi
+import org.onflow.sdk.FlowId
+import org.onflow.sdk.FlowTransactionResult
 
 class DeployScheme(val api: FlowAccessApi, val contracts: Contracts, val accounts: Accounts) {
     fun deploy() {
+        println("Deploy contracts:")
         contracts.contractsForDeploy().map { contract ->
             val account = accounts.byAddress[contract.address]!!
             deployContract(account, contract.name, contract.source)
         }
     }
 
-    fun deployContract(account: Account, contractName: String, contractSource: String): FlowEvent {
-        val source = fromResource(
+    fun deployContract(
+        account: Account,
+        contractName: String,
+        contractSource: String,
+    ): Pair<FlowId, FlowTransactionResult> {
+        val source = SourceLoader.fromResource(
             if (contractName in account.flow.contracts.keys) "contract_update.cdc" else "contract_add.cdc"
         )
-        val (txId, result) = sendTx(account, source) {
+        return api.tx(account, source) {
             arg { string(contractName) }
             arg { byteArray(contractSource.toByteArray()) }
-        }
-        println(txId.base16Value)
-        return result.events.first()
+        }.traceTxResult("deploy:$contractName")
     }
-
-    fun fromResource(name: String) =
-        javaClass.classLoader.getResourceAsStream(name)!!
-            .use { it.bufferedReader().readText() }
-
-    fun signer(account: Account) = Crypto.getSigner(account.keyPair.private)
-
-    fun sendTx(
-        account: Account,
-        source: String,
-        argBuilder: FlowArgumentsBuilder.() -> Unit
-    ): Pair<FlowId, FlowTransactionResult> =
-        api.simpleFlowTransaction(account.address, signer(account)) {
-            script(source)
-            arguments.addAll(FlowArgumentsBuilder().apply(argBuilder).build())
-        }.sendAndGetResult(timeoutMs = 100_000L)
-
 }

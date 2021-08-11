@@ -1,11 +1,11 @@
 package contracts
 
-import org.onflow.sdk.FlowAccessApi
+import Context
 import util.Account
 import util.ContractWrapper
 import util.SourceConverter
 
-class StoreShowCase(override val api: FlowAccessApi, override val converter: SourceConverter) : ContractWrapper {
+class StoreShowCase(override val context: Context, override val converter: SourceConverter) : ContractWrapper {
     override val prefix = "showCase"
 
     fun getSaleIds(address: String) =
