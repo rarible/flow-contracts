@@ -11,9 +11,9 @@ class EmulatorApp {
             context.deployScheme.deploy()
 
             val service = context.accounts.serviceAccount
-            val alice = context.accounts.accounts["alice"]!!
-            val bob = context.accounts.accounts["bob"]!!
-            val eve = context.accounts.accounts["eve"]!!
+            val alice = context.accounts.byName["alice"]!!
+            val bob = context.accounts.byName["bob"]!!
+            val eve = context.accounts.byName["eve"]!!
             val all = listOf(alice, bob, eve)
 
             all.forEach {

@@ -60,38 +60,26 @@ private fun traceValue(value: Field<*>): Pair<String, String> = when (value.type
     else -> value.type to value.value.toString()
 }
 
-fun FlowScriptResponse.optional() =
-    if (jsonCadence.type == "Optional") jsonCadence.value
-    else (jsonCadence.value as OptionalField).value
+fun FlowScriptResponse.asULongArray() = (jsonCadence.value as ArrayField).value
+        ?.filterIsInstance<UInt64NumberField>()
+        ?.map { it.toULong()!! }
 
-fun FlowScriptResponse.asULongArray() =
-    (optional() as ArrayField).value?.map { it.asULong() }
-
-fun FlowScriptResponse.asBoolean() = jsonCadence.run {
-    assert(type == "Bool")
-    value as Boolean
-}
+fun FlowScriptResponse.asBoolean() = jsonCadence.value as Boolean
 
 fun Pair<FlowId, FlowTransactionResult>.uLongValue(event: String, field: String) =
-    findField(event, field)?.asULong()
+    (findField(event, field) as UInt64NumberField).toULong()
 
 fun Pair<FlowId, FlowTransactionResult>.addressValue(event: String, field: String) =
-    findField(event, field)?.asAddress()
+    (findField(event, field) as AddressField).value
 
 private fun Pair<FlowId, FlowTransactionResult>.findField(event: String, field: String) =
-    event(event)?.field(field)
+    second[event]?.get<Field<*>>(field)
 
-fun Pair<FlowId, FlowTransactionResult>.event(s: String) =
-    second.events.find { it.type.endsWith(s) }
+operator fun FlowTransactionResult.get(postfix: String) =
+    events.find { it.type.endsWith(postfix) }
 
-fun FlowEvent.field(name: String): Field<*> =
-    event.value!!.fields.find { it.name == name }!!.value
-
-fun Field<*>.asULong() =
-    (this as UInt64NumberField).value!!.toULong()
-
-fun Field<*>.asAddress() =
-    (value as AddressField).value!!
-
-fun Field<*>.optional() =
-    (value as OptionalField).value
+fun ArrayField.toRoyalties() = value
+    ?.filterIsInstance<StructField>()
+    ?.associate {
+        it.get<AddressField>("address")?.value!! to it.get<UFix64NumberField>("fee")?.toDouble()!!
+    }

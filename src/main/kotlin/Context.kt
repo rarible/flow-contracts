@@ -19,7 +19,7 @@ class Context(chain: Chain, addonAccounts: List<String> = listOf()) {
     )
     val deployScheme = DeployScheme(api, contracts, accounts)
     val converter = SourceConverter(Emulator.coreContracts + contracts.deployAddresses)
-    val flowToken = FlowToken(api, converter)
-    val commonNFT = CommonNFT(api, converter)
-    val showCase = StoreShowCase(api, converter)
+    val flowToken = FlowToken(this, converter)
+    val commonNFT = CommonNFT(this, converter)
+    val showCase = StoreShowCase(this, converter)
 }
