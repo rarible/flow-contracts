@@ -13,7 +13,7 @@ pub contract interface NFTPlus {
     }
 
     pub resource interface WithRoyalties {
-        pub let royalties: [Royalties]
+        pub fun getRoyalties(): [Royalties]
     }
 
     pub resource interface Transferable {

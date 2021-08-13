@@ -3,6 +3,10 @@ import CommonNFT from 0xCOMMONNFT
 
 transaction {
     prepare(account: AuthAccount) {
-        CommonNFT.deinit(account)
+        account.unlink(self.minterPublicPath)
+        destroy <- account.load<@AnyResource>(from: self.minterStoragePath)
+
+        account.unlink(self.collectionPublicPath)
+        destroy <- account.load<@AnyResource>(from: self.collectionStoragePath)
     }
 }

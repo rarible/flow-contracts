@@ -54,7 +54,7 @@ pub contract RegularSaleOrder : SaleOrder {
             if (token.isInstance(Type<@CommonNFT.NFT>())) {
                 let ref = &token as! auth &NonFungibleToken.NFT
                 let ref2 = ref as! &CommonNFT.NFT
-                let royalties = ref2.royalties
+                let royalties = ref2.getRoyalties()
                 for royalty in royalties {
                     let v = self.bid.amount * royalty.fee / 100.0
                     let r = FtPathMapper.getReceiver(type: vault.getType(), address: royalty.address).borrow()!

@@ -35,13 +35,17 @@ pub contract CommonNFT : NonFungibleToken, NFTPlus {
         pub let id: UInt64
         pub let creator: Address
         pub let metadata: String
-        pub let royalties: [NFTPlus.Royalties]
+        access(self) let royalties: [NFTPlus.Royalties]
 
         init(id: UInt64, creator: Address, metadata: String, royalties: [NFTPlus.Royalties]) {
             self.id = id
             self.creator = creator
             self.metadata = metadata
             self.royalties = royalties
+        }
+
+        pub fun getRoyalties(): [NFTPlus.Royalties] {
+            return self.royalties
         }
 
         destroy() {
@@ -135,10 +139,6 @@ pub contract CommonNFT : NonFungibleToken, NFTPlus {
         destroy <- account.load<@Collection>(from: self.collectionStoragePath)
     }
 
-    pub fun collectionRef(_ account: AuthAccount): &Collection {
-        return account.borrow<&Collection>(from: self.collectionStoragePath) ?? self.configureAccount(account)
-    }
-
     pub fun receiver(_ address: Address): Capability<&{NonFungibleToken.Receiver}> {
         return getAccount(address).getCapability<&{NonFungibleToken.Receiver}>(self.collectionPublicPath)
     }
@@ -151,16 +151,8 @@ pub contract CommonNFT : NonFungibleToken, NFTPlus {
         return self.account.getCapability<&Minter>(self.minterPublicPath)
     }
 
-    pub fun deinit(_ account: AuthAccount) {
-        account.unlink(self.minterPublicPath)
-        destroy <- account.load<@AnyResource>(from: self.minterStoragePath)
-
-        account.unlink(self.collectionPublicPath)
-        destroy <- account.load<@AnyResource>(from: self.collectionStoragePath)
-    }
-
     init() {
-        self.totalSupply = 1
+        self.totalSupply = 0
         self.collectionPublicPath = /public/CommonNFTCollection
         self.collectionStoragePath = /storage/CommonNFTCollection
         self.minterPublicPath = /public/CommonNFTMinter

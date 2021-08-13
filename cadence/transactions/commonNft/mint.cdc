@@ -7,9 +7,14 @@ transaction(metadata: String, royalties: [CommonNFT.Royalties]) {
     let receiver: Capability<&{NonFungibleToken.Receiver}>
 
     prepare(account: AuthAccount) {
+        if account.borrow<&CommonNFT.Collection>(from: CommonNFT.collectionStoragePath) == nil {
+            let collection <- CommonNFT.createEmptyCollection() as! @CommonNFT.Collection
+            account.save(<- collection, to: CommonNFT.collectionStoragePath)
+            account.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath, target: CommonNFT.collectionStoragePath)
+        }
+
         StoreShowCase.showCase(account)
         self.minter = CommonNFT.minter()
-        CommonNFT.collectionRef(account)
         self.receiver = CommonNFT.receiver(account.address)
     }
 
