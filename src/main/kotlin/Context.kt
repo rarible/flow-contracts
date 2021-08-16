@@ -1,5 +1,6 @@
 import contracts.CommonNFT
 import contracts.FlowToken
+import contracts.NFTStorefront
 import contracts.StoreShowCase
 import util.Accounts
 import util.Contracts
@@ -22,4 +23,5 @@ class Context(chain: Chain, addonAccounts: List<String> = listOf()) {
     val flowToken = FlowToken(this, converter)
     val commonNFT = CommonNFT(this, converter)
     val showCase = StoreShowCase(this, converter)
+    val nftStorefront = NFTStorefront(this, converter)
 }

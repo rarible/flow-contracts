@@ -14,7 +14,7 @@ interface ContractWrapper {
         context.api.tx(account, converter.replaceImports(SourceLoader.transaction("$prefix/$name")), block)
             .traceTxResult("tx:$prefix/$name.cdc")
 
-    fun sc(name: String, vararg args: Any?, block: ScriptBuilder.() -> Unit) =
+    fun sc(name: String, vararg args: Any?, block: ScriptBuilder.() -> Unit = {}) =
         context.api.sc(converter.replaceImports(SourceLoader.script("$prefix/$name")), block)
             .traceScResult("sc:$prefix/$name.cdc", *args)
 
@@ -22,7 +22,7 @@ interface ContractWrapper {
         context.api.tx(account, converter.replaceImports(SourceLoader.fromResource("$prefix/$name.cdc")), block)
             .traceTxResult("rtx:$prefix/$name.cdc")
 
-    fun rsc(name: String, block: ScriptBuilder.() -> Unit) =
+    fun rsc(name: String, block: ScriptBuilder.() -> Unit = {}) =
         context.api.sc(converter.replaceImports(SourceLoader.fromResource("$prefix/$name.cdc")), block)
             .traceScResult("rtx:$prefix/$name.cdc")
 }

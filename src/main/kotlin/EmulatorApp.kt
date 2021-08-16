@@ -16,6 +16,9 @@ class EmulatorApp {
             val eve = context.accounts.byName["eve"]!!
             val all = listOf(alice, bob, eve)
 
+            context.nftStorefront.getFees()
+            context.nftStorefront.setFees(service, 2.4, 2.6)
+
             all.forEach {
 //                commonNFT.init(it)
                 context.flowToken.transferFlow(service, 10.0, it.addressHex)
