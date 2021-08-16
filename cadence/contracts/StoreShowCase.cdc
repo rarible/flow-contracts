@@ -55,21 +55,9 @@ pub contract StoreShowCase {
         return <- create ShowCase()
     }
 
-    pub fun installShowCase(account: AuthAccount): &ShowCase {
-        let showCase <- self.createShowCase()
-        let ref = &showCase as &ShowCase
-        account.save(<- showCase, to: self.storeShowCaseStoragePath)
-        account.link<&{ShowCasePublic}>(self.storeShowCasePublicPath, target: self.storeShowCaseStoragePath)
-        return ref
-    }
-
     pub fun showCasePublic(_ address: Address): Capability<&{ShowCasePublic}> {
         let account = getAccount(address)
         return account.getCapability<&{ShowCasePublic}>(self.storeShowCasePublicPath)
-    }
-
-    pub fun showCase(_ account: AuthAccount): &ShowCase {
-        return account.borrow<&ShowCase>(from: self.storeShowCaseStoragePath) ?? self.installShowCase(account: account)
     }
 
     pub let storeShowCasePublicPath: PublicPath
