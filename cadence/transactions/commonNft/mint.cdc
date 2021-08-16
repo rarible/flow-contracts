@@ -13,7 +13,12 @@ transaction(metadata: String, royalties: [CommonNFT.Royalties]) {
             account.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath, target: CommonNFT.collectionStoragePath)
         }
 
-        StoreShowCase.showCase(account)
+        if account.borrow<&StoreShowCase.ShowCase>(from: StoreShowCase.storeShowCaseStoragePath) == nil {
+            let showCase <- StoreShowCase.createShowCase()
+            account.save(<- showCase, to: StoreShowCase.storeShowCaseStoragePath)
+            account.link<&{StoreShowCase.ShowCasePublic}>(StoreShowCase.storeShowCasePublicPath, target: StoreShowCase.storeShowCaseStoragePath)
+        }
+
         self.minter = CommonNFT.minter()
         self.receiver = CommonNFT.receiver(account.address)
     }

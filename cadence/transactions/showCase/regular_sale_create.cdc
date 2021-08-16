@@ -27,9 +27,15 @@ transaction(tokenId: UInt64, amount: UFix64) {
             signer.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath, target: CommonNFT.collectionStoragePath)
         }
 
+        if signer.borrow<&StoreShowCase.ShowCase>(from: StoreShowCase.storeShowCaseStoragePath) == nil {
+            let showCase <- StoreShowCase.createShowCase()
+            signer.save(<- showCase, to: StoreShowCase.storeShowCaseStoragePath)
+            signer.link<&{StoreShowCase.ShowCasePublic}>(StoreShowCase.storeShowCasePublicPath, target: StoreShowCase.storeShowCaseStoragePath)
+        }
+
         let collection = signer.borrow<&CommonNFT.Collection>(from: CommonNFT.collectionStoragePath)!!
         self.nft <- collection.withdraw(withdrawID: tokenId)
-        self.showCase = StoreShowCase.showCase(signer)
+        self.showCase = signer.borrow<&StoreShowCase.ShowCase>(from: StoreShowCase.storeShowCaseStoragePath)!!
         self.receiver = FtPathMapper.getReceiver(type: Type<&FlowToken.Vault>(), address: signer.address)
     }
 

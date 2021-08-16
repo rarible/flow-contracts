@@ -2,6 +2,7 @@ import CommonNFT from 0xCOMMONNFT
 
 transaction {
     prepare(account: AuthAccount) {
-        CommonNFT.cleanAccount(account)
+        account.unlink(CommonNFT.collectionPublicPath)
+        destroy <- account.load<@Collection>(from: CommonNFT.collectionStoragePath)
     }
 }

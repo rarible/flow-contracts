@@ -126,19 +126,6 @@ pub contract CommonNFT : NonFungibleToken, NFTPlus {
         }
     }
 
-    pub fun configureAccount(_ account: AuthAccount): &Collection {
-        let collection <- self.createEmptyCollection() as! @Collection
-        let ref = &collection as &Collection
-        account.save(<- collection, to: self.collectionStoragePath)
-        account.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(self.collectionPublicPath, target: self.collectionStoragePath)
-        return ref
-    }
-
-    pub fun cleanAccount(_ account: AuthAccount) {
-        account.unlink(self.collectionPublicPath)
-        destroy <- account.load<@Collection>(from: self.collectionStoragePath)
-    }
-
     pub fun receiver(_ address: Address): Capability<&{NonFungibleToken.Receiver}> {
         return getAccount(address).getCapability<&{NonFungibleToken.Receiver}>(self.collectionPublicPath)
     }
