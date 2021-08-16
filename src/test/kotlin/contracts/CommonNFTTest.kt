@@ -8,11 +8,7 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.onflow.sdk.FlowException
 import org.onflow.sdk.cadence.*
-import util.Account
-import util.asULongArray
-import util.toRoyalties
-import util.uLongValue
-import javax.swing.text.html.Option
+import util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -69,12 +65,38 @@ internal class CommonNFTTest {
         fun Account.topUp(amount: Double) =
             c.flowToken.transferFlow(c.accounts["service"]!!, amount, addressHex)
 
+        fun Account.getFees() = c.nftStorefront.getFees()
+        fun Account.setFees(sellerFee: Double, buyerFee: Double) =
+            c.nftStorefront.setFees(this, sellerFee, buyerFee)
+
+        val service = c.accounts["service"]!!
         val alice = c.accounts["alice"]!!
         val bob = c.accounts["bob"]!!
         val eve = c.accounts["eve"]!!
 
         val metadata = "ipfs://metadata"
         val royalties = mapOf(alice.addressHex to 5.0, eve.addressHex to 3.0)
+
+        // fee check
+        assertDoesNotThrow {
+
+            service.setFees(5.75, 3.25).apply {
+                val sellerFee = (findField("CommonFee.SellerFeeChanged", "value") as UFix64NumberField).toDouble()
+                assertEquals(5.75, sellerFee)
+                val buyerFee = (findField("CommonFee.BuyerFeeChanged", "value") as UFix64NumberField).toDouble()
+                assertEquals(3.25, buyerFee)
+            }
+
+            alice.getFees().apply {
+                val actual = (jsonCadence.value as Array<*>)
+                    .map { it as DictionaryFieldEntry }
+                    .associate { (it.key as StringField).value!! to (it.value as UFix64NumberField).toDouble()!! }
+                val expected = mapOf("sellerFee" to 5.75, "buyerFee" to 3.25)
+                assertEquals(expected, actual)
+            }
+
+            service.setFees(2.5, 2.5)
+        }
 
         // init and check
         assertDoesNotThrow {

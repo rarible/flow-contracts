@@ -8,5 +8,6 @@ object Config {
         "FtPathMapper",
         "NFTPlus",
         "CommonNFT",
+        "CommonFee",
     )
 }

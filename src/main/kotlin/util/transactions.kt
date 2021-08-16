@@ -72,7 +72,7 @@ fun Pair<FlowId, FlowTransactionResult>.uLongValue(event: String, field: String)
 fun Pair<FlowId, FlowTransactionResult>.addressValue(event: String, field: String) =
     (findField(event, field) as AddressField).value
 
-private fun Pair<FlowId, FlowTransactionResult>.findField(event: String, field: String) =
+fun Pair<FlowId, FlowTransactionResult>.findField(event: String, field: String) =
     second[event]?.get<Field<*>>(field)
 
 operator fun FlowTransactionResult.get(postfix: String) =
