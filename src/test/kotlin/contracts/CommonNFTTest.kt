@@ -2,12 +2,15 @@ package contracts
 
 import Context
 import Emulator
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import com.nftco.flow.sdk.Flow
+import com.nftco.flow.sdk.FlowException
+import com.nftco.flow.sdk.cadence.*
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
-import org.onflow.sdk.FlowException
-import org.onflow.sdk.cadence.*
 import util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -69,6 +72,27 @@ internal class CommonNFTTest {
         fun Account.setFees(sellerFee: Double, buyerFee: Double) =
             c.nftStorefront.setFees(this, sellerFee, buyerFee)
 
+        fun Account.readStorefrontIds() =
+            c.nftStorefront.readStorefrontIds(addressHex).asULongArray()
+
+        fun Account.readSaleOfferDetails(saleOfferResourceId: ULong) =
+            c.nftStorefront.readSaleOfferDetails(addressHex, saleOfferResourceId)
+
+        fun Account.setupAccount() =
+            c.nftStorefront.setupAccount(this)
+
+        fun Account.sellItem(saleItemId: ULong, saleItemPrice: Double) =
+            c.nftStorefront.sellItem(this, saleItemId, saleItemPrice)
+
+        fun Account.buyItem(saleOfferRecourceId: ULong, storefrontAddress: String) =
+            c.nftStorefront.buyItem(this, saleOfferRecourceId, storefrontAddress)
+
+        fun Account.cleanupItem(saleOfferResourceId: ULong, storefrontAddress: String) =
+            c.nftStorefront.cleanupItem(this, saleOfferResourceId, storefrontAddress)
+
+        fun Account.removeItem(saleOfferResourceId: ULong) =
+            c.nftStorefront.removeItem(this, saleOfferResourceId)
+
         val service = c.accounts["service"]!!
         val alice = c.accounts["alice"]!!
         val bob = c.accounts["bob"]!!
@@ -77,6 +101,13 @@ internal class CommonNFTTest {
         val metadata = "ipfs://metadata"
         val royalties = mapOf(alice.addressHex to 5.0, eve.addressHex to 3.0)
 
+        open class TypeValue(val staticType: String)
+        open class TypeField(value: TypeValue) : Field<TypeValue>("Type", value)
+        Flow.OBJECT_MAPPER
+        val objectMapper = ObjectMapper()
+        objectMapper.registerKotlinModule()
+        objectMapper.findAndRegisterModules()
+        println(objectMapper.registeredModuleIds)
         // fee check
         assertDoesNotThrow {
 
@@ -175,6 +206,27 @@ internal class CommonNFTTest {
                 println("eveAmount = $eveAmount")
             }
             alice.getIds()
+        }
+
+        alice.topUp(10.0)
+        bob.topUp(10.0)
+
+        assertDoesNotThrow {
+            alice.setupAccount()
+            val id = alice.getIds()!!.first()
+            alice.sellItem(id, 1.00)
+            val buyId = alice.readStorefrontIds()!!.first()
+//            alice.readSaleOfferDetails(buyId)
+            bob.buyItem(buyId, alice.addressHex)
+            bob.cleanupItem(buyId, alice.addressHex)
+        }
+
+        assertDoesNotThrow {
+            alice.setupAccount()
+            val id = alice.getIds()!!.first()
+            alice.sellItem(id, 0.50)
+            val buyId = alice.readStorefrontIds()!!.first()
+            alice.removeItem(buyId)
         }
     }
 }

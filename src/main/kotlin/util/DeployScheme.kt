@@ -1,8 +1,8 @@
 package util
 
-import org.onflow.sdk.FlowAccessApi
-import org.onflow.sdk.FlowId
-import org.onflow.sdk.FlowTransactionResult
+import com.nftco.flow.sdk.FlowAccessApi
+import com.nftco.flow.sdk.FlowId
+import com.nftco.flow.sdk.FlowTransactionResult
 
 class DeployScheme(val api: FlowAccessApi, val contracts: Contracts, val accounts: Accounts) {
     fun deploy() {

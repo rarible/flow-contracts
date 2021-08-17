@@ -1,7 +1,7 @@
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
-import org.onflow.sdk.Flow
-import org.onflow.sdk.FlowAddress
+import com.nftco.flow.sdk.Flow
+import com.nftco.flow.sdk.FlowAddress
 import util.Accounts
 import kotlin.test.assertEquals
 

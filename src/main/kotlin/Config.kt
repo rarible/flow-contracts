@@ -9,5 +9,6 @@ object Config {
         "NFTPlus",
         "CommonNFT",
         "CommonFee",
+        "NFTStorefront",
     )
 }

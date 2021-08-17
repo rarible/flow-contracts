@@ -1,4 +1,4 @@
-import org.onflow.sdk.FlowAccessApi
+import com.nftco.flow.sdk.FlowAccessApi
 import util.Accounts
 
 interface Chain {

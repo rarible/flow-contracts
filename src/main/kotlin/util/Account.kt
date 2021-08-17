@@ -1,7 +1,7 @@
 package util
 
-import org.onflow.sdk.FlowAccount
-import org.onflow.sdk.crypto.KeyPair
+import com.nftco.flow.sdk.FlowAccount
+import com.nftco.flow.sdk.crypto.KeyPair
 
 data class Account(
     val name: String,

@@ -15,7 +15,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("reflect"))
-    implementation("com.nftco:flow-jvm-sdk:0.4.0")
+    implementation("com.nftco:flow-jvm-sdk:0.5.0")
     implementation("org.junit.jupiter:junit-jupiter:5.7.2")
     testImplementation(kotlin("test-junit5"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.2")

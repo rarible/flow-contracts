@@ -1,8 +1,8 @@
 package util
 
-import org.onflow.sdk.*
-import org.onflow.sdk.cadence.*
-import org.onflow.sdk.crypto.Crypto
+import com.nftco.flow.sdk.*
+import com.nftco.flow.sdk.cadence.*
+import com.nftco.flow.sdk.crypto.Crypto
 
 fun FlowAccessApi.sc(source: String, args: ScriptBuilder.() -> Unit) = simpleFlowScript {
     script(source)
@@ -15,12 +15,25 @@ fun FlowAccessApi.tx(account: Account, source: String, block: FlowArgumentsBuild
         arguments.addAll(FlowArgumentsBuilder().apply(block).build())
     }.sendAndGetResult(timeoutMs = 100_000L)
 
+val reg1 = Regex.fromLiteral("\"type\":\"Type\"")
+val reg2 = Regex("""\{"staticType":"([^"]+)"\}""")
+
+// replace "Type" field to "String" field
+fun ByteArray.fix(): ByteArray {
+    val s1 = reg1.replace(String(this), "\"type\":\"String\"")
+    val s2 = reg2.replace(s1) { "\"${it.groupValues[1]}\"" }
+    return s2.toByteArray()
+}
+
 fun Pair<FlowId, FlowTransactionResult>.traceTxResult(name: String) = apply {
     println("$name  txID=${first.base16Value}  status=${second.status} (code=${second.statusCode})")
     if (second.errorMessage.isNotBlank()) println(" message=${second.errorMessage}")
     println(" Events: ${second.events.count()}")
     if (second.events.isNotEmpty()) {
-        for (event in second.events) {
+        for (e in second.events) {
+            // FIXME: replace "Type" to "String", because "Type" parsing not implemented in sdk
+            val payload = FlowEventPayload(e.payload.bytes.fix())
+            val event = e.copy(payload = payload)
             println((" [${event.eventIndex}] ${event.id}"))
             for (field in (event.payload.jsonCadence.value as CompositeValue).fields) {
                 println("    ${field.name}: ${traceValue(field.value).let { (t, v) -> "$t = $v" }}")
@@ -32,7 +45,8 @@ fun Pair<FlowId, FlowTransactionResult>.traceTxResult(name: String) = apply {
 
 fun FlowScriptResponse.traceScResult(name: String, vararg args: Any?) = apply {
     println("$name (${args.joinToString()})")
-    val (type, value) = traceValue(jsonCadence)
+    val bytes1 = bytes.fix()
+    val (type, value) = traceValue(Flow.decodeJsonCadence(bytes1))
     println("  result: $type = $value")
     println()
 }
@@ -60,9 +74,9 @@ private fun traceValue(value: Field<*>): Pair<String, String> = when (value.type
     else -> value.type to value.value.toString()
 }
 
-fun FlowScriptResponse.asULongArray() = (jsonCadence.value as ArrayField).value
-        ?.filterIsInstance<UInt64NumberField>()
-        ?.map { it.toULong()!! }
+fun FlowScriptResponse.asULongArray() = (jsonCadence as? ArrayField ?: jsonCadence.value as ArrayField).value
+    ?.filterIsInstance<UInt64NumberField>()
+    ?.map { it.toULong()!! }
 
 fun FlowScriptResponse.asBoolean() = jsonCadence.value as Boolean
 

@@ -1,8 +1,8 @@
 package util
 
 import Context
-import org.onflow.sdk.FlowArgumentsBuilder
-import org.onflow.sdk.ScriptBuilder
+import com.nftco.flow.sdk.FlowArgumentsBuilder
+import com.nftco.flow.sdk.ScriptBuilder
 
 interface ContractWrapper {
     val context: Context
