@@ -34,4 +34,8 @@ pub contract CommonFee {
         self.commonFeeManagerStoragePath = /storage/commonFeeManager
         self.account.save(<- create Manager(), to: self.commonFeeManagerStoragePath)
     }
+
+    pub fun feeAddress(): Address {
+        return self.account.address
+    }
 }
