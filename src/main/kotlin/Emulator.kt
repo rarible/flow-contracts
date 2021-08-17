@@ -1,4 +1,4 @@
-import org.onflow.sdk.Flow
+import com.nftco.flow.sdk.Flow
 import util.Accounts
 
 object Emulator : Chain {

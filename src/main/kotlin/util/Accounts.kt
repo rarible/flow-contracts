@@ -1,10 +1,10 @@
 package util
 
-import org.onflow.sdk.*
-import org.onflow.sdk.cadence.AddressField
-import org.onflow.sdk.crypto.Crypto
-import org.onflow.sdk.crypto.KeyPair
-import org.onflow.sdk.crypto.PublicKey
+import com.nftco.flow.sdk.*
+import com.nftco.flow.sdk.cadence.AddressField
+import com.nftco.flow.sdk.crypto.Crypto
+import com.nftco.flow.sdk.crypto.KeyPair
+import com.nftco.flow.sdk.crypto.PublicKey
 
 class Accounts(private val api: FlowAccessApi, load: List<AccountDef>, create: List<String>) {
 
