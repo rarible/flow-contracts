@@ -8,7 +8,7 @@ object SourceLoader {
     private const val transactionsPath = "transactions"
     private const val scriptsPath = "scripts"
 
-    fun fromFile(path: String, name: String) =
+    private fun fromFile(path: String, name: String) =
         File("$cadenceRoot/$path/$name.cdc").readText()
 
     fun fromResource(name: String) =

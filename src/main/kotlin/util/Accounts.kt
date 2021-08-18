@@ -31,13 +31,13 @@ class Accounts(private val api: FlowAccessApi, load: List<AccountDef>, create: L
 
     operator fun get(key: String) = byName[key]
 
-    fun loadAccount(accountDef: AccountDef) = Account(
+    private fun loadAccount(accountDef: AccountDef) = Account(
         accountDef.name,
         KeyPair(Crypto.decodePrivateKey(accountDef.privateKey), Crypto.decodePublicKey(accountDef.publicKey)),
         api.getAccountAtLatestBlock(FlowAddress(accountDef.addressHex))!!
     ).also(this@Accounts::addAccount)
 
-    fun createAndLoadAccount(name: String): Account {
+    private fun createAndLoadAccount(name: String): Account {
         val keyPair = Crypto.generateKeyPair()
         return Account(
             name,
@@ -46,7 +46,7 @@ class Accounts(private val api: FlowAccessApi, load: List<AccountDef>, create: L
         ).also(this@Accounts::addAccount)
     }
 
-    fun createAccount(publicKey: PublicKey) =
+    private fun createAccount(publicKey: PublicKey) =
         api.tx(serviceAccount, SourceLoader.fromResource("create_account.cdc")) {
             val accountKey = FlowAccountKey(
                 publicKey = FlowPublicKey(publicKey.hex),

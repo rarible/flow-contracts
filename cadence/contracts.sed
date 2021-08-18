@@ -2,11 +2,8 @@ s/0xFLOWFEES/"FlowFees.cdc"/g
 s/0xFLOWTOKEN/"FlowToken.cdc"/g
 s/0xFUNGIBLETOKEN/"FungibleToken.cdc"/g
 s/0xNONFUNGIBLETOKEN/"NonFungibleToken.cdc"/g
-s/0xSALEORDER/"SaleOrder.cdc"/g
 s/0xFTPATHMAPPER/"FtPathMapper.cdc"/g
-s/0xASSETBOUND/"AssetBound.cdc"/g
-s/0xMARKETFEE/"MarketFee.cdc"/g
-s/0xSTORESHOWCASE/"StoreShowCase.cdc"/g
+s/0xCOMMONFEE/"CommonFee.cdc"/g
 s/0xNFTPLUS/"NFTPlus.cdc"/g
+s/0xNFTSTOREFRONT/"NFTStorefront.cdc"/g
 s/0xCOMMONNFT/"CommonNFT.cdc"/g
-s/0xREGULARSALEORDER/"RegularSaleOrder.cdc"/g

@@ -51,7 +51,7 @@ transaction(saleItemID: UInt64, saleItemPrice: UFix64) {
                 amount: saleItemPrice * (100.0 - CommonFee.buyerFee - CommonFee.sellerFee) / 100.0
             )
         ]
-        let ref = self.nftProvider.borrow()!.borrowNFT(id: saleItemID) as! &CommonNFT.NFT
+        // let ref = self.nftProvider.borrow()!.borrowNFT(id: saleItemID) as! &CommonNFT.NFT
         // for ref. in  {
             
         // }

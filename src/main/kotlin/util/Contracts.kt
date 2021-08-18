@@ -29,10 +29,10 @@ class Contracts(
     private val dependencies: List<Pair<String, Set<String>>> =
         calculateDependencies(deployAddresses.keys.toList(), deployedAddresses.keys.toList())
 
-    val ordered: List<String> =
+    private val ordered: List<String> =
         resolveDeployOrder(dependencies)
 
-    val aliasMapping = (deployedAddresses + deployAddresses)
+    private val aliasMapping = (deployedAddresses + deployAddresses)
         .map { (name, address) -> contractAlias(name) to address }
         .toMap()
 
@@ -46,6 +46,7 @@ class Contracts(
 
     fun contractAlias(name: String) = "0x${name.uppercase()}"
 
+    @Deprecated("TODO: remove")
     fun replaceImports(script: String): String =
         importRe.replace(script) {
             aliasMapping[it.value] ?: throw IllegalStateException("Not found address for alias: ${it.value}")

@@ -16,7 +16,7 @@ fun FlowAccessApi.tx(account: Account, source: String, block: FlowArgumentsBuild
     }.sendAndGetResult(timeoutMs = 100_000L)
 
 val reg1 = Regex.fromLiteral("\"type\":\"Type\"")
-val reg2 = Regex("""\{"staticType":"([^"]+)"\}""")
+val reg2 = Regex("""\{"staticType":"([^"]+)"}""")
 
 // replace "Type" field to "String" field
 fun ByteArray.fix(): ByteArray {
@@ -66,7 +66,7 @@ private fun traceValue(value: Field<*>): Pair<String, String> = when (value.type
     }
     "Resource" -> {
         val (t, fields) = (value.value as CompositeValue).let { it.id to it.fields }
-        val v = fields.joinToString(", ", "{", "}") {
+        val v = fields.joinToString(", ", "{", "}") { it ->
             "${it.name}: ${traceValue(it.value).let { "${it.first} = ${it.second}" }}"
         }
         t to v

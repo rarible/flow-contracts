@@ -1,6 +1,5 @@
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
 import CommonNFT from 0xCOMMONNFT
-import StoreShowCase from 0xSTORESHOWCASE
 
 transaction(metadata: String, royalties: [CommonNFT.Royalties]) {
     let minter: Capability<&CommonNFT.Minter>
@@ -11,12 +10,6 @@ transaction(metadata: String, royalties: [CommonNFT.Royalties]) {
             let collection <- CommonNFT.createEmptyCollection() as! @CommonNFT.Collection
             account.save(<- collection, to: CommonNFT.collectionStoragePath)
             account.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath, target: CommonNFT.collectionStoragePath)
-        }
-
-        if account.borrow<&StoreShowCase.ShowCase>(from: StoreShowCase.storeShowCaseStoragePath) == nil {
-            let showCase <- StoreShowCase.createShowCase()
-            account.save(<- showCase, to: StoreShowCase.storeShowCaseStoragePath)
-            account.link<&{StoreShowCase.ShowCasePublic}>(StoreShowCase.storeShowCasePublicPath, target: StoreShowCase.storeShowCaseStoragePath)
         }
 
         self.minter = CommonNFT.minter()

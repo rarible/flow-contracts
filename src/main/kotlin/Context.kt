@@ -1,7 +1,6 @@
 import contracts.CommonNFT
 import contracts.FlowToken
 import contracts.NFTStorefront
-import contracts.StoreShowCase
 import util.Accounts
 import util.Contracts
 import util.DeployScheme
@@ -19,9 +18,8 @@ class Context(chain: Chain, addonAccounts: List<String> = listOf()) {
             .toMap()
     )
     val deployScheme = DeployScheme(api, contracts, accounts)
-    val converter = SourceConverter(Emulator.coreContracts + contracts.deployAddresses)
+    private val converter = SourceConverter(Emulator.coreContracts + contracts.deployAddresses)
     val flowToken = FlowToken(this, converter)
     val commonNFT = CommonNFT(this, converter)
-    val showCase = StoreShowCase(this, converter)
     val nftStorefront = NFTStorefront(this, converter)
 }
