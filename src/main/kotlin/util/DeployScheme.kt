@@ -13,7 +13,7 @@ class DeployScheme(val api: FlowAccessApi, val contracts: Contracts, val account
         }
     }
 
-    fun deployContract(
+    private fun deployContract(
         account: Account,
         contractName: String,
         contractSource: String,

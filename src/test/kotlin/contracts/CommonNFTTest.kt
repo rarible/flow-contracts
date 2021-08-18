@@ -2,9 +2,6 @@ package contracts
 
 import Context
 import Emulator
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import com.nftco.flow.sdk.Flow
 import com.nftco.flow.sdk.FlowException
 import com.nftco.flow.sdk.cadence.*
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -55,16 +52,6 @@ internal class CommonNFTTest {
 
         fun Account.getIds() = c.commonNFT.getIds(addressHex).asULongArray()
 
-        fun Account.sell(tokenId: ULong, amount: Double) =
-            c.showCase.regularSaleCreate(this, tokenId, amount)
-                .uLongValue("RegularSaleOrder.OrderOpened", "id")!!
-
-        fun Account.buy(account: Account, saleId: ULong) =
-            c.showCase.regularSalePurchase(this, account.addressHex, saleId)
-
-        fun Account.borrowSale(saleId: ULong) =
-            c.showCase.saleDetails(saleId, addressHex)
-
         fun Account.topUp(amount: Double) =
             c.flowToken.transferFlow(c.accounts["service"]!!, amount, addressHex)
 
@@ -101,13 +88,6 @@ internal class CommonNFTTest {
         val metadata = "ipfs://metadata"
         val royalties = mapOf(alice.addressHex to 5.0, eve.addressHex to 3.0)
 
-        open class TypeValue(val staticType: String)
-        open class TypeField(value: TypeValue) : Field<TypeValue>("Type", value)
-        Flow.OBJECT_MAPPER
-        val objectMapper = ObjectMapper()
-        objectMapper.registerKotlinModule()
-        objectMapper.findAndRegisterModules()
-        println(objectMapper.registeredModuleIds)
         // fee check
         assertDoesNotThrow {
 
@@ -184,36 +164,12 @@ internal class CommonNFTTest {
             bob.burn(0U)
         }
 
-        // create sale
-        val tokenId = assertDoesNotThrow { bob.mint(metadata, royalties) }
-        val saleId = assertDoesNotThrow { bob.sell(tokenId, 0.123) }
-
-        // try buy without enough money
-        assertThrows<FlowException> {
-            alice.buy(bob, saleId)
-        }
-
-        assertDoesNotThrow {
-//            bob.borrowSale(saleId)
-            alice.topUp(10.0)
-            alice.buy(bob, saleId).also { (_, result) ->
-                val eveAmount = result.events
-                    .find {
-                        it.type.endsWith("FlowToken.TokensDeposited") &&
-                                it.get<OptionalField>("to")?.value?.value == eve.addressHex
-                    }
-                    ?.let { it.get<UFix64NumberField>("amount")?.toDouble() }
-                println("eveAmount = $eveAmount")
-            }
-            alice.getIds()
-        }
-
         alice.topUp(10.0)
         bob.topUp(10.0)
 
         assertDoesNotThrow {
             alice.setupAccount()
-            val id = alice.getIds()!!.first()
+            val id = alice.mint(metadata, royalties)
             alice.sellItem(id, 1.00)
             val buyId = alice.readStorefrontIds()!!.first()
 //            alice.readSaleOfferDetails(buyId)
@@ -223,7 +179,7 @@ internal class CommonNFTTest {
 
         assertDoesNotThrow {
             alice.setupAccount()
-            val id = alice.getIds()!!.first()
+            val id = alice.mint(metadata, royalties)
             alice.sellItem(id, 0.50)
             val buyId = alice.readStorefrontIds()!!.first()
             alice.removeItem(buyId)
