@@ -6,10 +6,10 @@
     }
   },
   "contracts": {
-    "FtPathMapper": "contracts/FtPathMapper.cdc",
     "NFTPlus": "contracts/NFTPlus.cdc",
     "CommonNFT": "contracts/CommonNFT.cdc",
     "CommonFee": "contracts/CommonFee.cdc",
+    "NFTStorefront": "contracts/NFTStorefront.cdc",
     "FlowToken": {
       "source": "contracts/FlowToken.cdc",
       "aliases": {
@@ -79,7 +79,6 @@
       "emulator-account": [
         "CommonFee",
         "CommonNFT",
-        "FtPathMapper",
         "NFTPlus",
         "NFTStorefront",
         "NonFungibleToken"
@@ -89,7 +88,6 @@
       "master": [
         "CommonFee",
         "CommonNFT",
-        "FtPathMapper",
         "NFTPlus",
         "NFTStorefront"
       ]

@@ -10,7 +10,7 @@ pub contract CommonFee {
     // Seller fee in %
     pub var sellerFee: UFix64
 
-    // Seller fee in %
+    // BuyerFee fee in %
     pub var buyerFee: UFix64
 
     pub resource Manager {

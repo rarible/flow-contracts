@@ -19,4 +19,23 @@ pub contract interface NFTPlus {
     pub resource interface Transferable {
         pub fun transfer(tokenId: UInt64, to: Capability<&{NonFungibleToken.Receiver}>)
     }
+
+    pub resource NFT: NonFungibleToken.INFT, WithRoyalties {
+        pub let id: UInt64
+        pub fun getRoyalties(): [Royalties]
+    }
+
+    pub resource interface CollectionPublic {
+        pub fun getRoyalties(id: UInt64): [Royalties]
+    }
+
+    pub resource Collection: NonFungibleToken.Provider, NonFungibleToken.Receiver, NonFungibleToken.CollectionPublic, Transferable, CollectionPublic {
+        pub var ownedNFTs: @{UInt64: NonFungibleToken.NFT}
+        pub fun withdraw(withdrawID: UInt64): @NonFungibleToken.NFT
+        pub fun deposit(token: @NonFungibleToken.NFT)
+        pub fun getIDs(): [UInt64]
+        pub fun borrowNFT(id: UInt64): &NonFungibleToken.NFT
+        pub fun getRoyalties(id: UInt64): [Royalties]
+    }
+
 }
