@@ -64,6 +64,13 @@ pub contract NFTStorefront {
         price: UFix64
     )
 
+    pub event SaleOfferCut(
+        storefrontAddress: Address,
+        saleOfferResourceID: UInt64,
+        address: Address,
+        amount: UFix64
+    )
+
     // SaleOfferCompleted
     // The sale offer has been resolved. It has either been accepted, or removed and destroyed.
     //
@@ -412,6 +419,15 @@ pub contract NFTStorefront {
                 ftVaultType: salePaymentVaultType,
                 price: saleOfferPrice
             )
+
+            for cut in saleCuts {
+                emit SaleOfferCut(
+                    storefrontAddress: self.owner?.address!,
+                    saleOfferResourceID: saleOfferResourceID,
+                    address: cut.receiver.address,
+                    amount: cut.amount
+                )
+            }
 
             return saleOfferResourceID
         }

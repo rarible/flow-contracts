@@ -46,7 +46,7 @@ class Contracts(
 
     fun contractAlias(name: String) = "0x${name.uppercase()}"
 
-    @Deprecated("TODO: remove")
+//    @Deprecated("TODO: remove")
     fun replaceImports(script: String): String =
         importRe.replace(script) {
             aliasMapping[it.value] ?: throw IllegalStateException("Not found address for alias: ${it.value}")

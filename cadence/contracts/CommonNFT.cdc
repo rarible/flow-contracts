@@ -53,7 +53,7 @@ pub contract CommonNFT : NonFungibleToken, NFTPlus {
         }
     }
 
-    pub resource Collection: NonFungibleToken.Provider, NonFungibleToken.Receiver, NonFungibleToken.CollectionPublic, NFTPlus.Transferable {
+    pub resource Collection: NonFungibleToken.Provider, NonFungibleToken.Receiver, NonFungibleToken.CollectionPublic, NFTPlus.Transferable, NFTPlus.CollectionPublic {
         pub var ownedNFTs: @{UInt64: NonFungibleToken.NFT}
 
         init() {
@@ -87,6 +87,11 @@ pub contract CommonNFT : NonFungibleToken, NFTPlus {
 
         pub fun borrowNFT(id: UInt64): &NonFungibleToken.NFT {
             return &self.ownedNFTs[id] as &NonFungibleToken.NFT
+        }
+
+        pub fun getRoyalties(id: UInt64): [NFTPlus.Royalties] {
+            let ref = &self.ownedNFTs[id] as auth &NonFungibleToken.NFT
+            return (ref as! &NFTPlus.NFT)!!.getRoyalties()
         }
 
         destroy() {
