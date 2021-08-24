@@ -39,20 +39,27 @@ F="flow -n testnet"
 #  tokenId: 3
 #  amount: 0.123
 #
-#$F transactions send transactions/showCase/regular_sale_create.cdc --signer master --arg UInt64:3 --arg UFix64:0.123
+#$F transactions send transactions/nftStorefront/sell_item.cdc --signer master --arg UInt64:3 --arg UFix64:0.123
 
 #
 # Buy
-#  address: 0xe91e497115b9731b
 #  saleId: 10671852
+#  address: 0xe91e497115b9731b
 #
-#$F transactions send transactions/showCase/regular_sale_purchase.cdc --signer master --arg Address:0xe91e497115b9731b --arg UInt64:10671852
+#$F transactions send transactions/nftStorefront/buy_item.cdc --signer master --arg UInt64:10671852 --arg Address:0xe91e497115b9731b
+
+#
+# Cleanup accepted sale
+#  saleId: 10671852
+#  address: 0xe91e497115b9731b
+#
+#$F transactions send transactions/nftStorefront/cleanup_item.cdc --signer master --arg UInt64:10671852 --arg Address:0xe91e497115b9731b
 
 #
 # Cancel sale
 #  saleId: 10671852
 #
-#$F transactions send transactions/showCase/sale_order_withdraw.cdc --signer master --arg UInt64:10788740
+#$F transactions send transactions/nftStorefront/remove_item.cdc --signer master --arg UInt64:10788740
 
 #
 # Owned NFT list
@@ -71,5 +78,5 @@ $F scripts execute scripts/commonNft/get_ids.cdc --arg Address:0xe91e497115b9731
 # Opened sales
 #  address: 0xe91e497115b9731b
 #
-$F scripts execute scripts/showCase/get_sale_ids.cdc --arg Address:0xe91e497115b9731b
+$F scripts execute scripts/nftStorefront/read_storefront_ids.cdc --arg Address:0xe91e497115b9731b
 
