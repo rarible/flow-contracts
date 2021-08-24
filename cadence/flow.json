@@ -69,8 +69,12 @@
       "address": "0xfcfb23c627a63d40",
       "key": "b369570e5df2c9439364f0cff0f6bf64f1a2ce2d7c85a9e6dc4ebebfe61c561c"
     },
-    "master": {
+    "master_old3": {
       "address": "0xe91e497115b9731b",
+      "key": "780e9ad4acbc6f07f08f0c817792cb76a2b7ac564c149b166db6323a70f849fe"
+    },
+    "master": {
+      "address": "0x665b9acf64dfdfdb",
       "key": "780e9ad4acbc6f07f08f0c817792cb76a2b7ac564c149b166db6323a70f849fe"
     }
   },
