@@ -26,6 +26,12 @@ transaction(saleItemID: UInt64, saleItemPrice: UFix64) {
         self.nftProvider = acct.getCapability<&CommonNFT.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic, NFTPlus.CollectionPublic}>(commonNFTCollectionProviderPrivatePath)!
         assert(self.nftProvider.borrow() != nil, message: "Missing or mis-typed CommonNFT.Collection provider")
 
+        if acct.borrow<&NFTStorefront.Storefront>(from: NFTStorefront.StorefrontStoragePath) == nil {
+            let storefront <- NFTStorefront.createStorefront() as! @NFTStorefront.Storefront
+            acct.save(<-storefront, to: NFTStorefront.StorefrontStoragePath)
+            acct.link<&NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}>(NFTStorefront.StorefrontPublicPath, target: NFTStorefront.StorefrontStoragePath)
+        }
+
         self.storefront = acct.borrow<&NFTStorefront.Storefront>(from: NFTStorefront.StorefrontStoragePath)
             ?? panic("Missing or mis-typed NFTStorefront Storefront")
     }
