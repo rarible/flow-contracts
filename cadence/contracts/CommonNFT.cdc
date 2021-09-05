@@ -91,7 +91,7 @@ pub contract CommonNFT : NonFungibleToken, NFTPlus {
 
         pub fun getRoyalties(id: UInt64): [NFTPlus.Royalties] {
             let ref = &self.ownedNFTs[id] as auth &NonFungibleToken.NFT
-            return (ref as! &NFTPlus.NFT)!!.getRoyalties()
+            return (ref as! &NFTPlus.NFT).getRoyalties()
         }
 
         destroy() {

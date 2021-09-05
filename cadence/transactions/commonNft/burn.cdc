@@ -8,7 +8,7 @@ transaction(tokenId: UInt64) {
             account.save(<- collection, to: CommonNFT.collectionStoragePath)
             account.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath, target: CommonNFT.collectionStoragePath)
         }
-        let collection = account.borrow<&CommonNFT.Collection>(from: CommonNFT.collectionStoragePath)!!
+        let collection = account.borrow<&CommonNFT.Collection>(from: CommonNFT.collectionStoragePath)!
         destroy collection.withdraw(withdrawID: tokenId)
     }
 }

@@ -1,4 +1,4 @@
-import FungibleToken from 0xFUNGIBLETOKENADDRESS
+import FungibleToken from 0xFUNGIBLETOKEN
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
 import FlowToken from 0xFLOWTOKEN
 import CommonNFT from 0xCOMMONNFT

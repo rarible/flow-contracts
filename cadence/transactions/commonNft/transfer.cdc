@@ -8,7 +8,7 @@ transaction(tokenId: UInt64, to: Address) {
             account.save(<- collection, to: CommonNFT.collectionStoragePath)
             account.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath, target: CommonNFT.collectionStoragePath)
         }
-        let collection = account.borrow<&CommonNFT.Collection>(from: CommonNFT.collectionStoragePath)!!
+        let collection = account.borrow<&CommonNFT.Collection>(from: CommonNFT.collectionStoragePath)!
         collection.transfer(tokenId: tokenId, to: CommonNFT.receiver(to))
     }
 }

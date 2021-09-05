@@ -58,7 +58,7 @@ transaction(saleItemID: UInt64, saleItemPrice: UFix64) {
         ]
 
         // add royalty
-        for royalty in self.nftProvider.borrow()!!.getRoyalties(id: saleItemID) {
+        for royalty in self.nftProvider.borrow()!.getRoyalties(id: saleItemID) {
             saleCuts.append(createCut(royalty.address, base * royalty.fee / 100.0))
         }
 
