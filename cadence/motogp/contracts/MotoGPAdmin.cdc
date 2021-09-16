@@ -1,4 +1,4 @@
-import MotoGPPack from 0xa49cc0ee46c54bfb
+import MotoGPPack from 0xMOTOGPPACK
 
 pub contract MotoGPAdmin{
 

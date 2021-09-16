@@ -1,7 +1,7 @@
-import NonFungibleToken from 0x1d7e57aa55817448
-import MotoGPAdmin from 0xa49cc0ee46c54bfb
-import MotoGPCardMetadata from 0xa49cc0ee46c54bfb
-import MotoGPCounter from 0xa49cc0ee46c54bfb
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import MotoGPAdmin from 0xMOTOGPADMIN
+import MotoGPCardMetadata from 0xMOTOGPCARDMETADATA
+import MotoGPCounter from 0xMOTOGPCOUNTER
 
 pub contract MotoGPCard: NonFungibleToken {
 
