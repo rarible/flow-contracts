@@ -21,6 +21,13 @@
         "testnet": "0x7e60df042a9c0868"
       }
     },
+    "FlowStorageFees": {
+      "source": "contracts/FlowStorageFees.cdc",
+      "aliases": {
+        "emulator": "0xf8d6e0586b0a20c7",
+        "testnet": "0x8c5303eaa26202d6"
+      }
+    },
     "FungibleToken": {
       "source": "contracts/FungibleToken.cdc",
       "aliases": {
@@ -44,11 +51,40 @@
     "emulator-account": {
       "address": "f8d6e0586b0a20c7",
       "key": "2e85e1b33e582009ff42637dbd4545f69ae622ccd07d02cd8a12a769b93f05a2"
+    },
+    "service": {
+      "address": "0xed2aedbddfa6aa09",
+      "key": "c0e593ee02207dbe807a7f6c5d931bf3bf0111ec06ce47f0deb1f1f440e8f811"
+    },
+    "alice": {
+      "address": "0x8de45aebdfefb31c",
+      "key": "113df54f78728ee5fc073f1128429136a7a98187a9d7b3810b9f12de6829f90c"
+    },
+    "bob": {
+      "address": "0x1f1931535758a0b7",
+      "key": "f4eb3fd5bd244115c3d71f7471c81b78804ccea6acda96908d809c70b9442327"
+    },
+    "eve": {
+      "address": "0xfb7e888e46a2a068",
+      "key": "49a6d9dd320c6e767f30009b1a8d986b6d54bf7bfbc4f19ef66c1b9323cb5f35"
     }
   },
   "deployments": {
     "emulator": {
       "emulator-account": [
+        "NonFungibleToken",
+        "ContractVersion",
+        "MotoGPAdmin",
+        "MotoGPCard",
+        "MotoGPCardMetadata",
+        "MotoGPCounter",
+        "MotoGPPack",
+        "MotoGPTransfer",
+        "PackOpener"
+      ]
+    },
+    "testnet": {
+      "service": [
         "ContractVersion",
         "MotoGPAdmin",
         "MotoGPCard",

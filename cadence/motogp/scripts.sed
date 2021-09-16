@@ -1,0 +1,13 @@
+s/0xFLOWFEES/"..\/..\/contracts\/FlowFees.cdc"/g
+s/0xFLOWSTORAGEFEES/"..\/..\/contracts\/FlowStorageFees.cdc"/g
+s/0xFLOWTOKEN/"..\/..\/contracts\/FlowToken.cdc"/g
+s/0xFUNGIBLETOKEN/"..\/..\/contracts\/FungibleToken.cdc"/g
+s/0xNONFUNGIBLETOKEN/"..\/..\/contracts\/NonFungibleToken.cdc"/g
+s/0xCONTRACTVERSION/"..\/..\/contracts\/ContractVersion.cdc"/g
+s/0xMOTOGPPACK/"..\/..\/contracts\/MotoGPPack.cdc"/g
+s/0xMOTOGPADMIN/"..\/..\/contracts\/MotoGPAdmin.cdc"/g
+s/0xMOTOGPCARDMETADATA/"..\/..\/contracts\/MotoGPCardMetadata.cdc"/g
+s/0xMOTOGPCOUNTER/"..\/..\/contracts\/MotoGPCounter.cdc"/g
+s/0xMOTOGPCARD/"..\/..\/contracts\/MotoGPCard.cdc"/g
+s/0xPACKOPENER/"..\/..\/contracts\/PackOpener.cdc"/g
+s/0xMOTOGPTRANSFER/"..\/..\/contracts\/MotoGPTransfer.cdc"/g
