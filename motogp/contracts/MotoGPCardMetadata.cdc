@@ -1,5 +1,5 @@
-import MotoGPAdmin from 0xMOTOGPADMIN
-import ContractVersion from 0xCONTRACTVERSION
+import MotoGPAdmin from "MotoGPAdmin.cdc"
+import ContractVersion from "ContractVersion.cdc"
 
 // Contract to hold Metadata for MotoGPCards. Metadata is accessed using the Card's cardID (not the Card's id)
 //

@@ -14,6 +14,18 @@
     "MotoGPPack": "contracts/MotoGPPack.cdc",
     "MotoGPTransfer": "contracts/MotoGPTransfer.cdc",
     "PackOpener": "contracts/PackOpener.cdc",
+    "CommonFee": {
+      "source": "contracts/CommonFee.cdc",
+      "aliases": {
+        "testnet": "0xe7e97b10fbd3b607"
+      }
+    },
+    "NFTStorefront": {
+      "source": "contracts/NFTStorefront.cdc",
+      "aliases": {
+        "testnet": "0xe7e97b10fbd3b607"
+      }
+    },
     "FlowToken": {
       "source": "contracts/FlowToken.cdc",
       "aliases": {
@@ -52,6 +64,10 @@
       "address": "f8d6e0586b0a20c7",
       "key": "2e85e1b33e582009ff42637dbd4545f69ae622ccd07d02cd8a12a769b93f05a2"
     },
+    "emulator-alice": {
+      "address": "0x01cf0e2f2f715450",
+      "key": "113df54f78728ee5fc073f1128429136a7a98187a9d7b3810b9f12de6829f90c"
+    },
     "service": {
       "address": "0xed2aedbddfa6aa09",
       "key": "c0e593ee02207dbe807a7f6c5d931bf3bf0111ec06ce47f0deb1f1f440e8f811"
@@ -80,7 +96,9 @@
         "MotoGPCounter",
         "MotoGPPack",
         "MotoGPTransfer",
-        "PackOpener"
+        "PackOpener",
+        "CommonFee",
+        "NFTStorefront"
       ]
     },
     "testnet": {

@@ -1,7 +1,7 @@
-import PackOpener from 0xPACKOPENER
-import MotoGPCard from 0xMOTOGPCARD
-import MotoGPPack from 0xMOTOGPPACK
-import MotoGPTransfer from 0xMOTOGPTRANSFER
+import PackOpener from "../contracts/PackOpener.cdc"
+import MotoGPCard from "../contracts/MotoGPCard.cdc"
+import MotoGPPack from "../contracts/MotoGPPack.cdc"
+import MotoGPTransfer from "../contracts/MotoGPTransfer.cdc"
 
 transaction(id: UInt64, toAddress: Address) {
     var packCollectionRef: &MotoGPPack.Collection

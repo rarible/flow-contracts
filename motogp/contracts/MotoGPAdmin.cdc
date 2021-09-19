@@ -1,4 +1,4 @@
-import MotoGPPack from 0xMOTOGPPACK
+import MotoGPPack from "MotoGPPack.cdc"
 
 pub contract MotoGPAdmin{
 

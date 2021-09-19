@@ -1,12 +1,12 @@
-import FlowToken from 0xFLOWTOKEN
-import MotoGPAdmin from 0xMOTOGPADMIN
-import MotoGPPack from 0xMOTOGPPACK
-import MotoGPCard from 0xMOTOGPCARD
-import NonFungibleToken from 0xNONFUNGIBLETOKEN
-import FungibleToken from 0xFUNGIBLETOKEN
-import FlowStorageFees from 0xFLOWSTORAGEFEES
-import ContractVersion from 0xCONTRACTVERSION
-import PackOpener from 0xPACKOPENER
+import FlowToken from "FlowToken.cdc"
+import MotoGPAdmin from "MotoGPAdmin.cdc"
+import MotoGPPack from "MotoGPPack.cdc"
+import MotoGPCard from "MotoGPCard.cdc"
+import NonFungibleToken from "NonFungibleToken.cdc"
+import FungibleToken from "FungibleToken.cdc"
+import FlowStorageFees from "FlowStorageFees.cdc"
+import ContractVersion from "ContractVersion.cdc"
+import PackOpener from "PackOpener.cdc"
 
 // Contract for topping up an account's storage capacity when it receives a MotoGP pack or card
 //
