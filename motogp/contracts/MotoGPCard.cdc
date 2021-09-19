@@ -1,7 +1,7 @@
-import NonFungibleToken from 0xNONFUNGIBLETOKEN
-import MotoGPAdmin from 0xMOTOGPADMIN
-import MotoGPCardMetadata from 0xMOTOGPCARDMETADATA
-import MotoGPCounter from 0xMOTOGPCOUNTER
+import NonFungibleToken from "NonFungibleToken.cdc"
+import MotoGPAdmin from "MotoGPAdmin.cdc"
+import MotoGPCardMetadata from "MotoGPCardMetadata.cdc"
+import MotoGPCounter from "MotoGPCounter.cdc"
 
 pub contract MotoGPCard: NonFungibleToken {
 

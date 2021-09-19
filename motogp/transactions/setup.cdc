@@ -1,5 +1,5 @@
-import MotoGPCard from 0xMOTOGPCARD
-import MotoGPPack from 0xMOTOGPPACK
+import MotoGPCard from "../contracts/MotoGPCard.cdc"
+import MotoGPPack from "../contracts/MotoGPPack.cdc"
 
 transaction {
     prepare(acct: AuthAccount) {
