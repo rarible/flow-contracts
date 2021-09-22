@@ -8,8 +8,18 @@
   "contracts": {
     "ContractVersion": "contracts/ContractVersion.cdc",
     "MotoGPAdmin": "contracts/MotoGPAdmin.cdc",
-    "MotoGPCard": "contracts/MotoGPCard.cdc",
-    "MotoGPCardMetadata": "contracts/MotoGPCardMetadata.cdc",
+    "MotoGPCard": {
+	    "source": "contracts/MotoGPCard.cdc",
+	    "aliases": {
+		    "mainnet": "0xa49cc0ee46c54bfb"
+	    }
+    },
+    "MotoGPCardMetadata": {
+	    "source": "contracts/MotoGPCardMetadata.cdc",
+	    "aliases": {
+		    "mainnet": "0xa49cc0ee46c54bfb"
+	    }
+    },
     "MotoGPCounter": "contracts/MotoGPCounter.cdc",
     "MotoGPPack": "contracts/MotoGPPack.cdc",
     "MotoGPTransfer": "contracts/MotoGPTransfer.cdc",
@@ -50,7 +60,8 @@
     "NonFungibleToken": {
       "source": "contracts/NonFungibleToken.cdc",
       "aliases": {
-        "testnet": "0x631e88ae7f1d7c20"
+        "testnet": "0x631e88ae7f1d7c20",
+        "mainnet": "0x1d7e57aa55817448"
       }
     }
   },
