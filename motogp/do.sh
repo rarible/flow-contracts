@@ -103,3 +103,12 @@ $FLOW transactions send transactions/sell_card.cdc 0 0.1
 # @param storefrontAddress
 $FLOW transactions send transactions/buy_card.cdc 31 $SERVICE
 
+
+# read metadata on mainnet
+
+# ids list
+flow -n mainnet scripts execute scripts/get_card_ids.cdc 0x6315e44b670d3d00
+
+# metadata
+flow -n mainnet scripts execute scripts/borrow_card_metadata.cdc 0x6315e44b670d3d00 10474
+
