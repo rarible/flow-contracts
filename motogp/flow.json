@@ -21,7 +21,12 @@
 	    }
     },
     "MotoGPCounter": "contracts/MotoGPCounter.cdc",
-    "MotoGPPack": "contracts/MotoGPPack.cdc",
+    "MotoGPPack": {
+      "source": "contracts/MotoGPPack.cdc",
+	    "aliases": {
+		    "mainnet": "0xa49cc0ee46c54bfb"
+	    }
+    },
     "MotoGPTransfer": "contracts/MotoGPTransfer.cdc",
     "PackOpener": "contracts/PackOpener.cdc",
     "CommonFee": {
