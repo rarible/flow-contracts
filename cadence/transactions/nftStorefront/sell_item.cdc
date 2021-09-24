@@ -48,9 +48,6 @@ transaction(saleItemID: UInt64, saleItemPrice: UFix64) {
             return NFTStorefront.SaleCut(receiver: receiver, amount: amount)
         }
 
-        // base for royalties
-        let base = saleItemPrice * (100.0 - CommonFee.sellerFee) / 100.0
-
         // add fees
         let saleCuts = [
             createCut(CommonFee.feeAddress(), saleItemPrice * CommonFee.buyerFee / 100.0),
@@ -59,7 +56,7 @@ transaction(saleItemID: UInt64, saleItemPrice: UFix64) {
 
         // add royalty
         for royalty in self.nftProvider.borrow()!.getRoyalties(id: saleItemID) {
-            saleCuts.append(createCut(royalty.address, base * royalty.fee / 100.0))
+            saleCuts.append(createCut(royalty.address, saleItemPrice * royalty.fee / 100.0))
         }
 
         // add seller
