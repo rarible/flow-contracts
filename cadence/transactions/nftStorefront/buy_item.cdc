@@ -42,7 +42,7 @@ transaction(saleOfferResourceID: UInt64, storefrontAddress: Address) {
         computation limited exceeded: 100
         */
         // Be kind and recycle
-        //self.storefront.cleanup(saleOfferResourceID: saleOfferResourceID)
+        self.storefront.cleanup(saleOfferResourceID: saleOfferResourceID)
     }
 
     //- Post to check item is in collection?
