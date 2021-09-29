@@ -14,6 +14,7 @@
       "source": "contracts/FlowToken.cdc",
       "aliases": {
         "emulator": "0x0ae53cb6e3f42a79",
+        "e2e": "0x0ae53cb6e3f42a79",
         "testnet": "0x7e60df042a9c0868"
       }
     },
@@ -21,6 +22,7 @@
       "source": "contracts/FungibleToken.cdc",
       "aliases": {
         "emulator": "0xee82856bf20e2aa6",
+        "e2e": "0xee82856bf20e2aa6",
         "testnet": "0x9a0766d93b6608b7"
       }
     },
@@ -33,6 +35,7 @@
   },
   "networks": {
     "emulator": "127.0.0.1:3569",
+    "e2e": "flow-emulator-e2e.rarible.int:9081",
     "mainnet": "access.mainnet.nodes.onflow.org:9000",
     "testnet": "access.devnet.nodes.onflow.org:9000"
   },
@@ -56,6 +59,14 @@
     "emulator-account": {
       "address": "f8d6e0586b0a20c7",
       "key": "ba412c8efe86d806da91ad655bf2c6bcf8fa1c8f8a2bb5cdd0de43fcaab1a2f9"
+    },
+    "e2e-master": {
+      "address": "f8d6e0586b0a20c7",
+      "key": "8ea7b6cb8da7a09c19e2401eafcfd3863136decb5a495779a22f917c376da8b4"
+    },
+    "e2e-contractor": {
+      "address": "179b6b1cb6755e31",
+      "key": "0379aa74b0c9fe58c9010ae7c4b39b80e038b17940c4a4fa073b7274fbdcedbb"
     },
     "admin": {
       "address": "1cd85950d20f05b2",
@@ -90,6 +101,15 @@
     },
     "testnet": {
       "master": [
+        "CommonFee",
+        "CommonNFT",
+        "NFTPlus",
+        "NFTStorefront"
+      ]
+    },
+    "e2e": {
+      "e2e-contractor": [
+        "NonFungibleToken",
         "CommonFee",
         "CommonNFT",
         "NFTPlus",
