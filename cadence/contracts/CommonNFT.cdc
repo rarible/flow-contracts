@@ -17,7 +17,7 @@ pub contract CommonNFT : NonFungibleToken, NFTPlus {
     pub event Withdraw(id: UInt64, from: Address?)
     pub event Deposit(id: UInt64, to: Address?)
 
-    pub event Mint(id: UInt64, collection: String, creator: Address, metadata: String, royalties: [NFTPlus.Royalties])
+    pub event Mint(id: UInt64, creator: Address, metadata: String, royalties: [NFTPlus.Royalties])
     pub event Destroy(id: UInt64)
 
     pub struct Royalties {
@@ -105,7 +105,7 @@ pub contract CommonNFT : NonFungibleToken, NFTPlus {
             )
             CommonNFT.totalSupply = CommonNFT.totalSupply + 1
             let tokenRef = &token as &NonFungibleToken.NFT
-            emit Mint(id: token.id, collection: token.getType().identifier, creator: creator.address, metadata: metadata, royalties: royalties)
+            emit Mint(id: token.id, creator: creator.address, metadata: metadata, royalties: royalties)
             creator.borrow()!.deposit(token: <- token)
             return tokenRef
         }
