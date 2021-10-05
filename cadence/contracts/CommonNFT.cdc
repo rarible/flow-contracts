@@ -19,7 +19,6 @@ pub contract CommonNFT : NonFungibleToken, NFTPlus {
 
     pub event Mint(id: UInt64, collection: String, creator: Address, metadata: String, royalties: [NFTPlus.Royalties])
     pub event Destroy(id: UInt64)
-    pub event Transfer(id: UInt64, from: Address?, to: Address)
 
     pub struct Royalties {
         pub let address: Address
@@ -53,7 +52,7 @@ pub contract CommonNFT : NonFungibleToken, NFTPlus {
         }
     }
 
-    pub resource Collection: NonFungibleToken.Provider, NonFungibleToken.Receiver, NonFungibleToken.CollectionPublic, NFTPlus.Transferable, NFTPlus.CollectionPublic {
+    pub resource Collection: NonFungibleToken.Provider, NonFungibleToken.Receiver, NonFungibleToken.CollectionPublic, NFTPlus.CollectionPublic {
         pub var ownedNFTs: @{UInt64: NonFungibleToken.NFT}
 
         init() {
@@ -72,13 +71,6 @@ pub contract CommonNFT : NonFungibleToken, NFTPlus {
             let dummy <- self.ownedNFTs[id] <- token
             destroy dummy
             emit Deposit(id: id, to: self.owner?.address)
-        }
-
-        pub fun transfer(tokenId: UInt64, to: Capability<&{NonFungibleToken.Receiver}>) {
-            let token <- self.ownedNFTs.remove(key: tokenId) ?? panic("Missed NFT")
-            emit Withdraw(id: tokenId, from: self.owner?.address)
-            to.borrow()!.deposit(token: <- token)
-            emit Transfer(id: tokenId, from: self.owner?.address, to: to.address)
         }
 
         pub fun getIDs(): [UInt64] {
@@ -104,18 +96,6 @@ pub contract CommonNFT : NonFungibleToken, NFTPlus {
     }
 
     pub resource Minter {
-        pub fun mint(creator: Address, metadata: String, royalties: [NFTPlus.Royalties]): @NonFungibleToken.NFT {
-            let token <- create NFT(
-                id: CommonNFT.totalSupply,
-                creator: creator,
-                metadata: metadata,
-                royalties: royalties
-            )
-            CommonNFT.totalSupply = CommonNFT.totalSupply + 1
-            emit Mint(id: token.id, collection: token.getType().identifier, creator: creator, metadata: metadata, royalties: royalties)
-            return <- token
-        }
-
         pub fun mintTo(creator: Capability<&{NonFungibleToken.Receiver}>, metadata: String, royalties: [NFTPlus.Royalties]): &NonFungibleToken.NFT {
             let token <- create NFT(
                 id: CommonNFT.totalSupply,

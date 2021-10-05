@@ -2,8 +2,6 @@ import NonFungibleToken from "NonFungibleToken.cdc"
 
 pub contract interface NFTPlus {
 
-    pub event Transfer(id: UInt64, from: Address?, to: Address)
-
     pub fun receiver(_ address: Address): Capability<&{NonFungibleToken.Receiver}>
     pub fun collectionPublic(_ address: Address): Capability<&{NonFungibleToken.CollectionPublic}>
 
@@ -16,10 +14,6 @@ pub contract interface NFTPlus {
         pub fun getRoyalties(): [Royalties]
     }
 
-    pub resource interface Transferable {
-        pub fun transfer(tokenId: UInt64, to: Capability<&{NonFungibleToken.Receiver}>)
-    }
-
     pub resource NFT: NonFungibleToken.INFT, WithRoyalties {
         pub let id: UInt64
         pub fun getRoyalties(): [Royalties]
@@ -29,7 +23,7 @@ pub contract interface NFTPlus {
         pub fun getRoyalties(id: UInt64): [Royalties]
     }
 
-    pub resource Collection: NonFungibleToken.Provider, NonFungibleToken.Receiver, NonFungibleToken.CollectionPublic, Transferable, CollectionPublic {
+    pub resource Collection: NonFungibleToken.Provider, NonFungibleToken.Receiver, NonFungibleToken.CollectionPublic, CollectionPublic {
         pub var ownedNFTs: @{UInt64: NonFungibleToken.NFT}
         pub fun withdraw(withdrawID: UInt64): @NonFungibleToken.NFT
         pub fun deposit(token: @NonFungibleToken.NFT)
