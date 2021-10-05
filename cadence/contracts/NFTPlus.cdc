@@ -10,11 +10,7 @@ pub contract interface NFTPlus {
         pub let fee: UFix64
     }
 
-    pub resource interface WithRoyalties {
-        pub fun getRoyalties(): [Royalties]
-    }
-
-    pub resource NFT: NonFungibleToken.INFT, WithRoyalties {
+    pub resource NFT: NonFungibleToken.INFT {
         pub let id: UInt64
         pub fun getRoyalties(): [Royalties]
     }

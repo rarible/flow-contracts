@@ -30,7 +30,7 @@ pub contract CommonNFT : NonFungibleToken, NFTPlus {
         }
     }
 
-    pub resource NFT: NonFungibleToken.INFT, NFTPlus.WithRoyalties {
+    pub resource NFT: NonFungibleToken.INFT {
         pub let id: UInt64
         pub let creator: Address
         pub let metadata: String
