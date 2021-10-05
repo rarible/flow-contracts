@@ -2,23 +2,23 @@ import CommonNFT from "../../contracts/CommonNFT.cdc"
 import CommonOrder from "../../contracts/CommonOrder.cdc"
 import FlowToken from "../../contracts/FlowToken.cdc"
 import FungibleToken from "../../contracts/FungibleToken.cdc"
-import NFTPlus from "../../contracts/NFTPlus.cdc"
+import LicensedNFT from "../../contracts/LicensedNFT.cdc"
 import NFTStorefront from "../../contracts/NFTStorefront.cdc"
 import NonFungibleToken from "../../contracts/NonFungibleToken.cdc"
 
 // Sell CommonNFT token for Flow with NFTStorefront
 //
 transaction(tokenId: UInt64, price: UFix64) {
-    let nftProvider: Capability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,NFTPlus.CollectionPublic}>
+    let nftProvider: Capability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>
     let storefront: &NFTStorefront.Storefront
 
     prepare(acct: AuthAccount) {
         let nftProviderPath = /private/commonNFTProviderForNFTStorefront
-        if !acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,NFTPlus.CollectionPublic}>(nftProviderPath)!.check() {
-            acct.link<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,NFTPlus.CollectionPublic}>(nftProviderPath, target: CommonNFT.collectionStoragePath)
+        if !acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!.check() {
+            acct.link<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath, target: CommonNFT.collectionStoragePath)
         }
 
-        self.nftProvider = acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,NFTPlus.CollectionPublic}>(nftProviderPath)!
+        self.nftProvider = acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!
         assert(self.nftProvider.borrow() != nil, message: "Missing or mis-typed nft collection provider")
 
         if acct.borrow<&NFTStorefront.Storefront>(from: NFTStorefront.StorefrontStoragePath) == nil {

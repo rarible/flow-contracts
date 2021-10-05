@@ -6,7 +6,7 @@
     }
   },
   "contracts": {
-    "NFTPlus": "contracts/NFTPlus.cdc",
+    "LicensedNFT": "contracts/LicensedNFT.cdc",
     "CommonNFT": "contracts/CommonNFT.cdc",
     "CommonFee": "contracts/CommonFee.cdc",
     "CommonOrder": "contracts/CommonOrder.cdc",
@@ -115,7 +115,7 @@
       "emulator-account": [
         "CommonFee",
         "CommonNFT",
-        "NFTPlus",
+        "LicensedNFT",
         "NFTStorefront",
         "NonFungibleToken",
         "CommonOrder",
@@ -136,7 +136,7 @@
       "service": [
         "CommonFee",
         "CommonNFT",
-        "NFTPlus",
+        "LicensedNFT",
         "CommonOrder",
 
         "Evolution",
