@@ -1,7 +1,7 @@
 import NonFungibleToken from "../../contracts/NonFungibleToken.cdc"
 import CommonNFT from "../../contracts/CommonNFT.cdc"
 
-transaction(metadata: String, royalties: [CommonNFT.Royalties]) {
+transaction(metadata: String, royalties: [CommonNFT.Royalty]) {
     let minter: Capability<&CommonNFT.Minter>
     let receiver: Capability<&{NonFungibleToken.Receiver}>
 

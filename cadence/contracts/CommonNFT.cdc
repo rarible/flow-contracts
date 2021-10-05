@@ -17,10 +17,10 @@ pub contract CommonNFT : NonFungibleToken, NFTPlus {
     pub event Withdraw(id: UInt64, from: Address?)
     pub event Deposit(id: UInt64, to: Address?)
 
-    pub event Mint(id: UInt64, creator: Address, metadata: String, royalties: [NFTPlus.Royalties])
+    pub event Mint(id: UInt64, creator: Address, metadata: String, royalties: [NFTPlus.Royalty])
     pub event Destroy(id: UInt64)
 
-    pub struct Royalties {
+    pub struct Royalty {
         pub let address: Address
         pub let fee: UFix64
 
@@ -34,16 +34,16 @@ pub contract CommonNFT : NonFungibleToken, NFTPlus {
         pub let id: UInt64
         pub let creator: Address
         pub let metadata: String
-        access(self) let royalties: [NFTPlus.Royalties]
+        access(self) let royalties: [NFTPlus.Royalty]
 
-        init(id: UInt64, creator: Address, metadata: String, royalties: [NFTPlus.Royalties]) {
+        init(id: UInt64, creator: Address, metadata: String, royalties: [NFTPlus.Royalty]) {
             self.id = id
             self.creator = creator
             self.metadata = metadata
             self.royalties = royalties
         }
 
-        pub fun getRoyalties(): [NFTPlus.Royalties] {
+        pub fun getRoyalties(): [NFTPlus.Royalty] {
             return self.royalties
         }
 
@@ -81,7 +81,7 @@ pub contract CommonNFT : NonFungibleToken, NFTPlus {
             return &self.ownedNFTs[id] as &NonFungibleToken.NFT
         }
 
-        pub fun getRoyalties(id: UInt64): [NFTPlus.Royalties] {
+        pub fun getRoyalties(id: UInt64): [NFTPlus.Royalty] {
             let ref = &self.ownedNFTs[id] as auth &NonFungibleToken.NFT
             return (ref as! &NFTPlus.NFT).getRoyalties()
         }
@@ -96,7 +96,7 @@ pub contract CommonNFT : NonFungibleToken, NFTPlus {
     }
 
     pub resource Minter {
-        pub fun mintTo(creator: Capability<&{NonFungibleToken.Receiver}>, metadata: String, royalties: [NFTPlus.Royalties]): &NonFungibleToken.NFT {
+        pub fun mintTo(creator: Capability<&{NonFungibleToken.Receiver}>, metadata: String, royalties: [NFTPlus.Royalty]): &NonFungibleToken.NFT {
             let token <- create NFT(
                 id: CommonNFT.totalSupply,
                 creator: creator.address,
