@@ -1,4 +1,4 @@
-import CommonNFT from 0xCOMMONNFT
+import CommonNFT from "../../contracts/CommonNFT.cdc"
 
 pub fun main(address: Address, tokenId: UInt64): &AnyResource {
     let account = getAccount(address)

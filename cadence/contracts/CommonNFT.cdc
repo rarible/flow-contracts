@@ -1,5 +1,5 @@
-import NonFungibleToken from 0xNONFUNGIBLETOKEN
-import NFTPlus from 0xNFTPLUS
+import NonFungibleToken from "NonFungibleToken.cdc"
+import NFTPlus from "NFTPlus.cdc"
 
 /**
  * CommonNFT token contract

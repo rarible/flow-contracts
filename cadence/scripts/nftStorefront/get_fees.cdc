@@ -1,4 +1,4 @@
-import CommonFee from 0xCOMMONFEE
+import CommonFee from "../../contracts/CommonFee.cdc"
 
 pub fun main(): {String:UFix64} {
     return {

@@ -46,7 +46,7 @@ F="flow -n testnet"
 #  saleId: 10671852
 #  address: 0x665b9acf64dfdfdb
 #
-#$F transactions send transactions/nftStorefront/buy_item.cdc --signer master --arg UInt64:10671852 --arg Address:0x665b9acf64dfdfdb
+#$F transactions send transactions/nftStorefront/buy_common-nft_flow.cdc --signer master --arg UInt64:10671852 --arg Address:0x665b9acf64dfdfdb
 
 #
 # Cleanup accepted sale

@@ -1,4 +1,4 @@
-import CommonNFT from 0xCOMMONNFT
+import CommonNFT from "../../contracts/CommonNFT.cdc"
 
 transaction {
     prepare(account: AuthAccount) {

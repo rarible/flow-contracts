@@ -1,5 +1,5 @@
-import NonFungibleToken from 0xNONFUNGIBLETOKEN
-import CommonNFT from 0xCOMMONNFT
+import NonFungibleToken from "../../contracts/NonFungibleToken.cdc"
+import CommonNFT from "../../contracts/CommonNFT.cdc"
 
 transaction(metadata: String, royalties: [CommonNFT.Royalties]) {
     let minter: Capability<&CommonNFT.Minter>

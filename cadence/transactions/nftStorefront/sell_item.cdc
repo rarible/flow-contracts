@@ -1,10 +1,10 @@
-import FungibleToken from 0xFUNGIBLETOKEN
-import NonFungibleToken from 0xNONFUNGIBLETOKEN
-import FlowToken from 0xFLOWTOKEN
-import CommonNFT from 0xCOMMONNFT
-import NFTStorefront from 0xNFTSTOREFRONT
-import CommonFee from 0xCOMMONFEE
-import NFTPlus from 0xNFTPLUS
+import FungibleToken from "../../contracts/FungibleToken.cdc"
+import NonFungibleToken from "../../contracts/NonFungibleToken.cdc"
+import FlowToken from "../../contracts/FlowToken.cdc"
+import CommonNFT from "../../contracts/CommonNFT.cdc"
+import NFTStorefront from "../../contracts/NFTStorefront.cdc"
+import CommonFee from "../../contracts/CommonFee.cdc"
+import NFTPlus from "../../contracts/NFTPlus.cdc"
 
 /**
  * Sell CommonNFT token for Flow with NFTStorefront

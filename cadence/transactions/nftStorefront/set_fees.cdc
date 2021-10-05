@@ -1,4 +1,4 @@
-import CommonFee from 0xCOMMONFEE
+import CommonFee from "../../contracts/CommonFee.cdc"
 
 transaction (sellerFee: UFix64, buyerFee: UFix64) {
     let manager: &CommonFee.Manager

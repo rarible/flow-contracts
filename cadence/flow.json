@@ -9,7 +9,14 @@
     "NFTPlus": "contracts/NFTPlus.cdc",
     "CommonNFT": "contracts/CommonNFT.cdc",
     "CommonFee": "contracts/CommonFee.cdc",
-    "NFTStorefront": "contracts/NFTStorefront.cdc",
+    "CommonOrder": "contracts/CommonOrder.cdc",
+    "NFTStorefront": {
+      "source": "contracts/NFTStorefront.cdc",
+      "aliases": {
+        "testnet": "0x94b06cfca1d8a476",
+        "mainnet": "0x4eb8a10cb9f87357"
+      }
+    },
     "FlowToken": {
       "source": "contracts/FlowToken.cdc",
       "aliases": {
@@ -29,6 +36,39 @@
       "aliases": {
         "testnet": "0x631e88ae7f1d7c20"
       }
+    },
+
+    "Evolution": "contracts/Evolution.cdc",
+
+    "ContractVersion": "contracts/ContractVersion.cdc",
+    "MotoGPAdmin": "contracts/MotoGPAdmin.cdc",
+    "MotoGPCard": {
+      "source": "contracts/MotoGPCard.cdc",
+      "aliases": {
+        "mainnet": "0xa49cc0ee46c54bfb"
+      }
+    },
+    "MotoGPCardMetadata": {
+      "source": "contracts/MotoGPCardMetadata.cdc",
+      "aliases": {
+        "mainnet": "0xa49cc0ee46c54bfb"
+      }
+    },
+    "MotoGPCounter": "contracts/MotoGPCounter.cdc",
+    "MotoGPPack": {
+      "source": "contracts/MotoGPPack.cdc",
+      "aliases": {
+        "mainnet": "0xa49cc0ee46c54bfb"
+      }
+    },
+    "MotoGPTransfer": "contracts/MotoGPTransfer.cdc",
+    "PackOpener": "contracts/PackOpener.cdc",
+    "FlowStorageFees": {
+      "source": "contracts/FlowStorageFees.cdc",
+      "aliases": {
+        "emulator": "0xf8d6e0586b0a20c7",
+        "testnet": "0x8c5303eaa26202d6"
+      }
     }
   },
   "networks": {
@@ -37,45 +77,37 @@
     "testnet": "access.devnet.nodes.onflow.org:9000"
   },
   "accounts": {
-    "alice": {
-      "address": "0x01cf0e2f2f715450",
-      "keys": "f7e8e86e763e4452fd8706eea43302da923da7d8e195c6dd16f0a9e7ed3d6010"
-    },
-    "bob": {
-      "address": "0x179b6b1cb6755e31",
-      "keys": "d3bd8321b92d008c2306cf68900d764c7559086c1acc8d859e76aed904f64a44"
-    },
-    "eve": {
-      "address": "0xf3fcd2c1a78f5eee",
-      "keys": "e6bc45110d3f40a0abc5e6eee12d84fd3e95c9ae7ae5d7b3053672e77fa765b2"
-    },
-    "emulator-master": {
-      "address": "f8d6e0586b0a20c7",
-      "key": "ba412c8efe86d806da91ad655bf2c6bcf8fa1c8f8a2bb5cdd0de43fcaab1a2f9"
-    },
     "emulator-account": {
       "address": "f8d6e0586b0a20c7",
-      "key": "ba412c8efe86d806da91ad655bf2c6bcf8fa1c8f8a2bb5cdd0de43fcaab1a2f9"
+      "key": "242a85b1745b25bf130a9ce2b7b0b7f19aca9364d9440070ec11c112b2362573"
     },
-    "admin": {
-      "address": "1cd85950d20f05b2",
-      "keys": "90150ceed224dc2aeab050ca0fd5de70ada89f755c59aa0080a420f04c38aa13"
+    "emulator-alice": {
+      "address": "0x01cf0e2f2f715450",
+      "key": "113df54f78728ee5fc073f1128429136a7a98187a9d7b3810b9f12de6829f90c"
     },
-    "master_old": {
-      "address": "0xe4e5f90bf7e2a25f",
-      "key": "a3a8e3a9ef712083caebb4c551bd58e2ed6eb40ad3d49fb6ab38495e89475160"
+    "emulator-bob": {
+      "address": "0x179b6b1cb6755e31",
+      "key": "f4eb3fd5bd244115c3d71f7471c81b78804ccea6acda96908d809c70b9442327"
     },
-    "master_old2": {
-      "address": "0xfcfb23c627a63d40",
-      "key": "b369570e5df2c9439364f0cff0f6bf64f1a2ce2d7c85a9e6dc4ebebfe61c561c"
+    "emulator-eve": {
+      "address": "0xf3fcd2c1a78f5eee",
+      "key": "49a6d9dd320c6e767f30009b1a8d986b6d54bf7bfbc4f19ef66c1b9323cb5f35"
     },
-    "master_old3": {
-      "address": "0xe91e497115b9731b",
-      "key": "780e9ad4acbc6f07f08f0c817792cb76a2b7ac564c149b166db6323a70f849fe"
+    "service": {
+      "address": "0xe747e6de249869c4",
+      "key": "c0e593ee02207dbe807a7f6c5d931bf3bf0111ec06ce47f0deb1f1f440e8f811"
     },
-    "master": {
-      "address": "0x665b9acf64dfdfdb",
-      "key": "780e9ad4acbc6f07f08f0c817792cb76a2b7ac564c149b166db6323a70f849fe"
+    "alice": {
+      "address": "0xec6dd447e81d17ed",
+      "key": "113df54f78728ee5fc073f1128429136a7a98187a9d7b3810b9f12de6829f90c"
+    },
+    "bob": {
+      "address": "0xfa39b17471191d8c",
+      "key": "f4eb3fd5bd244115c3d71f7471c81b78804ccea6acda96908d809c70b9442327"
+    },
+    "eve": {
+      "address": "0x1e5e08a960e31d53",
+      "key": "49a6d9dd320c6e767f30009b1a8d986b6d54bf7bfbc4f19ef66c1b9323cb5f35"
     }
   },
   "deployments": {
@@ -85,15 +117,38 @@
         "CommonNFT",
         "NFTPlus",
         "NFTStorefront",
-        "NonFungibleToken"
+        "NonFungibleToken",
+        "CommonOrder",
+
+        "Evolution",
+
+        "ContractVersion",
+        "MotoGPAdmin",
+        "MotoGPCard",
+        "MotoGPCardMetadata",
+        "MotoGPCounter",
+        "MotoGPPack",
+        "MotoGPTransfer",
+        "PackOpener"
       ]
     },
     "testnet": {
-      "master": [
+      "service": [
         "CommonFee",
         "CommonNFT",
         "NFTPlus",
-        "NFTStorefront"
+        "CommonOrder",
+
+        "Evolution",
+
+        "ContractVersion",
+        "MotoGPAdmin",
+        "MotoGPCard",
+        "MotoGPCardMetadata",
+        "MotoGPCounter",
+        "MotoGPPack",
+        "MotoGPTransfer",
+        "PackOpener"
       ]
     }
   }
