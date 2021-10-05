@@ -94,19 +94,19 @@
       "key": "49a6d9dd320c6e767f30009b1a8d986b6d54bf7bfbc4f19ef66c1b9323cb5f35"
     },
     "service": {
-      "address": "0xe747e6de249869c4",
+      "address": "0x88e19f27ab4cd225",
       "key": "c0e593ee02207dbe807a7f6c5d931bf3bf0111ec06ce47f0deb1f1f440e8f811"
     },
     "alice": {
-      "address": "0xec6dd447e81d17ed",
+      "address": "0x6c8626fabab6d2fa",
       "key": "113df54f78728ee5fc073f1128429136a7a98187a9d7b3810b9f12de6829f90c"
     },
     "bob": {
-      "address": "0xfa39b17471191d8c",
+      "address": "0x7ad243c923b2d89b",
       "key": "f4eb3fd5bd244115c3d71f7471c81b78804ccea6acda96908d809c70b9442327"
     },
     "eve": {
-      "address": "0x1e5e08a960e31d53",
+      "address": "0x9eb5fa143248d844",
       "key": "49a6d9dd320c6e767f30009b1a8d986b6d54bf7bfbc4f19ef66c1b9323cb5f35"
     }
   },

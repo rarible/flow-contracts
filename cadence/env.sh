@@ -1,1 +1,1 @@
-env-testnet.sh
+env-emulator.sh
