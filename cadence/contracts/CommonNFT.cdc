@@ -1,9 +1,8 @@
 import NonFungibleToken from "NonFungibleToken.cdc"
 import LicensedNFT from "LicensedNFT.cdc"
 
-/**
- * CommonNFT token contract
- */
+ // CommonNFT token contract
+ //
 pub contract CommonNFT : NonFungibleToken, LicensedNFT {
 
     pub var totalSupply: UInt64
@@ -109,14 +108,6 @@ pub contract CommonNFT : NonFungibleToken, LicensedNFT {
             creator.borrow()!.deposit(token: <- token)
             return tokenRef
         }
-    }
-
-    pub fun receiver(_ address: Address): Capability<&{NonFungibleToken.Receiver}> {
-        return getAccount(address).getCapability<&{NonFungibleToken.Receiver}>(self.collectionPublicPath)
-    }
-
-    pub fun collectionPublic(_ address: Address): Capability<&{NonFungibleToken.CollectionPublic}> {
-        return getAccount(address).getCapability<&{NonFungibleToken.CollectionPublic}>(self.collectionPublicPath)
     }
 
     pub fun minter(): Capability<&Minter> {

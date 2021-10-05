@@ -6,7 +6,7 @@ import NFTStorefront from "../../contracts/NFTStorefront.cdc"
 
 transaction(orderId: UInt64, storefrontAddress: Address) {
     let paymentVault: @FungibleToken.Vault
-    let commonNFTCollection: &{NonFungibleToken.Receiver}
+    let tokenReceiver: &{NonFungibleToken.Receiver}
     let storefront: &NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}
     let listing: &NFTStorefront.Listing{NFTStorefront.ListingPublic}
 
@@ -32,13 +32,13 @@ transaction(orderId: UInt64, storefrontAddress: Address) {
             acct.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath, target: CommonNFT.collectionStoragePath)
         }
 
-        self.commonNFTCollection = CommonNFT.receiver(acct.address).borrow()
+        self.tokenReceiver = acct.getCapability<&{NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath).borrow()
             ?? panic("Cannot borrow NFT collection receiver from acct")
     }
 
     execute {
         let item <- self.listing.purchase(payment: <-self.paymentVault)
-        self.commonNFTCollection.deposit(token: <-item)
+        self.tokenReceiver.deposit(token: <-item)
         self.storefront.cleanup(listingResourceID: orderId)
     }
 }
