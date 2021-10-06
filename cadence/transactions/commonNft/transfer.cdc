@@ -1,14 +1,21 @@
-import NonFungibleToken from 0xNONFUNGIBLETOKEN
-import CommonNFT from 0xCOMMONNFT
+import NonFungibleToken from "../../contracts/NonFungibleToken.cdc"
+import CommonNFT from "../../contracts/CommonNFT.cdc"
 
+// transfer CommonNFT token with tokenId to given address
+//
 transaction(tokenId: UInt64, to: Address) {
-    prepare(account: AuthAccount) {
-        if account.borrow<&CommonNFT.Collection>(from: CommonNFT.collectionStoragePath) == nil {
-            let collection <- CommonNFT.createEmptyCollection() as! @CommonNFT.Collection
-            account.save(<- collection, to: CommonNFT.collectionStoragePath)
-            account.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath, target: CommonNFT.collectionStoragePath)
-        }
-        let collection = account.borrow<&CommonNFT.Collection>(from: CommonNFT.collectionStoragePath)!
-        collection.transfer(tokenId: tokenId, to: CommonNFT.receiver(to))
+    let token: @NonFungibleToken.NFT
+    let receiver: Capability<&{NonFungibleToken.Receiver}>
+
+    prepare(acct: AuthAccount) {
+        let collection = acct.borrow<&CommonNFT.Collection>(from: CommonNFT.collectionStoragePath)
+            ?? panic("Missing collection, NFT not found")
+        self.token <- collection.withdraw(withdrawID: tokenId)
+        self.receiver = getAccount(to).getCapability<&{NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath)
+    }
+
+    execute {
+        let receiver = self.receiver.borrow()!
+        receiver.deposit(token: <- self.token)
     }
 }

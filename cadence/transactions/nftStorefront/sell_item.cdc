@@ -1,10 +1,10 @@
-import FungibleToken from 0xFUNGIBLETOKEN
-import NonFungibleToken from 0xNONFUNGIBLETOKEN
-import FlowToken from 0xFLOWTOKEN
-import CommonNFT from 0xCOMMONNFT
-import NFTStorefront from 0xNFTSTOREFRONT
-import CommonFee from 0xCOMMONFEE
-import NFTPlus from 0xNFTPLUS
+import FungibleToken from "../../contracts/FungibleToken.cdc"
+import NonFungibleToken from "../../contracts/NonFungibleToken.cdc"
+import FlowToken from "../../contracts/FlowToken.cdc"
+import CommonNFT from "../../contracts/CommonNFT.cdc"
+import NFTStorefront from "../../contracts/NFTStorefront.cdc"
+import CommonFee from "../../contracts/CommonFee.cdc"
+import LicensedNFT from "../../contracts/LicensedNFT.cdc"
 
 /**
  * Sell CommonNFT token for Flow with NFTStorefront
@@ -13,17 +13,17 @@ import NFTPlus from 0xNFTPLUS
  * @params saleItemPrice price in Flow
  */
 transaction(saleItemID: UInt64, saleItemPrice: UFix64) {
-    let nftProvider: Capability<&CommonNFT.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic, NFTPlus.CollectionPublic}>
+    let nftProvider: Capability<&CommonNFT.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic, LicensedNFT.CollectionPublic}>
     let storefront: &NFTStorefront.Storefront
 
     prepare(acct: AuthAccount) {
         let commonNFTCollectionProviderPrivatePath = /private/commonNFTCollectionProviderForNFTStorefront
 
-        if !acct.getCapability<&CommonNFT.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic, NFTPlus.CollectionPublic}>(commonNFTCollectionProviderPrivatePath)!.check() {
-            acct.link<&CommonNFT.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic, NFTPlus.CollectionPublic}>(commonNFTCollectionProviderPrivatePath, target: CommonNFT.collectionStoragePath)
+        if !acct.getCapability<&CommonNFT.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic, LicensedNFT.CollectionPublic}>(commonNFTCollectionProviderPrivatePath)!.check() {
+            acct.link<&CommonNFT.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic, LicensedNFT.CollectionPublic}>(commonNFTCollectionProviderPrivatePath, target: CommonNFT.collectionStoragePath)
         }
 
-        self.nftProvider = acct.getCapability<&CommonNFT.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic, NFTPlus.CollectionPublic}>(commonNFTCollectionProviderPrivatePath)!
+        self.nftProvider = acct.getCapability<&CommonNFT.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic, LicensedNFT.CollectionPublic}>(commonNFTCollectionProviderPrivatePath)!
         assert(self.nftProvider.borrow() != nil, message: "Missing or mis-typed CommonNFT.Collection provider")
 
         if acct.borrow<&NFTStorefront.Storefront>(from: NFTStorefront.StorefrontStoragePath) == nil {

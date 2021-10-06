@@ -1,7 +1,12 @@
-import CommonNFT from 0xCOMMONNFT
+import NonFungibleToken from "../../contracts/NonFungibleToken.cdc"
+import CommonNFT from "../../contracts/CommonNFT.cdc"
 
+// Take CommonNFT token props by account address and tokenId
+//
 pub fun main(address: Address, tokenId: UInt64): &AnyResource {
-    let account = getAccount(address)
-    let collection = CommonNFT.collectionPublic(address).borrow()!
+    let collection = getAccount(address)
+        .getCapability<&{NonFungibleToken.CollectionPublic}>(CommonNFT.collectionPublicPath)
+        .borrow()
+        ?? panic("NFT Collection not found")
     return collection.borrowNFT(id: tokenId)
 }

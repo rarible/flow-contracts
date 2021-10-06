@@ -1,0 +1,114 @@
+{
+  "emulators": {
+    "default": {
+      "port": 3569,
+      "serviceAccount": "emulator-account"
+    }
+  },
+  "contracts": {
+    "NFTPlus": "contracts/NFTPlus.cdc",
+    "CommonNFT": "contracts/CommonNFT.cdc",
+    "CommonFee": "contracts/CommonFee.cdc",
+    "NFTStorefront": "contracts/NFTStorefront.cdc",
+    "RegularOrder": "contracts/RegularOrder.cdc",
+    "FlowToken": {
+      "source": "contracts/FlowToken.cdc",
+      "aliases": {
+        "emulator": "0x0ae53cb6e3f42a79",
+        "testnet": "0x7e60df042a9c0868"
+      }
+    },
+    "FungibleToken": {
+      "source": "contracts/FungibleToken.cdc",
+      "aliases": {
+        "emulator": "0xee82856bf20e2aa6",
+        "testnet": "0x9a0766d93b6608b7"
+      }
+    },
+    "NonFungibleToken": {
+      "source": "contracts/NonFungibleToken.cdc",
+      "aliases": {
+        "testnet": "0x631e88ae7f1d7c20"
+      }
+    }
+  },
+  "networks": {
+    "emulator": "127.0.0.1:3569",
+    "mainnet": "access.mainnet.nodes.onflow.org:9000",
+    "testnet": "access.devnet.nodes.onflow.org:9000"
+  },
+  "accounts": {
+    "alice": {
+      "address": "0x01cf0e2f2f715450",
+      "keys": "f7e8e86e763e4452fd8706eea43302da923da7d8e195c6dd16f0a9e7ed3d6010"
+    },
+    "bob": {
+      "address": "0x179b6b1cb6755e31",
+      "keys": "d3bd8321b92d008c2306cf68900d764c7559086c1acc8d859e76aed904f64a44"
+    },
+    "eve": {
+      "address": "0xf3fcd2c1a78f5eee",
+      "keys": "e6bc45110d3f40a0abc5e6eee12d84fd3e95c9ae7ae5d7b3053672e77fa765b2"
+    },
+    "emulator-master": {
+      "address": "f8d6e0586b0a20c7",
+      "key": "ba412c8efe86d806da91ad655bf2c6bcf8fa1c8f8a2bb5cdd0de43fcaab1a2f9"
+    },
+    "emulator-account-orig": {
+      "address": "f8d6e0586b0a20c7",
+      "key": "ba412c8efe86d806da91ad655bf2c6bcf8fa1c8f8a2bb5cdd0de43fcaab1a2f9"
+    },
+    "admin": {
+      "address": "1cd85950d20f05b2",
+      "keys": "90150ceed224dc2aeab050ca0fd5de70ada89f755c59aa0080a420f04c38aa13"
+    },
+    "master_old": {
+      "address": "0xe4e5f90bf7e2a25f",
+      "key": "a3a8e3a9ef712083caebb4c551bd58e2ed6eb40ad3d49fb6ab38495e89475160"
+    },
+    "master_old2": {
+      "address": "0xfcfb23c627a63d40",
+      "key": "b369570e5df2c9439364f0cff0f6bf64f1a2ce2d7c85a9e6dc4ebebfe61c561c"
+    },
+    "master_old3": {
+      "address": "0xe91e497115b9731b",
+      "key": "780e9ad4acbc6f07f08f0c817792cb76a2b7ac564c149b166db6323a70f849fe"
+    },
+    "master00": {
+      "address": "0x665b9acf64dfdfdb",
+      "key": "780e9ad4acbc6f07f08f0c817792cb76a2b7ac564c149b166db6323a70f849fe"
+    },
+    "master": {
+      "address": "0xe7e97b10fbd3b607",
+      "key": "780e9ad4acbc6f07f08f0c817792cb76a2b7ac564c149b166db6323a70f849fe"
+    },
+    "emulator-account": {
+      "address": "f8d6e0586b0a20c7",
+      "key": "2e85e1b33e582009ff42637dbd4545f69ae622ccd07d02cd8a12a769b93f05a2"
+    },
+    "emulator-alice": {
+      "address": "0x01cf0e2f2f715450",
+      "key": "113df54f78728ee5fc073f1128429136a7a98187a9d7b3810b9f12de6829f90c"
+    }
+  },
+  "deployments": {
+    "emulator": {
+      "emulator-account": [
+        "CommonFee",
+        "CommonNFT",
+        "NFTPlus",
+        "NFTStorefront",
+        "NonFungibleToken",
+        "RegularOrder"
+      ]
+    },
+    "testnet": {
+      "master": [
+        "CommonFee",
+        "CommonNFT",
+        "NFTPlus",
+        "NFTStorefront"
+      ]
+    }
+  }
+}

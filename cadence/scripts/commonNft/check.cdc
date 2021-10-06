@@ -1,5 +1,10 @@
-import CommonNFT from 0xCOMMONNFT
+import NonFungibleToken from "../../contracts/NonFungibleToken.cdc"
+import CommonNFT from "../../contracts/CommonNFT.cdc"
 
+// check CommonNFT collection is available on given address
+//
 pub fun main(address: Address): Bool {
-    return CommonNFT.receiver(address).check()
+    return getAccount(address)
+        .getCapability<&{NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath)
+        .check()
 }

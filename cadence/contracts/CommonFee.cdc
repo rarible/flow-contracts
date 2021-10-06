@@ -14,14 +14,14 @@ pub contract CommonFee {
     pub var buyerFee: UFix64
 
     pub resource Manager {
-        pub fun setBuyerFee(_ fee: UFix64) {
-            CommonFee.buyerFee = fee
-            emit BuyerFeeChanged(value: CommonFee.buyerFee)
-        }
-
         pub fun setSellerFee(_ fee: UFix64) {
             CommonFee.sellerFee = fee
             emit SellerFeeChanged(value: CommonFee.sellerFee)
+        }
+
+        pub fun setBuyerFee(_ fee: UFix64) {
+            CommonFee.buyerFee = fee
+            emit BuyerFeeChanged(value: CommonFee.buyerFee)
         }
     }
 
