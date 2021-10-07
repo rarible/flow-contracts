@@ -69,6 +69,12 @@
         "emulator": "0xf8d6e0586b0a20c7",
         "testnet": "0x8c5303eaa26202d6"
       }
+    },
+    "TopShot": {
+      "source": "contracts/TopShot.cdc",
+      "aliases": {
+        "mainnet": "0x0b2a3299cc857e29"
+      }
     }
   },
   "networks": {
@@ -140,7 +146,8 @@
         "MotoGPCounter",
         "MotoGPPack",
         "MotoGPTransfer",
-        "PackOpener"
+        "PackOpener",
+        "TopShot"
       ]
     },
     "e2e": {
@@ -159,7 +166,8 @@
         "MotoGPCounter",
         "MotoGPPack",
         "MotoGPTransfer",
-        "PackOpener"
+        "PackOpener",
+        "TopShot"
       ]
     },
     "testnet": {
@@ -176,7 +184,8 @@
         "MotoGPCounter",
         "MotoGPPack",
         "MotoGPTransfer",
-        "PackOpener"
+        "PackOpener",
+        "TopShot"
       ]
     }
   }
