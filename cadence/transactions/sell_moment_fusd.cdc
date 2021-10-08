@@ -1,10 +1,10 @@
 import NonFungibleToken from "../contracts/NonFungibleToken.cdc"
-import FlowToken from "../contracts/FlowToken.cdc"
+import FUSD from "../contracts/FUSD.cdc"
 import NFTStorefront from "../contracts/NFTStorefront.cdc"
 import CommonOrder from "../contracts/CommonOrder.cdc"
 import TopShot from "../contracts/TopShot.cdc"
 
-// Sell TopShot moment for Flow with NFTStorefront
+// Sell TopShot moment for FUSD with NFTStorefront
 //
 transaction(tokenId: UInt64, price: UFix64) {
     let nftProvider: Capability<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>
@@ -38,8 +38,8 @@ transaction(tokenId: UInt64, price: UFix64) {
             nftProvider: self.nftProvider,
             nftType: Type<@TopShot.NFT>(),
             nftId: tokenId,
-            vaultPath: /public/flowTokenReceiver,
-            vaultType: Type<@FlowToken.Vault>(),
+            vaultPath: /public/fusdReceiver,
+            vaultType: Type<@FUSD.Vault>(),
             price: price,
             extraCuts: [CommonOrder.PaymentPart(address: topshotFeeAddress, rate: topshotFeeRate)],
             royalties: []

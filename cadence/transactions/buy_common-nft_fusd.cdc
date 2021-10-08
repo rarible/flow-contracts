@@ -1,8 +1,8 @@
-import FungibleToken from "../../contracts/FungibleToken.cdc"
-import NonFungibleToken from "../../contracts/NonFungibleToken.cdc"
-import FlowToken from "../../contracts/FlowToken.cdc"
-import CommonNFT from "../../contracts/CommonNFT.cdc"
-import NFTStorefront from "../../contracts/NFTStorefront.cdc"
+import FungibleToken from "../contracts/FungibleToken.cdc"
+import NonFungibleToken from "../contracts/NonFungibleToken.cdc"
+import FUSD from "../contracts/FUSD.cdc"
+import CommonNFT from "../contracts/CommonNFT.cdc"
+import NFTStorefront from "../contracts/NFTStorefront.cdc"
 
 transaction(orderId: UInt64, storefrontAddress: Address) {
     let paymentVault: @FungibleToken.Vault
@@ -22,8 +22,8 @@ transaction(orderId: UInt64, storefrontAddress: Address) {
                     ?? panic("No Offer with that ID in Storefront")
         let price = self.listing.getDetails().salePrice
 
-        let mainFlowVault = acct.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)
-            ?? panic("Cannot borrow FlowToken vault from acct storage")
+        let mainFlowVault = acct.borrow<&FUSD.Vault>(from: /storage/fusdVault)
+            ?? panic("Cannot borrow FUSD vault from acct storage")
         self.paymentVault <- mainFlowVault.withdraw(amount: price)
 
         if acct.borrow<&CommonNFT.Collection>(from: CommonNFT.collectionStoragePath) == nil {

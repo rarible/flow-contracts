@@ -1,10 +1,10 @@
-import CommonNFT from "../../contracts/CommonNFT.cdc"
-import CommonOrder from "../../contracts/CommonOrder.cdc"
-import FlowToken from "../../contracts/FlowToken.cdc"
-import FungibleToken from "../../contracts/FungibleToken.cdc"
-import LicensedNFT from "../../contracts/LicensedNFT.cdc"
-import NFTStorefront from "../../contracts/NFTStorefront.cdc"
-import NonFungibleToken from "../../contracts/NonFungibleToken.cdc"
+import CommonNFT from "../contracts/CommonNFT.cdc"
+import CommonOrder from "../contracts/CommonOrder.cdc"
+import FlowToken from "../contracts/FlowToken.cdc"
+import FungibleToken from "../contracts/FungibleToken.cdc"
+import LicensedNFT from "../contracts/LicensedNFT.cdc"
+import NFTStorefront from "../contracts/NFTStorefront.cdc"
+import NonFungibleToken from "../contracts/NonFungibleToken.cdc"
 
 // Sell CommonNFT token for Flow with NFTStorefront
 //
