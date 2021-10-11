@@ -10,68 +10,108 @@
     "CommonNFT": "contracts/CommonNFT.cdc",
     "CommonFee": "contracts/CommonFee.cdc",
     "CommonOrder": "contracts/CommonOrder.cdc",
+    "FungibleToken": {
+      "source": "contracts/core/FungibleToken.cdc",
+      "aliases": {
+        "emulator": "0xee82856bf20e2aa6",
+        "e2e": "0xee82856bf20e2aa6",
+        "testnet": "0x9a0766d93b6608b7",
+        "mainnet": "0xf233dcee88fe0abe"
+      }
+    },
+    "FlowToken": {
+      "source": "contracts/core/FlowToken.cdc",
+      "aliases": {
+        "emulator": "0x0ae53cb6e3f42a79",
+        "e2e": "0x0ae53cb6e3f42a79",
+        "testnet": "0x7e60df042a9c0868",
+        "mainnet": "0x1654653399040a61"
+      }
+    },
+    "FUSD": {
+      "source": "contracts/core/FUSD.cdc",
+      "aliases": {
+        "testnet": "0xe223d8a629e49c68",
+        "mainnet": "0x3c5959b568896393"
+      }
+    },
+    "NonFungibleToken": {
+      "source": "contracts/core/NonFungibleToken.cdc",
+      "aliases": {
+        "testnet": "0x631e88ae7f1d7c20",
+        "mainnet": "0x1d7e57aa55817448"
+      }
+    },
     "NFTStorefront": {
-      "source": "contracts/NFTStorefront.cdc",
+      "source": "contracts/core/NFTStorefront.cdc",
       "aliases": {
         "testnet": "0x94b06cfca1d8a476",
         "mainnet": "0x4eb8a10cb9f87357"
       }
     },
-    "FlowToken": {
-      "source": "contracts/FlowToken.cdc",
-      "aliases": {
-        "emulator": "0x0ae53cb6e3f42a79",
-        "e2e": "0x0ae53cb6e3f42a79",
-        "testnet": "0x7e60df042a9c0868"
-      }
-    },
-    "FungibleToken": {
-      "source": "contracts/FungibleToken.cdc",
-      "aliases": {
-        "emulator": "0xee82856bf20e2aa6",
-        "e2e": "0xee82856bf20e2aa6",
-        "testnet": "0x9a0766d93b6608b7"
-      }
-    },
-    "NonFungibleToken": {
-      "source": "contracts/NonFungibleToken.cdc",
-      "aliases": {
-        "testnet": "0x631e88ae7f1d7c20"
-      }
-    },
-    "Evolution": "contracts/Evolution.cdc",
-    "ContractVersion": "contracts/ContractVersion.cdc",
-    "MotoGPAdmin": "contracts/MotoGPAdmin.cdc",
-    "MotoGPCard": {
-      "source": "contracts/MotoGPCard.cdc",
-      "aliases": {
-        "mainnet": "0xa49cc0ee46c54bfb"
-      }
-    },
-    "MotoGPCardMetadata": {
-      "source": "contracts/MotoGPCardMetadata.cdc",
-      "aliases": {
-        "mainnet": "0xa49cc0ee46c54bfb"
-      }
-    },
-    "MotoGPCounter": "contracts/MotoGPCounter.cdc",
-    "MotoGPPack": {
-      "source": "contracts/MotoGPPack.cdc",
-      "aliases": {
-        "mainnet": "0xa49cc0ee46c54bfb"
-      }
-    },
-    "MotoGPTransfer": "contracts/MotoGPTransfer.cdc",
-    "PackOpener": "contracts/PackOpener.cdc",
     "FlowStorageFees": {
-      "source": "contracts/FlowStorageFees.cdc",
+      "source": "contracts/core/FlowStorageFees.cdc",
       "aliases": {
         "emulator": "0xf8d6e0586b0a20c7",
         "testnet": "0x8c5303eaa26202d6"
       }
     },
+    "ContractVersion": {
+      "source": "contracts/third-party/ContractVersion.cdc",
+      "aliases": {
+        "mainnet": "0xa49cc0ee46c54bfb"
+      }
+    },
+    "MotoGPAdmin": {
+      "source": "contracts/third-party/MotoGPAdmin.cdc",
+      "aliases": {
+        "mainnet": "0xa49cc0ee46c54bfb"
+      }
+    },
+    "MotoGPCard": {
+      "source": "contracts/third-party/MotoGPCard.cdc",
+      "aliases": {
+        "mainnet": "0xa49cc0ee46c54bfb"
+      }
+    },
+    "MotoGPCardMetadata": {
+      "source": "contracts/third-party/MotoGPCardMetadata.cdc",
+      "aliases": {
+        "mainnet": "0xa49cc0ee46c54bfb"
+      }
+    },
+    "MotoGPCounter": {
+      "source": "contracts/third-party/MotoGPCounter.cdc",
+      "aliases": {
+        "mainnet": "0xa49cc0ee46c54bfb"
+      }
+    },
+    "MotoGPTransfer": {
+      "source": "contracts/third-party/MotoGPTransfer.cdc",
+      "aliases": {
+        "mainnet": "0xa49cc0ee46c54bfb"
+      }
+    },
+    "MotoGPPack": {
+      "source": "contracts/third-party/MotoGPPack.cdc",
+      "aliases": {
+        "mainnet": "0xa49cc0ee46c54bfb"
+      }
+    },
+    "PackOpener": {
+      "source": "contracts/third-party/PackOpener.cdc",
+      "aliases": {
+        "mainnet": "0xa49cc0ee46c54bfb"
+      }
+    },
+    "Evolution": {
+      "source": "contracts/third-party/Evolution.cdc",
+      "aliases": {
+        "mainnet": "0xf4264ac8f3256818"
+      }
+    },
     "TopShot": {
-      "source": "contracts/TopShot.cdc",
+      "source": "contracts/third-party/TopShot.cdc",
       "aliases": {
         "mainnet": "0x0b2a3299cc857e29"
       }
@@ -129,15 +169,17 @@
       "keys": "90150ceed224dc2aeab050ca0fd5de70ada89f755c59aa0080a420f04c38aa13"
     }
   },
+
   "deployments": {
     "emulator": {
       "emulator-account": [
         "CommonFee",
         "CommonNFT",
-        "LicensedNFT",
-        "NFTStorefront",
-        "NonFungibleToken",
         "CommonOrder",
+        "LicensedNFT",
+        "NonFungibleToken",
+        "FUSD",
+        "NFTStorefront",
         "Evolution",
         "ContractVersion",
         "MotoGPAdmin",
@@ -154,10 +196,11 @@
       "e2e-contractor": [
         "CommonFee",
         "CommonNFT",
-        "LicensedNFT",
-        "NFTStorefront",
-        "NonFungibleToken",
         "CommonOrder",
+        "LicensedNFT",
+        "NonFungibleToken",
+        "FUSD",
+        "NFTStorefront",
         "Evolution",
         "ContractVersion",
         "MotoGPAdmin",

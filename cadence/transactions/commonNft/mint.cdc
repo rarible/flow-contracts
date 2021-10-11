@@ -1,4 +1,4 @@
-import NonFungibleToken from "../../contracts/NonFungibleToken.cdc"
+import NonFungibleToken from "../../contracts/core/NonFungibleToken.cdc"
 import CommonNFT from "../../contracts/CommonNFT.cdc"
 
 // Mint CommonNFT token to signer acct

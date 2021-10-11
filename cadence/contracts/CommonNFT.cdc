@@ -1,8 +1,8 @@
-import NonFungibleToken from "NonFungibleToken.cdc"
+import NonFungibleToken from "core/NonFungibleToken.cdc"
 import LicensedNFT from "LicensedNFT.cdc"
 
- // CommonNFT token contract
- //
+// CommonNFT token contract
+//
 pub contract CommonNFT : NonFungibleToken, LicensedNFT {
 
     pub var totalSupply: UInt64
