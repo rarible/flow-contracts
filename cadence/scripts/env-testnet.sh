@@ -4,14 +4,14 @@ flow_wrap() {
 }
 
 FLOW="flow_wrap -n testnet"
-TX="$FLOW transactions send --signer"
-TXS="$FLOW transactions send --signer service"
+TX="$FLOW transactions send --gas-limit 9999 --signer"
+TXS="$TX service"
 SC="$FLOW scripts execute"
 
-SERVICE=0x88e19f27ab4cd225
-ALICE=0x6c8626fabab6d2fa
-BOB=0x7ad243c923b2d89b
-EVE=0x9eb5fa143248d844
+SERVICE=0x01658d9b94068f3c
+ALICE=0xf35651751cf88582
+BOB=0xf87c63ecd07dfbab
+EVE=0x0a4fbf025883f115
 
 service=service
 alice=alice

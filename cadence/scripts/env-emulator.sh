@@ -4,7 +4,7 @@ flow_wrap() {
 }
 
 FLOW=flow_wrap
-TX="$FLOW transactions send --gas-limit 10000 --signer"
+TX="$FLOW transactions send --gas-limit 9999 --signer"
 TXS="$TX emulator-account"
 SC="$FLOW scripts execute"
 
