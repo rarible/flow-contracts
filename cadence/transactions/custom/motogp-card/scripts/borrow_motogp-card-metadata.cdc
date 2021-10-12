@@ -8,4 +8,3 @@ pub fun main(address: Address, tokenId: UInt64): MotoGPCardMetadata.Metadata? {
     let ref = collection.borrowCard(id: tokenId)!
     return ref.getCardMetadata()
 }
-

@@ -17,3 +17,5 @@ service=service
 alice=alice
 bob=bob
 eve=eve
+
+CONTRACT=01658d9b94068f3c

@@ -7,10 +7,10 @@ pub contract CommonFee {
     pub event SellerFeeChanged(value: UFix64)
     pub event BuyerFeeChanged(value: UFix64)
 
-    // Seller fee in %
+    // Seller fee [0..1)
     pub var sellerFee: UFix64
 
-    // BuyerFee fee in %
+    // BuyerFee fee [0..1)
     pub var buyerFee: UFix64
 
     pub resource Manager {
@@ -26,9 +26,9 @@ pub contract CommonFee {
     }
 
     init() {
-        self.sellerFee = 2.5
+        self.sellerFee = 0.025
         emit SellerFeeChanged(value: CommonFee.sellerFee)
-        self.buyerFee = 2.5
+        self.buyerFee = 0.025
         emit BuyerFeeChanged(value: CommonFee.buyerFee)
 
         self.commonFeeManagerStoragePath = /storage/commonFeeManager
