@@ -32,7 +32,7 @@ transaction(tokenId: UInt64, price: UFix64) {
 
     execute {
         let topshotFeeAddress = CommonFee.feeAddress() // TODO Replace with TopShot fee address
-        let topshotFeeRate = 5.0
+        let topshotFeeRate = 0.05
 
         CommonOrder.addOrder(
             storefront: self.storefront,
