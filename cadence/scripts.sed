@@ -1,9 +1,0 @@
-s/0xFLOWFEES/"..\/..\/contracts\/FlowFees.cdc"/g
-s/0xFLOWTOKEN/"..\/..\/contracts\/FlowToken.cdc"/g
-s/0xFUNGIBLETOKEN/"..\/..\/contracts\/FungibleToken.cdc"/g
-s/0xNONFUNGIBLETOKEN/"..\/..\/contracts\/NonFungibleToken.cdc"/g
-s/0xFTPATHMAPPER/"..\/..\/contracts\/FtPathMapper.cdc"/g
-s/0xCOMMONFEE/"..\/..\/contracts\/CommonFee.cdc"/g
-s/0xNFTPLUS/"..\/..\/contracts\/NFTPlus.cdc"/g
-s/0xNFTSTOREFRONT/"..\/..\/contracts\/NFTStorefront.cdc"/g
-s/0xCOMMONNFT/"..\/..\/contracts\/CommonNFT.cdc"/g

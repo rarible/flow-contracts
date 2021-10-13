@@ -1,7 +1,7 @@
 import CommonFee from "CommonFee.cdc"
-import FungibleToken from "FungibleToken.cdc"
-import NFTStorefront from "NFTStorefront.cdc"
-import NonFungibleToken from "NonFungibleToken.cdc"
+import FungibleToken from "core/FungibleToken.cdc"
+import NFTStorefront from "core/NFTStorefront.cdc"
+import NonFungibleToken from "core/NonFungibleToken.cdc"
 
 // CommonOrder
 //
@@ -102,11 +102,12 @@ pub contract CommonOrder {
         let orderAddress = storefront.owner!.address
         let payments: [Payment] = []
         let saleCuts: [NFTStorefront.SaleCut] = []
-        var percentage = 100.0
+        var percentage = 1.0
         var offerPrice = 0.0
 
         let addPayment = fun (type: String, address: Address, rate: UFix64) {
-            let amount = price * rate / 100.0
+            assert(rate >= 0.0 && rate < 1.0, message: "Rate must be in range [0..1)")
+            let amount = price * rate
             let receiver = getAccount(address).getCapability<&{FungibleToken.Receiver}>(vaultPath)
             assert(receiver.borrow() != nil, message: "Missing or mis-typed fungible token receiver")
 
@@ -115,6 +116,7 @@ pub contract CommonOrder {
 
             offerPrice = offerPrice + amount
             percentage = percentage - (type == CommonOrder.BUYER_FEE ? 0.0 : rate)
+            assert(rate >= 0.0 && rate < 1.0, message: "Sum of payouts must be in range [0..1)")
         }
 
         addPayment(CommonOrder.BUYER_FEE, CommonFee.feeAddress(), CommonFee.buyerFee)

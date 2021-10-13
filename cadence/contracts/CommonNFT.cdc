@@ -1,8 +1,8 @@
-import NonFungibleToken from "NonFungibleToken.cdc"
+import NonFungibleToken from "core/NonFungibleToken.cdc"
 import LicensedNFT from "LicensedNFT.cdc"
 
- // CommonNFT token contract
- //
+// CommonNFT token contract
+//
 pub contract CommonNFT : NonFungibleToken, LicensedNFT {
 
     pub var totalSupply: UInt64
@@ -16,7 +16,7 @@ pub contract CommonNFT : NonFungibleToken, LicensedNFT {
     pub event Withdraw(id: UInt64, from: Address?)
     pub event Deposit(id: UInt64, to: Address?)
 
-    pub event Mint(id: UInt64, creator: Address, metadata: String, royalties: [LicensedNFT.Royalty])
+    pub event Mint(id: UInt64, creator: Address, metadata: {String:String}, royalties: [LicensedNFT.Royalty])
     pub event Destroy(id: UInt64)
 
     pub struct Royalty {
@@ -32,14 +32,18 @@ pub contract CommonNFT : NonFungibleToken, LicensedNFT {
     pub resource NFT: NonFungibleToken.INFT {
         pub let id: UInt64
         pub let creator: Address
-        pub let metadata: String
+        access(self) let metadata: {String:String}
         access(self) let royalties: [LicensedNFT.Royalty]
 
-        init(id: UInt64, creator: Address, metadata: String, royalties: [LicensedNFT.Royalty]) {
+        init(id: UInt64, creator: Address, metadata: {String:String}, royalties: [LicensedNFT.Royalty]) {
             self.id = id
             self.creator = creator
             self.metadata = metadata
             self.royalties = royalties
+        }
+
+        pub fun getMetadata(): {String:String} {
+            return self.metadata
         }
 
         pub fun getRoyalties(): [LicensedNFT.Royalty] {
@@ -80,6 +84,11 @@ pub contract CommonNFT : NonFungibleToken, LicensedNFT {
             return &self.ownedNFTs[id] as &NonFungibleToken.NFT
         }
 
+        pub fun getMetadata(id: UInt64): {String:String} {
+            let ref = &self.ownedNFTs[id] as auth &NonFungibleToken.NFT
+            return (ref as! &CommonNFT.NFT).getMetadata()
+        }
+
         pub fun getRoyalties(id: UInt64): [LicensedNFT.Royalty] {
             let ref = &self.ownedNFTs[id] as auth &NonFungibleToken.NFT
             return (ref as! &LicensedNFT.NFT).getRoyalties()
@@ -95,7 +104,7 @@ pub contract CommonNFT : NonFungibleToken, LicensedNFT {
     }
 
     pub resource Minter {
-        pub fun mintTo(creator: Capability<&{NonFungibleToken.Receiver}>, metadata: String, royalties: [LicensedNFT.Royalty]): &NonFungibleToken.NFT {
+        pub fun mintTo(creator: Capability<&{NonFungibleToken.Receiver}>, metadata: {String:String}, royalties: [LicensedNFT.Royalty]): &NonFungibleToken.NFT {
             let token <- create NFT(
                 id: CommonNFT.totalSupply,
                 creator: creator.address,

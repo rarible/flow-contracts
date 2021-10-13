@@ -1,4 +1,4 @@
-import NonFungibleToken from "../../contracts/NonFungibleToken.cdc"
+import NonFungibleToken from "../../contracts/core/NonFungibleToken.cdc"
 import CommonNFT from "../../contracts/CommonNFT.cdc"
 
 // transfer CommonNFT token with tokenId to given address

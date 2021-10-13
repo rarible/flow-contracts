@@ -1,4 +1,4 @@
-import NonFungibleToken from "../../contracts/NonFungibleToken.cdc"
+import NonFungibleToken from "../../contracts/core/NonFungibleToken.cdc"
 import CommonNFT from "../../contracts/CommonNFT.cdc"
 
 // Burn CommonNFT on signer account by tokenId
