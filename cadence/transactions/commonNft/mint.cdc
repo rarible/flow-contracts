@@ -20,6 +20,6 @@ transaction(metadata: String, royalties: [CommonNFT.Royalty]) {
 
     execute {
         let minter = self.minter.borrow() ?? panic("Could not borrow receiver capability (maybe receiver not configured?)")
-        minter.mintTo(creator: self.receiver, metadata: metadata, royalties: royalties)
+        minter.mintTo(creator: self.receiver, metadata: {"metaURI": metadata}, royalties: royalties)
     }
 }

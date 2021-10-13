@@ -106,7 +106,7 @@ pub contract CommonOrder {
         var offerPrice = 0.0
 
         let addPayment = fun (type: String, address: Address, rate: UFix64) {
-            assert(rate >= 0 && rate < 1.0, message: "Rate must be in range [0..1)")
+            assert(rate >= 0.0 && rate < 1.0, message: "Rate must be in range [0..1)")
             let amount = price * rate
             let receiver = getAccount(address).getCapability<&{FungibleToken.Receiver}>(vaultPath)
             assert(receiver.borrow() != nil, message: "Missing or mis-typed fungible token receiver")
@@ -116,7 +116,7 @@ pub contract CommonOrder {
 
             offerPrice = offerPrice + amount
             percentage = percentage - (type == CommonOrder.BUYER_FEE ? 0.0 : rate)
-            assert(rate >= 0 && rate < 1.0, message: "Sum of payouts must be in range [0..1)")
+            assert(rate >= 0.0 && rate < 1.0, message: "Sum of payouts must be in range [0..1)")
         }
 
         addPayment(CommonOrder.BUYER_FEE, CommonFee.feeAddress(), CommonFee.buyerFee)
