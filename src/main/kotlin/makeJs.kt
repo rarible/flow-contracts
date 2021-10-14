@@ -17,7 +17,7 @@ private fun fileToJs(file: File) =
     makeJsElement(file.nameWithoutExtension, aliasedImports(file.readText()))
 
 private fun makeJsElement(name: String, source: String) =
-    "    $name: `\n${source.trim()}\n    `,\n"
+    "\t$name: `\n${source.trim()}\n`,\n"
 
 fun makeJsModule(moduleName: String, fileList: List<File>) =
     "export const $moduleName = {\n${fileList.joinToString("", transform = ::fileToJs)}\n}\n".trim()
@@ -59,8 +59,8 @@ fun main() {
 
     // CommonNFT module
     val commonNftRoot = File("cadence/transactions/common-nft")
-    with(File("build", "common-nft.ts")) {
-        writeText(makeJsModule("CommonNft", listOf(
+    with(File("build", "common-nft-sources.ts")) {
+        writeText(makeJsModule("CommonNftSources", listOf(
             File(commonNftRoot, "scripts/borrow_nft.cdc"),
             File(commonNftRoot, "scripts/check.cdc"),
             File(commonNftRoot, "scripts/get_ids.cdc"),
