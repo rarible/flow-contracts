@@ -1,47 +1,53 @@
-import FungibleToken from "../../../contracts/core/FungibleToken.cdc"
-import NonFungibleToken from "../../../contracts/core/NonFungibleToken.cdc"
-import FUSD from "../../../contracts/core/FUSD.cdc"
 import MotoGPCard from "../../../contracts/third-party/MotoGPCard.cdc"
+import CommonOrder from "../../../contracts/CommonOrder.cdc"
+import FUSD from "../../../contracts/core/FUSD.cdc"
+import FungibleToken from "../../../contracts/core/FungibleToken.cdc"
 import NFTStorefront from "../../../contracts/core/NFTStorefront.cdc"
+import NonFungibleToken from "../../../contracts/core/NonFungibleToken.cdc"
 
-transaction(orderId: UInt64, storefrontAddress: Address) {
-    let paymentVault: @FungibleToken.Vault
-    let motoGpCardCollection: &{MotoGPCard.ICardCollectionPublic}
-    let storefront: &NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}
+transaction (orderId: UInt64, storefrontAddress: Address) {
     let listing: &NFTStorefront.Listing{NFTStorefront.ListingPublic}
+    let paymentVault: @FungibleToken.Vault
+    let storefront: &NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}
+    let tokenReceiver: &{MotoGPCard.ICardCollectionPublic}
+    let buyerAddress: Address
 
     prepare(acct: AuthAccount) {
         self.storefront = getAccount(storefrontAddress)
-            .getCapability<&NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}>(
-                NFTStorefront.StorefrontPublicPath
-            )!
-            .borrow()
+            .getCapability(NFTStorefront.StorefrontPublicPath)!
+            .borrow<&NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}>()
             ?? panic("Could not borrow Storefront from provided address")
 
         self.listing = self.storefront.borrowListing(listingResourceID: orderId)
                     ?? panic("No Offer with that ID in Storefront")
         let price = self.listing.getDetails().salePrice
 
-        let mainFlowVault = acct.borrow<&FUSD.Vault>(from: /storage/fusdVault)
+        let mainVault = acct.borrow<&FUSD.Vault>(from: /storage/fusdVault)
             ?? panic("Cannot borrow FUSD vault from acct storage")
-        self.paymentVault <- mainFlowVault.withdraw(amount: price)
+        self.paymentVault <- mainVault.withdraw(amount: price)
 
         if acct.borrow<&MotoGPCard.Collection>(from: /storage/motogpCardCollection) == nil {
-            let cardCollection <- MotoGPCard.createEmptyCollection()
-            acct.save(<-cardCollection, to: /storage/motogpCardCollection)
+            let collection <- MotoGPCard.createEmptyCollection()
+            acct.save(<-collection, to: /storage/motogpCardCollection)
             acct.link<&MotoGPCard.Collection{MotoGPCard.ICardCollectionPublic}>(/public/motogpCardCollection, target: /storage/motogpCardCollection)
         }
 
-        self.motoGpCardCollection = acct.getCapability<&{MotoGPCard.ICardCollectionPublic}>(/public/motogpCardCollection).borrow()
+        self.tokenReceiver = acct.getCapability(/public/motogpCardCollection)
+            .borrow<&{MotoGPCard.ICardCollectionPublic}>()
             ?? panic("Cannot borrow NFT collection receiver from account")
+
+        self.buyerAddress = acct.address
     }
 
     execute {
-        let item <- self.listing.purchase(
-            payment: <-self.paymentVault
+        let item <- CommonOrder.closeOrder(
+            storefront: self.storefront,
+            orderId: orderId,
+            orderAddress: storefrontAddress,
+            listing: self.listing,
+            paymentVault: <- self.paymentVault,
+            buyerAddress: self.buyerAddress
         )
-
-        self.motoGpCardCollection.deposit(token: <-item)
-        self.storefront.cleanup(listingResourceID: orderId)
+        self.tokenReceiver.deposit(token: <-item)
     }
 }

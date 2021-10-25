@@ -1,33 +1,33 @@
-import FungibleToken from "../../../contracts/core/FungibleToken.cdc"
-import NonFungibleToken from "../../../contracts/core/NonFungibleToken.cdc"
-import FUSD from "../../../contracts/core/FUSD.cdc"
 import TopShot from "../../../contracts/third-party/TopShot.cdc"
+import CommonOrder from "../../../contracts/CommonOrder.cdc"
+import FUSD from "../../../contracts/core/FUSD.cdc"
+import FungibleToken from "../../../contracts/core/FungibleToken.cdc"
 import NFTStorefront from "../../../contracts/core/NFTStorefront.cdc"
+import NonFungibleToken from "../../../contracts/core/NonFungibleToken.cdc"
 
-transaction(listingResourceID: UInt64, storefrontAddress: Address) {
-    let paymentVault: @FungibleToken.Vault
-    let collection: &{TopShot.MomentCollectionPublic}
-    let storefront: &NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}
+transaction (orderId: UInt64, storefrontAddress: Address) {
     let listing: &NFTStorefront.Listing{NFTStorefront.ListingPublic}
+    let paymentVault: @FungibleToken.Vault
+    let storefront: &NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}
+    let tokenReceiver: &{TopShot.MomentCollectionPublic}
+    let buyerAddress: Address
 
     prepare(acct: AuthAccount) {
         let collectionPublicPath = /public/MomentCollection
         let collectionStoragePath = /storage/MomentCollection
 
         self.storefront = getAccount(storefrontAddress)
-            .getCapability<&NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}>(
-                NFTStorefront.StorefrontPublicPath
-            )!
-            .borrow()
+            .getCapability(NFTStorefront.StorefrontPublicPath)!
+            .borrow<&NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}>()
             ?? panic("Could not borrow Storefront from provided address")
 
-        self.listing = self.storefront.borrowListing(listingResourceID: listingResourceID)
+        self.listing = self.storefront.borrowListing(listingResourceID: orderId)
                     ?? panic("No Offer with that ID in Storefront")
         let price = self.listing.getDetails().salePrice
 
-        let mainFlowVault = acct.borrow<&FUSD.Vault>(from: /storage/fusdVault)
+        let mainVault = acct.borrow<&FUSD.Vault>(from: /storage/fusdVault)
             ?? panic("Cannot borrow FUSD vault from acct storage")
-        self.paymentVault <- mainFlowVault.withdraw(amount: price)
+        self.paymentVault <- mainVault.withdraw(amount: price)
 
         if acct.borrow<&TopShot.Collection>(from: collectionStoragePath) == nil {
             let collection <- TopShot.createEmptyCollection() as! @TopShot.Collection
@@ -35,13 +35,22 @@ transaction(listingResourceID: UInt64, storefrontAddress: Address) {
             acct.link<&{TopShot.MomentCollectionPublic}>(collectionPublicPath, target: collectionStoragePath)
         }
 
-        self.collection = acct.getCapability<&{TopShot.MomentCollectionPublic}>(collectionPublicPath).borrow()
+        self.tokenReceiver = acct.getCapability(collectionPublicPath)
+            .borrow<&{TopShot.MomentCollectionPublic}>()
             ?? panic("Cannot borrow NFT collection receiver from account")
+
+        self.buyerAddress = acct.address
     }
 
     execute {
-        let item <- self.listing.purchase(payment: <-self.paymentVault)
-        self.collection.deposit(token: <-item)
-        self.storefront.cleanup(listingResourceID: listingResourceID)
+        let item <- CommonOrder.closeOrder(
+            storefront: self.storefront,
+            orderId: orderId,
+            orderAddress: storefrontAddress,
+            listing: self.listing,
+            paymentVault: <- self.paymentVault,
+            buyerAddress: self.buyerAddress
+        )
+        self.tokenReceiver.deposit(token: <-item)
     }
 }
