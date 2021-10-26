@@ -1,30 +1,30 @@
-import FungibleToken from "../../../contracts/core/FungibleToken.cdc"
-import NonFungibleToken from "../../../contracts/core/NonFungibleToken.cdc"
-import FlowToken from "../../../contracts/core/FlowToken.cdc"
 import Evolution from "../../../contracts/third-party/Evolution.cdc"
+import CommonOrder from "../../../contracts/CommonOrder.cdc"
+import FlowToken from "../../../contracts/core/FlowToken.cdc"
+import FungibleToken from "../../../contracts/core/FungibleToken.cdc"
 import NFTStorefront from "../../../contracts/core/NFTStorefront.cdc"
+import NonFungibleToken from "../../../contracts/core/NonFungibleToken.cdc"
 
-transaction(listingResourceID: UInt64, storefrontAddress: Address) {
-    let paymentVault: @FungibleToken.Vault
-    let collection: &{Evolution.EvolutionCollectionPublic}
-    let storefront: &NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}
+transaction (orderId: UInt64, storefrontAddress: Address) {
     let listing: &NFTStorefront.Listing{NFTStorefront.ListingPublic}
+    let paymentVault: @FungibleToken.Vault
+    let storefront: &NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}
+    let tokenReceiver: &{Evolution.EvolutionCollectionPublic}
+    let buyerAddress: Address
 
     prepare(acct: AuthAccount) {
         self.storefront = getAccount(storefrontAddress)
-            .getCapability<&NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}>(
-                NFTStorefront.StorefrontPublicPath
-            )!
-            .borrow()
+            .getCapability(NFTStorefront.StorefrontPublicPath)!
+            .borrow<&NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}>()
             ?? panic("Could not borrow Storefront from provided address")
 
-        self.listing = self.storefront.borrowListing(listingResourceID: listingResourceID)
+        self.listing = self.storefront.borrowListing(listingResourceID: orderId)
                     ?? panic("No Offer with that ID in Storefront")
         let price = self.listing.getDetails().salePrice
 
-        let mainFlowVault = acct.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)
+        let mainVault = acct.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)
             ?? panic("Cannot borrow FlowToken vault from acct storage")
-        self.paymentVault <- mainFlowVault.withdraw(amount: price)
+        self.paymentVault <- mainVault.withdraw(amount: price)
 
         if acct.borrow<&Evolution.Collection>(from: /storage/f4264ac8f3256818_Evolution_Collection) == nil {
             let collection <- Evolution.createEmptyCollection() as! @Evolution.Collection
@@ -32,13 +32,22 @@ transaction(listingResourceID: UInt64, storefrontAddress: Address) {
             acct.link<&{Evolution.EvolutionCollectionPublic}>(/public/f4264ac8f3256818_Evolution_Collection, target: /storage/f4264ac8f3256818_Evolution_Collection)
         }
 
-        self.collection = acct.getCapability<&{Evolution.EvolutionCollectionPublic}>(/public/f4264ac8f3256818_Evolution_Collection).borrow()
+        self.tokenReceiver = acct.getCapability(/public/f4264ac8f3256818_Evolution_Collection)
+            .borrow<&{Evolution.EvolutionCollectionPublic}>()
             ?? panic("Cannot borrow NFT collection receiver from account")
+
+        self.buyerAddress = acct.address
     }
 
     execute {
-        let item <- self.listing.purchase(payment: <-self.paymentVault)
-        self.collection.deposit(token: <-item)
-        self.storefront.cleanup(listingResourceID: listingResourceID)
+        let item <- CommonOrder.closeOrder(
+            storefront: self.storefront,
+            orderId: orderId,
+            orderAddress: storefrontAddress,
+            listing: self.listing,
+            paymentVault: <- self.paymentVault,
+            buyerAddress: self.buyerAddress
+        )
+        self.tokenReceiver.deposit(token: <-item)
     }
 }

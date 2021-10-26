@@ -77,12 +77,33 @@ pub contract CommonOrder {
     pub event OrderAvailable(
         orderAddress: Address,
         orderId: UInt64,
-        nftType: Type,
+        nftType: String,
         nftId: UInt64,
-        vaultType: Type,
+        vaultType: String,
         price: UFix64, // sum of payment parts
         offerPrice: UFix64, // base for calculate rates
         payments: [Payment]
+    )
+
+    pub event OrderClosed(
+        orderAddress: Address,
+        orderId: UInt64,
+        nftType: String,
+        nftId: UInt64,
+        vaultType: String,
+        price: UFix64,
+        buyerAddress: Address,
+        cuts: [PaymentPart]
+    )
+
+    pub event OrderCancelled(
+        orderAddress: Address,
+        orderId: UInt64,
+        nftType: String,
+        nftId: UInt64,
+        vaultType: String,
+        price: UFix64,
+        cuts: [PaymentPart]
     )
 
     // addOrder
@@ -143,14 +164,75 @@ pub contract CommonOrder {
         emit OrderAvailable(
             orderAddress: orderAddress,
             orderId: orderId,
-            nftType: nftType,
+            nftType: nftType.identifier,
             nftId: nftId,
-            vaultType: vaultType,
+            vaultType: vaultType.identifier,
             price: price,
-            offerPrice: price,
+            offerPrice: offerPrice,
             payments: payments
         )
 
         return orderId
+    }
+
+    // closeOrder
+    // Purchase nft by o
+    //
+    pub fun closeOrder(
+        storefront: &NFTStorefront.Storefront{NFTStorefront.StorefrontPublic},
+        orderId: UInt64,
+        orderAddress: Address,
+        listing: &NFTStorefront.Listing{NFTStorefront.ListingPublic},
+        paymentVault: @FungibleToken.Vault,
+        buyerAddress: Address
+    ): @NonFungibleToken.NFT {
+        let details = listing.getDetails()
+        let cuts: [PaymentPart] = []
+        for saleCut in details.saleCuts {
+            cuts.append(PaymentPart(address: saleCut.receiver.address, rate: saleCut.amount))
+        }
+
+        emit OrderClosed(
+            orderAddress: orderAddress,
+            orderId: orderId,
+            nftType: details.nftType.identifier,
+            nftId: details.nftID,
+            vaultType: details.salePaymentVaultType.identifier,
+            price: details.salePrice,
+            buyerAddress: buyerAddress,
+            cuts: cuts
+        )
+
+        let item <- listing.purchase(payment: <-paymentVault)
+        storefront.cleanup(listingResourceID: orderId)
+        return <- item
+    }
+
+    // removeOrder
+    // Cancel sale, dismiss order
+    //
+    pub fun removeOrder(
+        storefront: &NFTStorefront.Storefront,
+        orderId: UInt64,
+        orderAddress: Address,
+        listing: &NFTStorefront.Listing{NFTStorefront.ListingPublic},
+    ) {
+        let details = listing.getDetails()
+        let cuts: [PaymentPart] = []
+        for saleCut in details.saleCuts {
+            cuts.append(PaymentPart(address: saleCut.receiver.address, rate: saleCut.amount))
+        }
+
+        emit OrderCancelled(
+            orderAddress: orderAddress,
+            orderId: orderId,
+            nftType: details.nftType.identifier,
+            nftId: details.nftID,
+            vaultType: details.salePaymentVaultType.identifier,
+            price: details.salePrice,
+            cuts: cuts
+        )
+
+        storefront.removeListing(listingResourceID: orderId)
     }
 }
