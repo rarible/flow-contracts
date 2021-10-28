@@ -1,3 +1,4 @@
+
 import CommonNFT from "../../../contracts/CommonNFT.cdc"
 import CommonOrder from "../../../contracts/CommonOrder.cdc"
 import FUSD from "../../../contracts/core/FUSD.cdc"
@@ -5,11 +6,13 @@ import FungibleToken from "../../../contracts/core/FungibleToken.cdc"
 import NFTStorefront from "../../../contracts/core/NFTStorefront.cdc"
 import NonFungibleToken from "../../../contracts/core/NonFungibleToken.cdc"
 
+// Buy CommonNFT token for FUSD with NFTStorefront
+//
 transaction (orderId: UInt64, storefrontAddress: Address) {
     let listing: &NFTStorefront.Listing{NFTStorefront.ListingPublic}
     let paymentVault: @FungibleToken.Vault
     let storefront: &NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}
-    let tokenReceiver: &{NonFungibleToken.Receiver}
+    let tokenReceiver: &{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}
     let buyerAddress: Address
 
     prepare(acct: AuthAccount) {
@@ -28,12 +31,12 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
 
         if acct.borrow<&CommonNFT.Collection>(from: CommonNFT.collectionStoragePath) == nil {
             let collection <- CommonNFT.createEmptyCollection() as! @CommonNFT.Collection
-            acct.save(<- collection, to: CommonNFT.collectionStoragePath)
+            acct.save(<-collection, to: CommonNFT.collectionStoragePath)
             acct.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath, target: CommonNFT.collectionStoragePath)
         }
 
         self.tokenReceiver = acct.getCapability(CommonNFT.collectionPublicPath)
-            .borrow<&{NonFungibleToken.Receiver}>()
+            .borrow<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>()
             ?? panic("Cannot borrow NFT collection receiver from acct")
 
         self.buyerAddress = acct.address
@@ -51,3 +54,4 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
         self.tokenReceiver.deposit(token: <-item)
     }
 }
+    

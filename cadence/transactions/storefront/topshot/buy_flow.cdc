@@ -1,3 +1,4 @@
+
 import TopShot from "../../../contracts/third-party/TopShot.cdc"
 import CommonOrder from "../../../contracts/CommonOrder.cdc"
 import FlowToken from "../../../contracts/core/FlowToken.cdc"
@@ -5,6 +6,8 @@ import FungibleToken from "../../../contracts/core/FungibleToken.cdc"
 import NFTStorefront from "../../../contracts/core/NFTStorefront.cdc"
 import NonFungibleToken from "../../../contracts/core/NonFungibleToken.cdc"
 
+// Buy TopShot token for FlowToken with NFTStorefront
+//
 transaction (orderId: UInt64, storefrontAddress: Address) {
     let listing: &NFTStorefront.Listing{NFTStorefront.ListingPublic}
     let paymentVault: @FungibleToken.Vault
@@ -13,9 +16,6 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
     let buyerAddress: Address
 
     prepare(acct: AuthAccount) {
-        let collectionPublicPath = /public/MomentCollection
-        let collectionStoragePath = /storage/MomentCollection
-
         self.storefront = getAccount(storefrontAddress)
             .getCapability(NFTStorefront.StorefrontPublicPath)!
             .borrow<&NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}>()
@@ -29,15 +29,15 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
             ?? panic("Cannot borrow FlowToken vault from acct storage")
         self.paymentVault <- mainVault.withdraw(amount: price)
 
-        if acct.borrow<&TopShot.Collection>(from: collectionStoragePath) == nil {
+        if acct.borrow<&TopShot.Collection>(from: /storage/MomentCollection) == nil {
             let collection <- TopShot.createEmptyCollection() as! @TopShot.Collection
-            acct.save(<-collection, to: collectionStoragePath)
-            acct.link<&{TopShot.MomentCollectionPublic}>(collectionPublicPath, target: collectionStoragePath)
+            acct.save(<-collection, to: /storage/MomentCollection)
+            acct.link<&{TopShot.MomentCollectionPublic}>(/public/MomentCollection, target: /storage/MomentCollection)
         }
 
-        self.tokenReceiver = acct.getCapability(collectionPublicPath)
+        self.tokenReceiver = acct.getCapability(/public/MomentCollection)
             .borrow<&{TopShot.MomentCollectionPublic}>()
-            ?? panic("Cannot borrow NFT collection receiver from account")
+            ?? panic("Cannot borrow NFT collection receiver from acct")
 
         self.buyerAddress = acct.address
     }
@@ -54,3 +54,4 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
         self.tokenReceiver.deposit(token: <-item)
     }
 }
+    

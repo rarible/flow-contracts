@@ -1,22 +1,24 @@
+import MotoGPCard from "../../../contracts/third-party/MotoGPCard.cdc"
+import CommonOrder from "../../../contracts/CommonOrder.cdc"
+import FUSD from "../../../contracts/core/FUSD.cdc"
 import FungibleToken from "../../../contracts/core/FungibleToken.cdc"
 import NonFungibleToken from "../../../contracts/core/NonFungibleToken.cdc"
-import FUSD from "../../../contracts/core/FUSD.cdc"
 import NFTStorefront from "../../../contracts/core/NFTStorefront.cdc"
-import CommonOrder from "../../../contracts/CommonOrder.cdc"
-import MotoGPCard from "../../../contracts/third-party/MotoGPCard.cdc"
 
+// Sell MotoGPCard token for FUSD with NFTStorefront
+//
 transaction(tokenId: UInt64, price: UFix64) {
     let nftProvider: Capability<&MotoGPCard.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>
     let storefront: &NFTStorefront.Storefront
 
     prepare(acct: AuthAccount) {
-        let nftProviderPath = /private/motoGpCardCollectionProviderForNFTStorefront
+        let nftProviderPath = /private/MotoGPCardProviderForNFTStorefront
         if !acct.getCapability<&MotoGPCard.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath)!.check() {
             acct.link<&MotoGPCard.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath, target: /storage/motogpCardCollection)
         }
 
         self.nftProvider = acct.getCapability<&MotoGPCard.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath)!
-        assert(self.nftProvider.borrow() != nil, message: "Missing or mis-typed MotoGPCard.Collection provider")
+        assert(self.nftProvider.borrow() != nil, message: "Missing or mis-typed nft collection provider")
 
         if acct.borrow<&NFTStorefront.Storefront>(from: NFTStorefront.StorefrontStoragePath) == nil {
             let storefront <- NFTStorefront.createStorefront() as! @NFTStorefront.Storefront
@@ -28,6 +30,10 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 
     execute {
+        let royalties: [CommonOrder.PaymentPart] = []
+        let extraCuts: [CommonOrder.PaymentPart] = []
+        
+        
         CommonOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
@@ -36,8 +42,8 @@ transaction(tokenId: UInt64, price: UFix64) {
             vaultPath: /public/fusdReceiver,
             vaultType: Type<@FUSD.Vault>(),
             price: price,
-            extraCuts: [],
-            royalties: []
+            extraCuts: extraCuts,
+            royalties: royalties
         )
     }
 }
