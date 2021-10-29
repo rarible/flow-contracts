@@ -1,10 +1,10 @@
 import NonFungibleToken from "../../../../contracts/core/NonFungibleToken.cdc"
-import CommonNFT from "../../../../contracts/CommonNFT.cdc"
+import RaribleNFT from "../../../../contracts/RaribleNFT.cdc"
 
-// check CommonNFT collection is available on given address
+// check RaribleNFT collection is available on given address
 //
 pub fun main(address: Address): Bool {
     return getAccount(address)
-        .getCapability<&{NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath)
+        .getCapability<&{NonFungibleToken.Receiver}>(RaribleNFT.collectionPublicPath)
         .check()
 }

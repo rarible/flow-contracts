@@ -1,11 +1,11 @@
 import NonFungibleToken from "../../contracts/core/NonFungibleToken.cdc"
-import CommonNFT from "../../contracts/CommonNFT.cdc"
+import RaribleNFT from "../../contracts/RaribleNFT.cdc"
 import Evolution from "../../contracts/third-party/Evolution.cdc"
 import MotoGPCard from "../../contracts/third-party/MotoGPCard.cdc"
 import TopShot from "../../contracts/third-party/TopShot.cdc"
 
-pub fun idsCommonNFT(_ account: PublicAccount): [UInt64] {
-    return account.getCapability(CommonNFT.collectionPublicPath)
+pub fun idsRaribleNFT(_ account: PublicAccount): [UInt64] {
+    return account.getCapability(RaribleNFT.collectionPublicPath)
         .borrow<&{NonFungibleToken.CollectionPublic}>()
         ?.getIDs() ?? []
 }
@@ -32,7 +32,7 @@ pub fun main(address: Address): {String: [UInt64]} {
     let account = getAccount(address)
     let results : {String: [UInt64]} = {}
 
-    results["CommonNFT"] = idsCommonNFT(account)
+    results["RaribleNFT"] = idsRaribleNFT(account)
     results["Evolution"] = idsEvolution(account)
     results["MotoGPCard"] = idsMotoGpCard(account)
     results["TopShot"] = idsTopShot(account)

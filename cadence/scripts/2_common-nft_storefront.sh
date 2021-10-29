@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 . env.sh
 
-echo "********** CommonNFT **********"
+echo "********** RaribleNFT **********"
 
 $TX $alice transactions/storefront/common-nft/sell_flow.cdc 2 1.0
 $TX $bob transactions/storefront/common-nft/buy_flow.cdc 100 $ALICE

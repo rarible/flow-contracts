@@ -1,5 +1,5 @@
 import MotoGPCard from "../../../contracts/third-party/MotoGPCard.cdc"
-import CommonOrder from "../../../contracts/CommonOrder.cdc"
+import RaribleOrder from "../../../contracts/RaribleOrder.cdc"
 import FlowToken from "../../../contracts/core/FlowToken.cdc"
 import FungibleToken from "../../../contracts/core/FungibleToken.cdc"
 import NonFungibleToken from "../../../contracts/core/NonFungibleToken.cdc"
@@ -32,20 +32,20 @@ transaction(orderId: UInt64, price: UFix64) {
     }
 
     execute {
-        let royalties: [CommonOrder.PaymentPart] = []
-        let extraCuts: [CommonOrder.PaymentPart] = []
+        let royalties: [RaribleOrder.PaymentPart] = []
+        let extraCuts: [RaribleOrder.PaymentPart] = []
         let details = self.listing.getDetails() 
         let tokenId = details.nftID
         
         
-        CommonOrder.removeOrder(
+        RaribleOrder.removeOrder(
             storefront: self.storefront,
             orderId: orderId,
             orderAddress: self.orderAddress,
             listing: self.listing,
         )
 
-        CommonOrder.addOrder(
+        RaribleOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
             nftType: details.nftType,

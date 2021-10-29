@@ -1,8 +1,8 @@
-import CommonNFT from "../../../contracts/CommonNFT.cdc"
+import RaribleNFT from "../../../contracts/RaribleNFT.cdc"
 
 transaction {
     prepare(account: AuthAccount) {
-        account.unlink(CommonNFT.collectionPublicPath)
-        destroy <- account.load<@CommonNFT.Collection>(from: CommonNFT.collectionStoragePath)
+        account.unlink(RaribleNFT.collectionPublicPath)
+        destroy <- account.load<@RaribleNFT.Collection>(from: RaribleNFT.collectionStoragePath)
     }
 }

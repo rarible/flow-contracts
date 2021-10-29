@@ -1,12 +1,12 @@
 import NonFungibleToken from "../../../contracts/core/NonFungibleToken.cdc"
-import CommonNFT from "../../../contracts/CommonNFT.cdc"
+import RaribleNFT from "../../../contracts/RaribleNFT.cdc"
 
 transaction {
     prepare(account: AuthAccount) {
-        account.unlink(CommonNFT.minterPublicPath)
-        destroy <- account.load<@AnyResource>(from: CommonNFT.minterStoragePath)
+        account.unlink(RaribleNFT.minterPublicPath)
+        destroy <- account.load<@AnyResource>(from: RaribleNFT.minterStoragePath)
 
-        account.unlink(CommonNFT.collectionPublicPath)
-        destroy <- account.load<@AnyResource>(from: CommonNFT.collectionStoragePath)
+        account.unlink(RaribleNFT.collectionPublicPath)
+        destroy <- account.load<@AnyResource>(from: RaribleNFT.collectionStoragePath)
     }
 }

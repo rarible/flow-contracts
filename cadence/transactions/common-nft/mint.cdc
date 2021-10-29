@@ -1,21 +1,21 @@
 import NonFungibleToken from "../../contracts/core/NonFungibleToken.cdc"
-import CommonNFT from "../../contracts/CommonNFT.cdc"
+import RaribleNFT from "../../contracts/RaribleNFT.cdc"
 
-// Mint CommonNFT token to signer acct
+// Mint RaribleNFT token to signer acct
 //
-transaction(metadata: String, royalties: [CommonNFT.Royalty]) {
-    let minter: Capability<&CommonNFT.Minter>
+transaction(metadata: String, royalties: [RaribleNFT.Royalty]) {
+    let minter: Capability<&RaribleNFT.Minter>
     let receiver: Capability<&{NonFungibleToken.Receiver}>
 
     prepare(acct: AuthAccount) {
-        if acct.borrow<&CommonNFT.Collection>(from: CommonNFT.collectionStoragePath) == nil {
-            let collection <- CommonNFT.createEmptyCollection() as! @CommonNFT.Collection
-            acct.save(<- collection, to: CommonNFT.collectionStoragePath)
-            acct.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath, target: CommonNFT.collectionStoragePath)
+        if acct.borrow<&RaribleNFT.Collection>(from: RaribleNFT.collectionStoragePath) == nil {
+            let collection <- RaribleNFT.createEmptyCollection() as! @RaribleNFT.Collection
+            acct.save(<- collection, to: RaribleNFT.collectionStoragePath)
+            acct.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(RaribleNFT.collectionPublicPath, target: RaribleNFT.collectionStoragePath)
         }
 
-        self.minter = CommonNFT.minter()
-        self.receiver = acct.getCapability<&{NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath)
+        self.minter = RaribleNFT.minter()
+        self.receiver = acct.getCapability<&{NonFungibleToken.Receiver}>(RaribleNFT.collectionPublicPath)
     }
 
     execute {

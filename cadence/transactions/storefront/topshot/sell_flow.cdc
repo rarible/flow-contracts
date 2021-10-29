@@ -1,6 +1,6 @@
-import CommonFee from "../../../contracts/CommonFee.cdc"
+import RaribleFee from "../../../contracts/RaribleFee.cdc"
 import TopShot from "../../../contracts/third-party/TopShot.cdc"
-import CommonOrder from "../../../contracts/CommonOrder.cdc"
+import RaribleOrder from "../../../contracts/RaribleOrder.cdc"
 import FlowToken from "../../../contracts/core/FlowToken.cdc"
 import FungibleToken from "../../../contracts/core/FungibleToken.cdc"
 import NonFungibleToken from "../../../contracts/core/NonFungibleToken.cdc"
@@ -31,13 +31,13 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 
     execute {
-        let royalties: [CommonOrder.PaymentPart] = []
-        let extraCuts: [CommonOrder.PaymentPart] = []
+        let royalties: [RaribleOrder.PaymentPart] = []
+        let extraCuts: [RaribleOrder.PaymentPart] = []
         
         
-        extraCuts.append(CommonOrder.PaymentPart(address: CommonFee.feeAddress(), rate: 0.05))
+        extraCuts.append(RaribleOrder.PaymentPart(address: RaribleFee.feeAddress(), rate: 0.05))
         
-        CommonOrder.addOrder(
+        RaribleOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
             nftType: Type<@TopShot.NFT>(),

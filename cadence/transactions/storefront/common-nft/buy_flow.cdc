@@ -1,12 +1,12 @@
 
-import CommonNFT from "../../../contracts/CommonNFT.cdc"
-import CommonOrder from "../../../contracts/CommonOrder.cdc"
+import RaribleNFT from "../../../contracts/RaribleNFT.cdc"
+import RaribleOrder from "../../../contracts/RaribleOrder.cdc"
 import FlowToken from "../../../contracts/core/FlowToken.cdc"
 import FungibleToken from "../../../contracts/core/FungibleToken.cdc"
 import NFTStorefront from "../../../contracts/core/NFTStorefront.cdc"
 import NonFungibleToken from "../../../contracts/core/NonFungibleToken.cdc"
 
-// Buy CommonNFT token for FlowToken with NFTStorefront
+// Buy RaribleNFT token for FlowToken with NFTStorefront
 //
 transaction (orderId: UInt64, storefrontAddress: Address) {
     let listing: &NFTStorefront.Listing{NFTStorefront.ListingPublic}
@@ -29,13 +29,13 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
             ?? panic("Cannot borrow FlowToken vault from acct storage")
         self.paymentVault <- mainVault.withdraw(amount: price)
 
-        if acct.borrow<&CommonNFT.Collection>(from: CommonNFT.collectionStoragePath) == nil {
-            let collection <- CommonNFT.createEmptyCollection() as! @CommonNFT.Collection
-            acct.save(<-collection, to: CommonNFT.collectionStoragePath)
-            acct.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath, target: CommonNFT.collectionStoragePath)
+        if acct.borrow<&RaribleNFT.Collection>(from: RaribleNFT.collectionStoragePath) == nil {
+            let collection <- RaribleNFT.createEmptyCollection() as! @RaribleNFT.Collection
+            acct.save(<-collection, to: RaribleNFT.collectionStoragePath)
+            acct.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(RaribleNFT.collectionPublicPath, target: RaribleNFT.collectionStoragePath)
         }
 
-        self.tokenReceiver = acct.getCapability(CommonNFT.collectionPublicPath)
+        self.tokenReceiver = acct.getCapability(RaribleNFT.collectionPublicPath)
             .borrow<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>()
             ?? panic("Cannot borrow NFT collection receiver from acct")
 
@@ -43,7 +43,7 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
     }
 
     execute {
-        let item <- CommonOrder.closeOrder(
+        let item <- RaribleOrder.closeOrder(
             storefront: self.storefront,
             orderId: orderId,
             orderAddress: storefrontAddress,

@@ -7,9 +7,9 @@
   },
   "contracts": {
     "LicensedNFT": "contracts/LicensedNFT.cdc",
-    "CommonNFT": "contracts/CommonNFT.cdc",
-    "CommonFee": "contracts/CommonFee.cdc",
-    "CommonOrder": "contracts/CommonOrder.cdc",
+    "RaribleNFT": "contracts/RaribleNFT.cdc",
+    "RaribleFee": "contracts/RaribleFee.cdc",
+    "RaribleOrder": "contracts/RaribleOrder.cdc",
     "FungibleToken": {
       "source": "contracts/core/FungibleToken.cdc",
       "aliases": {
@@ -173,9 +173,9 @@
   "deployments": {
     "emulator": {
       "emulator-account": [
-        "CommonFee",
-        "CommonNFT",
-        "CommonOrder",
+        "RaribleFee",
+        "RaribleNFT",
+        "RaribleOrder",
         "LicensedNFT",
         "NonFungibleToken",
         "FUSD",
@@ -194,9 +194,9 @@
     },
     "e2e": {
       "e2e-contractor": [
-        "CommonFee",
-        "CommonNFT",
-        "CommonOrder",
+        "RaribleFee",
+        "RaribleNFT",
+        "RaribleOrder",
         "LicensedNFT",
         "NonFungibleToken",
         "FUSD",
@@ -215,10 +215,10 @@
     },
     "testnet": {
       "service": [
-        "CommonFee",
-        "CommonNFT",
+        "RaribleFee",
+        "RaribleNFT",
         "LicensedNFT",
-        "CommonOrder",
+        "RaribleOrder",
         "Evolution",
         "ContractVersion",
         "MotoGPAdmin",

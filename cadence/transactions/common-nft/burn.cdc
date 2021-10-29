@@ -1,11 +1,11 @@
 import NonFungibleToken from "../../contracts/core/NonFungibleToken.cdc"
-import CommonNFT from "../../contracts/CommonNFT.cdc"
+import RaribleNFT from "../../contracts/RaribleNFT.cdc"
 
-// Burn CommonNFT on signer account by tokenId
+// Burn RaribleNFT on signer account by tokenId
 //
 transaction(tokenId: UInt64) {
     prepare(account: AuthAccount) {
-        let collection = account.borrow<&CommonNFT.Collection>(from: CommonNFT.collectionStoragePath)!
+        let collection = account.borrow<&RaribleNFT.Collection>(from: RaribleNFT.collectionStoragePath)!
         destroy collection.withdraw(withdrawID: tokenId)
     }
 }

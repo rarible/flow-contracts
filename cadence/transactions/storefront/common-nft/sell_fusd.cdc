@@ -1,22 +1,22 @@
 import LicensedNFT from "../../../contracts/LicensedNFT.cdc"
 
-import CommonNFT from "../../../contracts/CommonNFT.cdc"
-import CommonOrder from "../../../contracts/CommonOrder.cdc"
+import RaribleNFT from "../../../contracts/RaribleNFT.cdc"
+import RaribleOrder from "../../../contracts/RaribleOrder.cdc"
 import FUSD from "../../../contracts/core/FUSD.cdc"
 import FungibleToken from "../../../contracts/core/FungibleToken.cdc"
 import NonFungibleToken from "../../../contracts/core/NonFungibleToken.cdc"
 import NFTStorefront from "../../../contracts/core/NFTStorefront.cdc"
 
-// Sell CommonNFT token for FUSD with NFTStorefront
+// Sell RaribleNFT token for FUSD with NFTStorefront
 //
 transaction(tokenId: UInt64, price: UFix64) {
     let nftProvider: Capability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>
     let storefront: &NFTStorefront.Storefront
 
     prepare(acct: AuthAccount) {
-        let nftProviderPath = /private/CommonNFTProviderForNFTStorefront
+        let nftProviderPath = /private/RaribleNFTProviderForNFTStorefront
         if !acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!.check() {
-            acct.link<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath, target: CommonNFT.collectionStoragePath)
+            acct.link<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath, target: RaribleNFT.collectionStoragePath)
         }
 
         self.nftProvider = acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!
@@ -32,18 +32,18 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 
     execute {
-        let royalties: [CommonOrder.PaymentPart] = []
-        let extraCuts: [CommonOrder.PaymentPart] = []
+        let royalties: [RaribleOrder.PaymentPart] = []
+        let extraCuts: [RaribleOrder.PaymentPart] = []
         
         for royalty in self.nftProvider.borrow()!.getRoyalties(id: tokenId) {
-            royalties.append(CommonOrder.PaymentPart(address: royalty.address, rate: royalty.fee))
+            royalties.append(RaribleOrder.PaymentPart(address: royalty.address, rate: royalty.fee))
         }
         
         
-        CommonOrder.addOrder(
+        RaribleOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
-            nftType: Type<@CommonNFT.NFT>(),
+            nftType: Type<@RaribleNFT.NFT>(),
             nftId: tokenId,
             vaultPath: /public/fusdReceiver,
             vaultType: Type<@FUSD.Vault>(),
