@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 . env.sh
 
-# CommonNFT
+# RaribleNFT
 bash scripts/1_common-nft_mint.sh
 bash scripts/2_common-nft_storefront.sh
 

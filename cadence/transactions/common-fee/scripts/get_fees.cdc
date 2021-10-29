@@ -1,8 +1,8 @@
-import CommonFee from "../../../contracts/CommonFee.cdc"
+import RaribleFee from "../../../contracts/RaribleFee.cdc"
 
 pub fun main(): {String:UFix64} {
     return {
-        "buyerFee": CommonFee.buyerFee,
-        "sellerFee": CommonFee.sellerFee
+        "buyerFee": RaribleFee.buyerFee,
+        "sellerFee": RaribleFee.sellerFee
     }
 }

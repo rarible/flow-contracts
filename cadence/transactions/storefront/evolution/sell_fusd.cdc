@@ -1,7 +1,7 @@
 import NonFungibleToken from "../../../contracts/core/NonFungibleToken.cdc"
 import FUSD from "../../../contracts/core/FUSD.cdc"
 import NFTStorefront from "../../../contracts/core/NFTStorefront.cdc"
-import CommonOrder from "../../../contracts/CommonOrder.cdc"
+import RaribleOrder from "../../../contracts/RaribleOrder.cdc"
 import Evolution from "../../../contracts/third-party/Evolution.cdc"
 
 // Sell Evolution token for FUSD with NFTStorefront
@@ -28,7 +28,7 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 
     execute {
-        CommonOrder.addOrder(
+        RaribleOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
             nftType: Type<@Evolution.NFT>(),

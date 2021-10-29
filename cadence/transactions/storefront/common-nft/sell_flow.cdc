@@ -1,12 +1,12 @@
-import CommonNFT from "../../../contracts/CommonNFT.cdc"
-import CommonOrder from "../../../contracts/CommonOrder.cdc"
+import RaribleNFT from "../../../contracts/RaribleNFT.cdc"
+import RaribleOrder from "../../../contracts/RaribleOrder.cdc"
 import FlowToken from "../../../contracts/core/FlowToken.cdc"
 import FungibleToken from "../../../contracts/core/FungibleToken.cdc"
 import LicensedNFT from "../../../contracts/LicensedNFT.cdc"
 import NFTStorefront from "../../../contracts/core/NFTStorefront.cdc"
 import NonFungibleToken from "../../../contracts/core/NonFungibleToken.cdc"
 
-// Sell CommonNFT token for Flow with NFTStorefront
+// Sell RaribleNFT token for Flow with NFTStorefront
 //
 transaction(tokenId: UInt64, price: UFix64) {
     let nftProvider: Capability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>
@@ -15,7 +15,7 @@ transaction(tokenId: UInt64, price: UFix64) {
     prepare(acct: AuthAccount) {
         let nftProviderPath = /private/commonNFTProviderForNFTStorefront
         if !acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!.check() {
-            acct.link<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath, target: CommonNFT.collectionStoragePath)
+            acct.link<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath, target: RaribleNFT.collectionStoragePath)
         }
 
         self.nftProvider = acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!
@@ -31,14 +31,14 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 
     execute {
-        let royalties: [CommonOrder.PaymentPart] = []
+        let royalties: [RaribleOrder.PaymentPart] = []
         for royalty in self.nftProvider.borrow()!.getRoyalties(id: tokenId) {
-            royalties.append(CommonOrder.PaymentPart(address: royalty.address, rate: royalty.fee))
+            royalties.append(RaribleOrder.PaymentPart(address: royalty.address, rate: royalty.fee))
         }
-        CommonOrder.addOrder(
+        RaribleOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
-            nftType: Type<@CommonNFT.NFT>(),
+            nftType: Type<@RaribleNFT.NFT>(),
             nftId: tokenId,
             vaultPath: /public/flowTokenReceiver,
             vaultType: Type<@FlowToken.Vault>(),

@@ -1,9 +1,9 @@
 import NonFungibleToken from "../../../contracts/core/NonFungibleToken.cdc"
 import FlowToken from "../../../contracts/core/FlowToken.cdc"
 import NFTStorefront from "../../../contracts/core/NFTStorefront.cdc"
-import CommonOrder from "../../../contracts/CommonOrder.cdc"
+import RaribleOrder from "../../../contracts/RaribleOrder.cdc"
 import TopShot from "../../../contracts/third-party/TopShot.cdc"
-import CommonFee from "../../../contracts/CommonFee.cdc"
+import RaribleFee from "../../../contracts/RaribleFee.cdc"
 
 // Sell TopShot moment for Flow with NFTStorefront
 //
@@ -31,10 +31,10 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 
     execute {
-        let topshotFeeAddress = CommonFee.feeAddress() // TODO Replace with TopShot fee address
+        let topshotFeeAddress = RaribleFee.feeAddress() // TODO Replace with TopShot fee address
         let topshotFeeRate = 0.05
 
-        CommonOrder.addOrder(
+        RaribleOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
             nftType: Type<@TopShot.NFT>(),
@@ -42,7 +42,7 @@ transaction(tokenId: UInt64, price: UFix64) {
             vaultPath: /public/flowTokenReceiver,
             vaultType: Type<@FlowToken.Vault>(),
             price: price,
-            extraCuts: [CommonOrder.PaymentPart(address: topshotFeeAddress, rate: topshotFeeRate)],
+            extraCuts: [RaribleOrder.PaymentPart(address: topshotFeeAddress, rate: topshotFeeRate)],
             royalties: []
         )
     }

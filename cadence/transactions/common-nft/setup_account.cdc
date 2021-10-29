@@ -1,12 +1,12 @@
 import NonFungibleToken from "../../contracts/core/NonFungibleToken.cdc"
-import CommonNFT from "../../contracts/CommonNFT.cdc"
+import RaribleNFT from "../../contracts/RaribleNFT.cdc"
 
 transaction {
     prepare(account: AuthAccount) {
-        if account.borrow<&CommonNFT.Collection>(from: CommonNFT.collectionStoragePath) == nil {
-            let collection <- CommonNFT.createEmptyCollection() as! @CommonNFT.Collection
-            account.save(<- collection, to: CommonNFT.collectionStoragePath)
-            account.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath, target: CommonNFT.collectionStoragePath)
+        if account.borrow<&RaribleNFT.Collection>(from: RaribleNFT.collectionStoragePath) == nil {
+            let collection <- RaribleNFT.createEmptyCollection() as! @RaribleNFT.Collection
+            account.save(<- collection, to: RaribleNFT.collectionStoragePath)
+            account.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(RaribleNFT.collectionPublicPath, target: RaribleNFT.collectionStoragePath)
         }
     }
 }

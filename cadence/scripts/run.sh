@@ -7,6 +7,6 @@ bash 1_common-nft_mint.sh
 bash 1_evolution_fill-data.sh
 bash 1_evolution_mint.sh
 bash 1_motogp_mint.sh
-bash 2_storefront_CommonNFTs.sh
+bash 2_storefront_RaribleNFTs.sh
 bash 2_storefront_Evolution.sh
 bash 2_storefront_MotoGP.sh
