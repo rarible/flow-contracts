@@ -1,3 +1,4 @@
+
 import Evolution from "../../../contracts/third-party/Evolution.cdc"
 import CommonOrder from "../../../contracts/CommonOrder.cdc"
 import FlowToken from "../../../contracts/core/FlowToken.cdc"
@@ -5,6 +6,8 @@ import FungibleToken from "../../../contracts/core/FungibleToken.cdc"
 import NFTStorefront from "../../../contracts/core/NFTStorefront.cdc"
 import NonFungibleToken from "../../../contracts/core/NonFungibleToken.cdc"
 
+// Buy Evolution token for FlowToken with NFTStorefront
+//
 transaction (orderId: UInt64, storefrontAddress: Address) {
     let listing: &NFTStorefront.Listing{NFTStorefront.ListingPublic}
     let paymentVault: @FungibleToken.Vault
@@ -34,7 +37,7 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
 
         self.tokenReceiver = acct.getCapability(/public/f4264ac8f3256818_Evolution_Collection)
             .borrow<&{Evolution.EvolutionCollectionPublic}>()
-            ?? panic("Cannot borrow NFT collection receiver from account")
+            ?? panic("Cannot borrow NFT collection receiver from acct")
 
         self.buyerAddress = acct.address
     }
@@ -51,3 +54,4 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
         self.tokenReceiver.deposit(token: <-item)
     }
 }
+    
