@@ -9,11 +9,13 @@ TXS="$TX emulator-account"
 SC="$FLOW scripts execute"
 
 SERVICE=0xf8d6e0586b0a20c7
+TPSERVICE=0xf8d6e0586b0a20c7
 ALICE=0x01cf0e2f2f715450
 BOB=0x179b6b1cb6755e31
 EVE=0xf3fcd2c1a78f5eee
 
 service=service
+tpservice=service
 alice=alice
 bob=bob
 eve=eve

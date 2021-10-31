@@ -2,16 +2,16 @@
 . env.sh
 
 # add 0 and 1 pack types
-$TXS transactions/custom/motogp-card/m_add_pack_type.cdc 0
-$TXS transactions/custom/motogp-card/m_add_pack_type.cdc 1
+$TX $tpservice transactions/custom/motogp-card/m_add_pack_type.cdc 0
+$TX $tpservice transactions/custom/motogp-card/m_add_pack_type.cdc 1
 
 # empty after setup
 $SC transactions/custom/motogp-card/m_get_pack_ids.cdc $ALICE
 $SC transactions/custom/motogp-card/m_get_card_ids.cdc $ALICE
 
 # mint pack to alice
-$TXS transactions/custom/motogp-card/m_mint_pack_to_address.cdc [$ALICE] [0] [[1]]
-$TXS transactions/custom/motogp-card/m_mint_pack_to_address.cdc [$BOB] [0] [[2]]
+$TX $tpservice transactions/custom/motogp-card/m_mint_pack_to_address.cdc [$ALICE] [0] [[1]]
+$TX $tpservice transactions/custom/motogp-card/m_mint_pack_to_address.cdc [$BOB] [0] [[2]]
 
 $SC transactions/custom/motogp-card/m_get_pack_ids.cdc $ALICE
 $SC transactions/custom/motogp-card/m_borrow_pack.cdc $ALICE 0
@@ -23,8 +23,8 @@ $TX $alice transactions/custom/motogp-card/m_transfer_pack_to_pack_opener.cdc 0 
 $TX $bob transactions/custom/motogp-card/m_transfer_pack_to_pack_opener.cdc 1 $BOB
 
 # open pack
-$TXS transactions/custom/motogp-card/m_open_pack.cdc $ALICE 0 [1,2,3] [1,2,3]
-$TXS transactions/custom/motogp-card/m_open_pack.cdc $BOB 1 [12,22,32] [12,22,32]
+$TX $tpservice transactions/custom/motogp-card/m_open_pack.cdc $ALICE 0 [1,2,3] [1,2,3]
+$TX $tpservice transactions/custom/motogp-card/m_open_pack.cdc $BOB 1 [12,22,32] [12,22,32]
 
 $SC transactions/custom/motogp-card/m_get_card_ids.cdc $ALICE
 $SC transactions/custom/motogp-card/m_borrow_card.cdc $ALICE 1
@@ -38,7 +38,7 @@ $SC transactions/custom/motogp-card/m_borrow_card.cdc $ALICE 3
 # @param addresses array
 # @param pack types array
 # @param pack numbers array
-$TXS transactions/custom/motogp-card/m_mint_pack_to_address.cdc [$EVE] [0] [[11]]
+$TX $tpservice transactions/custom/motogp-card/m_mint_pack_to_address.cdc [$EVE] [0] [[11]]
 
 $TX $eve transactions/custom/motogp-card/m_transfer_pack_to_pack_opener.cdc 2 $EVE
 
@@ -48,4 +48,4 @@ $TX $eve transactions/custom/motogp-card/m_transfer_pack_to_pack_opener.cdc 2 $E
 # @param pack id (must be in the recipients pack opener storage)
 # @param card numbers
 # @param card serials
-$TXS transactions/custom/motogp-card/m_open_pack.cdc $EVE 2 [4,5,6] [1,2,3]
+$TX $tpservice transactions/custom/motogp-card/m_open_pack.cdc $EVE 2 [4,5,6] [1,2,3]
