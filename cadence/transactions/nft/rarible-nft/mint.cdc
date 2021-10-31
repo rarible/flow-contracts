@@ -1,5 +1,5 @@
-import NonFungibleToken from "../../contracts/core/NonFungibleToken.cdc"
-import RaribleNFT from "../../contracts/RaribleNFT.cdc"
+import NonFungibleToken from "../../../contracts/core/NonFungibleToken.cdc"
+import RaribleNFT from "../../../contracts/RaribleNFT.cdc"
 
 // Mint RaribleNFT token to signer acct
 //
