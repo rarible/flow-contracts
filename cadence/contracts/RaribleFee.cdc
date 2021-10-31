@@ -1,6 +1,6 @@
 // Simple fee manager
 //
-pub contract CommonFee {
+pub contract RaribleFee {
 
     pub let commonFeeManagerStoragePath: StoragePath
 
@@ -15,21 +15,21 @@ pub contract CommonFee {
 
     pub resource Manager {
         pub fun setSellerFee(_ fee: UFix64) {
-            CommonFee.sellerFee = fee
-            emit SellerFeeChanged(value: CommonFee.sellerFee)
+            RaribleFee.sellerFee = fee
+            emit SellerFeeChanged(value: RaribleFee.sellerFee)
         }
 
         pub fun setBuyerFee(_ fee: UFix64) {
-            CommonFee.buyerFee = fee
-            emit BuyerFeeChanged(value: CommonFee.buyerFee)
+            RaribleFee.buyerFee = fee
+            emit BuyerFeeChanged(value: RaribleFee.buyerFee)
         }
     }
 
     init() {
         self.sellerFee = 0.025
-        emit SellerFeeChanged(value: CommonFee.sellerFee)
+        emit SellerFeeChanged(value: RaribleFee.sellerFee)
         self.buyerFee = 0.025
-        emit BuyerFeeChanged(value: CommonFee.buyerFee)
+        emit BuyerFeeChanged(value: RaribleFee.buyerFee)
 
         self.commonFeeManagerStoragePath = /storage/commonFeeManager
         self.account.save(<- create Manager(), to: self.commonFeeManagerStoragePath)

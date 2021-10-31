@@ -1,9 +1,9 @@
 import NonFungibleToken from "core/NonFungibleToken.cdc"
 import LicensedNFT from "LicensedNFT.cdc"
 
-// CommonNFT token contract
+// RaribleNFT token contract
 //
-pub contract CommonNFT : NonFungibleToken, LicensedNFT {
+pub contract RaribleNFT : NonFungibleToken, LicensedNFT {
 
     pub var totalSupply: UInt64
 
@@ -69,7 +69,7 @@ pub contract CommonNFT : NonFungibleToken, LicensedNFT {
         }
 
         pub fun deposit(token: @NonFungibleToken.NFT) {
-            let token <- token as! @CommonNFT.NFT
+            let token <- token as! @RaribleNFT.NFT
             let id: UInt64 = token.id
             let dummy <- self.ownedNFTs[id] <- token
             destroy dummy
@@ -86,7 +86,7 @@ pub contract CommonNFT : NonFungibleToken, LicensedNFT {
 
         pub fun getMetadata(id: UInt64): {String:String} {
             let ref = &self.ownedNFTs[id] as auth &NonFungibleToken.NFT
-            return (ref as! &CommonNFT.NFT).getMetadata()
+            return (ref as! &RaribleNFT.NFT).getMetadata()
         }
 
         pub fun getRoyalties(id: UInt64): [LicensedNFT.Royalty] {
@@ -106,12 +106,12 @@ pub contract CommonNFT : NonFungibleToken, LicensedNFT {
     pub resource Minter {
         pub fun mintTo(creator: Capability<&{NonFungibleToken.Receiver}>, metadata: {String:String}, royalties: [LicensedNFT.Royalty]): &NonFungibleToken.NFT {
             let token <- create NFT(
-                id: CommonNFT.totalSupply,
+                id: RaribleNFT.totalSupply,
                 creator: creator.address,
                 metadata: metadata,
                 royalties: royalties
             )
-            CommonNFT.totalSupply = CommonNFT.totalSupply + 1
+            RaribleNFT.totalSupply = RaribleNFT.totalSupply + 1
             let tokenRef = &token as &NonFungibleToken.NFT
             emit Mint(id: token.id, creator: creator.address, metadata: metadata, royalties: royalties)
             creator.borrow()!.deposit(token: <- token)
@@ -125,10 +125,10 @@ pub contract CommonNFT : NonFungibleToken, LicensedNFT {
 
     init() {
         self.totalSupply = 0
-        self.collectionPublicPath = /public/CommonNFTCollection
-        self.collectionStoragePath = /storage/CommonNFTCollection
-        self.minterPublicPath = /public/CommonNFTMinter
-        self.minterStoragePath = /storage/CommonNFTMinter
+        self.collectionPublicPath = /public/RaribleNFTCollection
+        self.collectionStoragePath = /storage/RaribleNFTCollection
+        self.minterPublicPath = /public/RaribleNFTMinter
+        self.minterStoragePath = /storage/RaribleNFTMinter
 
         let minter <- create Minter()
         self.account.save(<- minter, to: self.minterStoragePath)

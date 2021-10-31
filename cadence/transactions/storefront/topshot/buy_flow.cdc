@@ -1,6 +1,6 @@
 
 import TopShot from "../../../contracts/third-party/TopShot.cdc"
-import CommonOrder from "../../../contracts/CommonOrder.cdc"
+import RaribleOrder from "../../../contracts/RaribleOrder.cdc"
 import FlowToken from "../../../contracts/core/FlowToken.cdc"
 import FungibleToken from "../../../contracts/core/FungibleToken.cdc"
 import NFTStorefront from "../../../contracts/core/NFTStorefront.cdc"
@@ -43,7 +43,7 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
     }
 
     execute {
-        let item <- CommonOrder.closeOrder(
+        let item <- RaribleOrder.closeOrder(
             storefront: self.storefront,
             orderId: orderId,
             orderAddress: storefrontAddress,

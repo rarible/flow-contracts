@@ -1,4 +1,4 @@
-import CommonOrder from "../../contracts/CommonOrder.cdc"
+import RaribleOrder from "../../contracts/RaribleOrder.cdc"
 import NFTStorefront from "../../contracts/core/NFTStorefront.cdc"
 
 transaction (orderId: UInt64) {
@@ -17,7 +17,7 @@ transaction (orderId: UInt64) {
     }
 
     execute {
-        CommonOrder.removeOrder(
+        RaribleOrder.removeOrder(
             storefront: self.storefront,
             orderId: orderId,
             orderAddress: self.orderAddress,

@@ -1,13 +1,13 @@
-import CommonFee from "CommonFee.cdc"
+import RaribleFee from "RaribleFee.cdc"
 import FungibleToken from "core/FungibleToken.cdc"
 import NFTStorefront from "core/NFTStorefront.cdc"
 import NonFungibleToken from "core/NonFungibleToken.cdc"
 
-// CommonOrder
+// RaribleOrder
 //
 // Wraps the NFTStorefront.createListting
 //
-pub contract CommonOrder {
+pub contract RaribleOrder {
 
     pub let BUYER_FEE: String
     pub let SELLER_FEE: String
@@ -136,22 +136,22 @@ pub contract CommonOrder {
             saleCuts.append(NFTStorefront.SaleCut(receiver: receiver, amount: amount))
 
             offerPrice = offerPrice + amount
-            percentage = percentage - (type == CommonOrder.BUYER_FEE ? 0.0 : rate)
+            percentage = percentage - (type == RaribleOrder.BUYER_FEE ? 0.0 : rate)
             assert(rate >= 0.0 && rate < 1.0, message: "Sum of payouts must be in range [0..1)")
         }
 
-        addPayment(CommonOrder.BUYER_FEE, CommonFee.feeAddress(), CommonFee.buyerFee)
-        addPayment(CommonOrder.SELLER_FEE, CommonFee.feeAddress(), CommonFee.sellerFee)
+        addPayment(RaribleOrder.BUYER_FEE, RaribleFee.feeAddress(), RaribleFee.buyerFee)
+        addPayment(RaribleOrder.SELLER_FEE, RaribleFee.feeAddress(), RaribleFee.sellerFee)
 
         for cut in extraCuts {
-            addPayment(CommonOrder.OTHER, cut.address, cut.rate)
+            addPayment(RaribleOrder.OTHER, cut.address, cut.rate)
         }
 
         for royalty in royalties {
-            addPayment(CommonOrder.ROYALTY, royalty.address, royalty.rate)
+            addPayment(RaribleOrder.ROYALTY, royalty.address, royalty.rate)
         }
 
-        addPayment(CommonOrder.REWARD, orderAddress, percentage)
+        addPayment(RaribleOrder.REWARD, orderAddress, percentage)
 
         let orderId = storefront.createListing(
             nftProviderCapability: nftProvider,

@@ -2,7 +2,7 @@
 . env.sh
 
 royalty() {
-    echo '{"type":"Struct","value":{"id":"A.'"$CONTRACT"'.CommonNFT.Royalty","fields":[{"name":"address","value":{"type":"Address","value":"'"$1"'"}},{"name":"fee","value":{"type":"UFix64","value":"'"$2"'"}}]}}'
+    echo '{"type":"Struct","value":{"id":"A.'"$CONTRACT"'.RaribleNFT.Royalty","fields":[{"name":"address","value":{"type":"Address","value":"'"$1"'"}},{"name":"fee","value":{"type":"UFix64","value":"'"$2"'"}}]}}'
 }
 
 metadata() {

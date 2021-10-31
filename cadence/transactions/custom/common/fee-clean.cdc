@@ -1,5 +1,5 @@
 import NonFungibleToken from "../../../contracts/core/NonFungibleToken.cdc"
-import CommonNFT from "../../../contracts/CommonNFT.cdc"
+import RaribleNFT from "../../../contracts/RaribleNFT.cdc"
 
 transaction {
     prepare(account: AuthAccount) {
