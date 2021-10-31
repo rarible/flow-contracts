@@ -11,7 +11,7 @@ TX="$FLOW transactions send --signer"
 TXS="$TX service"
 SC="$FLOW scripts execute"
 
-SERVICE=0x1ab36aaf654a13e
+SERVICE=0x01ab36aaf654a13e
 #ALICE=$ALICE_ADDRESS
 #BOB=$BOB_ADDRESS
 #EVE=$EVE_ADDRESS
@@ -21,7 +21,7 @@ service=service
 #bob=bob
 #eve=eve
 
-CONTRACT=1ab36aaf654a13e
+CONTRACT=01ab36aaf654a13e
 
 royalty() {
     echo '{"type":"Struct","value":{"id":"A.'"$CONTRACT"'.RaribleNFT.Royalty","fields":[{"name":"address","value":{"type":"Address","value":"'"$1"'"}},{"name":"fee","value":{"type":"UFix64","value":"'"$2"'"}}]}}'
