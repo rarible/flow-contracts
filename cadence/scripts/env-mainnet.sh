@@ -3,26 +3,25 @@ flow_wrap() {
   flow "$@"
 }
 
-. testnet-keys
+#. mainnet-keys
 
-FLOW="flow_wrap -f flow-testnet.json -n testnet"
-TX="$FLOW transactions send --gas-limit 9999 --signer"
+FLOW="flow_wrap -f flow-mainnet.json -n mainnet"
+#TX="$FLOW transactions send --gas-limit 9999 --signer"
+TX="$FLOW transactions send --signer"
 TXS="$TX service"
 SC="$FLOW scripts execute"
 
-SERVICE=$SERVICE_ADDRESS
-TPSERVICE=0x01658d9b94068f3c
-ALICE=$ALICE_ADDRESS
-BOB=$BOB_ADDRESS
-EVE=$EVE_ADDRESS
+SERVICE=0x1ab36aaf654a13e
+#ALICE=$ALICE_ADDRESS
+#BOB=$BOB_ADDRESS
+#EVE=$EVE_ADDRESS
 
 service=service
-tpservice=tp-service
-alice=alice
-bob=bob
-eve=eve
+#alice=alice
+#bob=bob
+#eve=eve
 
-CONTRACT=ebf4ae01d1284af8
+CONTRACT=1ab36aaf654a13e
 
 royalty() {
     echo '{"type":"Struct","value":{"id":"A.'"$CONTRACT"'.RaribleNFT.Royalty","fields":[{"name":"address","value":{"type":"Address","value":"'"$1"'"}},{"name":"fee","value":{"type":"UFix64","value":"'"$2"'"}}]}}'
