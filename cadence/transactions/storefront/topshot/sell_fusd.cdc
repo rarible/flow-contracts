@@ -35,7 +35,7 @@ transaction(tokenId: UInt64, price: UFix64) {
         let extraCuts: [RaribleOrder.PaymentPart] = []
         
         
-        extraCuts.append(RaribleOrder.PaymentPart(address: RaribleFee.feeAddress(), rate: 0.05))
+        extraCuts.append(RaribleOrder.PaymentPart(address: RaribleFee.feeAddressByName("topshot"), rate: 0.05))
         
         RaribleOrder.addOrder(
             storefront: self.storefront,

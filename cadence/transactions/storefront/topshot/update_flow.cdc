@@ -39,7 +39,7 @@ transaction(orderId: UInt64, price: UFix64) {
         let tokenId = details.nftID
         
         
-        extraCuts.append(RaribleOrder.PaymentPart(address: RaribleFee.feeAddress(), rate: 0.05))
+        extraCuts.append(RaribleOrder.PaymentPart(address: RaribleFee.feeAddressByName("topshot"), rate: 0.05))
         
         RaribleOrder.removeOrder(
             storefront: self.storefront,
