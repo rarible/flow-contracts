@@ -28,7 +28,7 @@ pub contract RaribleFee {
         }
 
         pub fun setFeeAddress(_ label: String, address: Address) {
-            let account = getAccount(address).getCapability
+            RaribleFee.feeAddresses[label] = address
             emit FeeAddressUpdated(label: label, address: address)
         }
     }
