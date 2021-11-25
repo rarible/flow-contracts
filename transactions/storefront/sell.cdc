@@ -1,15 +1,15 @@
-import RaribleNFT from "../../../contracts/RaribleNFT.cdc" //template
-import FlowToken from "../../../contracts/core/FlowToken.cdc" //template
-import FungibleToken from "../../../contracts/core/FungibleToken.cdc"
-import NonFungibleToken from "../../../contracts/core/NonFungibleToken.cdc"
-import NFTStorefront from "../../../contracts/core/NFTStorefront.cdc"
+import RaribleNFT from "../../contracts/RaribleNFT.cdc" //template
+import FlowToken from "../../contracts/core/FlowToken.cdc" //template
+import FungibleToken from "../../contracts/core/FungibleToken.cdc"
+import NonFungibleToken from "../../contracts/core/NonFungibleToken.cdc"
+import NFTStorefront from "../../contracts/core/NFTStorefront.cdc"
 
 transaction(
     tokenId: UInt64,
     price: UFix64, 
-    originFees: {Addres: UFix64},
-    royalties: {Addres: UFix64}, 
-    payments: {Addres: UFix64}
+    originFees: {Address: UFix64},
+    royalties: {Address: UFix64}, 
+    payments: {Address: UFix64}
 ) {
         let storefront: &NFTStorefront.Storefront
         let nftProvider: Capability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic}>

@@ -1,5 +1,5 @@
 
-import NFTStorefront from "../../../contracts/core/NFTStorefront.cdc"
+import NFTStorefront from "../../contracts/core/NFTStorefront.cdc"
 
 transaction(orderId: UInt64) {
 
