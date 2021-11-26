@@ -67,7 +67,7 @@ func TestEnglishAuctionAddBidScript(t *testing.T) {
 		//borrowLot(t, b, contracts, lotId)
 	})
 
-	t.Run("Should be able to add bid", func(t *testing.T) {
+	t.Run("Test buyout", func(t *testing.T) {
 		mintExampleNFT(t, b, aliceAddress,
 			contracts.NFTAddress,
 			contracts.ExampleNFTAddress,

@@ -165,6 +165,9 @@ pub contract EnglishAuction {
                 reward.address == refund.address : "AU23: lot: reward and refund must be linked at the same address"
                 reward.check() : "AU22: lot: broken reward capability"
                 refund.check() : "AU21: lot: broken refund capability"
+                minimumBid >= EnglishAuction.reservePrice: "AU24: minimumBid should be greater than reservePrice"
+                increment >= EnglishAuction.reservePrice: "AU25: increment should be greater than reservePrice"
+                buyoutPrice == nil || buyoutPrice! >= minimumBid: "AU26: bauoutPrice should be greater than minimumBid, or nil"
             }
             self.reward = reward 
             self.refund = refund
@@ -196,7 +199,7 @@ pub contract EnglishAuction {
 
         pub fun refundLot(isCancelled: Bool) {
             pre {
-                self.primaryBid == nil: "AU05: Lot have a bid(s), so it can't be cancelled"
+                self.primaryBid == nil: "AU05: Lot has a bid(s), so it can't be cancelled"
                 self.refund.check(): "AU21: lot: broken refund capability"
             }
             self.refund.borrow()!.deposit(token: <- self.item.removeFirst())
@@ -437,8 +440,8 @@ pub contract EnglishAuction {
     }
 
     init() {
-        // minimal auction duration 1h
-        // self.minimalDuration = 3600.0
+        // minimal auction duration 15m
+        // self.minimalDuration = 900.0
         self.minimalDuration = 60.0 // 1m for debugging purpose
 
         // maximal auction duration 60d
