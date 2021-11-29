@@ -13,7 +13,7 @@ transaction(orderId: UInt64, storefrontAddress: Address, fees: {Address: UFix64}
     let feeVault: @FungibleToken.Vault
     let storefront: &NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}
     let tokenReceiver: &{NonFungibleToken.Receiver}
-    let feeReceivers: {Capability<&{FungibleToken.Receiver}>: UFix64}
+    let feePayments: {Address: UFix64}
 
     prepare(acct: AuthAccount) {
         self.storefront = getAccount(storefrontAddress)
@@ -30,14 +30,12 @@ transaction(orderId: UInt64, storefrontAddress: Address, fees: {Address: UFix64}
 
         for k in fees.keys {
             let amount = price * fees[k]
-            let receiver = getAccount(k).getCapability<&{FungibleToken.Receiver}>(vaultPath)
-            feePayments.insert(key: receiver, amount)
+            self.feePayments.insert(key: k, amount)
             feesAmount = feesAmount + amount
         }
 
         let protocolFee = price * RaribleFee.buyerFee()
-        let receiver = getAccount(RaribleFee.feeAddress()).getCapability<&{FungibleToken.Receiver}>(vaultPath)
-        feePayments.insert(key: receiver, protocolFee)
+        self.feePayments.insert(key: RaribleFee.feeAddress(), protocolFee)
         feesAmount = feesAmount + protocolFee
         
         let mainVault = acct.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault) //template
@@ -59,14 +57,14 @@ transaction(orderId: UInt64, storefrontAddress: Address, fees: {Address: UFix64}
     execute {
 
         // pay fee's
-        for k in self.feeReceivers.keys {
-            let receiver = k.borrow() ?? panic("Can't borrow receiver for fee payment")
-            let payment <- self.feeVault.withdraw(amount: feeAddress[k])
+        for k in self.feePayments.keys {
+            let receiver = getAccount(k).getCapability<&{FungibleToken.Receiver}>().borrow() ?? panic("Can't borrow receiver for fee payment")
+            let payment <- self.feeVault.withdraw(amount: self.feePayments[k])
             receiver.deposit(from: <- payment)
         }
 
         // purchase item
-        let item <- self.storefront.purchase(payment: <- paymentVault)
+        let item <- self.storefront.purchase(payment: <- self.paymentVault)
         // transfer item to buyer
         self.tokenReceiver.deposit(token: <- item)
     }
