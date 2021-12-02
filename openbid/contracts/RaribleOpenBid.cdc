@@ -241,12 +241,12 @@ pub contract RaribleOpenBid {
 
         init() {
             self.bids <- {}
-            emit OpenBidDestroyed(OpenBidResourceId: self.uuid)
+            emit OpenBidInitialized(OpenBidResourceId: self.uuid)
         }
 
         destroy() {
             destroy self.bids
-            emit OpenBidInitialized(OpenBidResourceId: self.uuid)
+            emit OpenBidDestroyed(OpenBidResourceId: self.uuid)
         }
     }
 
