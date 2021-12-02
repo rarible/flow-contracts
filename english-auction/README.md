@@ -6,6 +6,14 @@ further, at which point the highest bidder pays their bid. Alternatively, if no 
 the auction, the item remains unsold. The auctioneer sets a minimum amount, sometimes known as a bidding increment, by
 which the next bid must exceed the current highest bid.
 
+## Addresses
+
+| Contract | EnglishAuction |
+| --- | :---: |
+| Testnet address | [`0xebf4ae01d1284af8`](https://flow-view-source.com/testnet/account/0xebf4ae01d1284af8) |
+| Testnet block height | [52899327](https://testnet.flowscan.org/transaction/56388da3ad7706ac7ecdd1bb8055d2adde383fc0d794795ec4d8d04ad5cf9b65)|
+
+
 ## Константы
 
 В контракте EnglishAuction заданы некоторые значения, влияющие на все аукционы.
