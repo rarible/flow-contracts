@@ -10,6 +10,7 @@ pub contract RaribleOpenBid {
     pub event OpenBidDestroyed(OpenBidResourceId: UInt64)
 
     pub event BidAvailable(
+        bidAddress: Address,
         bidId: UInt64,
         vaultType: Type,
         bidPrice: UFix64,
@@ -114,6 +115,7 @@ pub contract RaribleOpenBid {
             )
 
             emit BidAvailable(
+                bidAddress: rewardCapability.address,
                 bidId: self.details.bidId,
                 vaultType: self.details.vaultType,
                 bidPrice: self.details.bidPrice,
