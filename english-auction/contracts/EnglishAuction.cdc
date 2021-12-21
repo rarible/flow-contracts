@@ -1,5 +1,5 @@
-import FungibleToken from "./core/FungibleToken.cdc"
-import NonFungibleToken from "./core/NonFungibleToken.cdc"
+import FungibleToken from "./FungibleToken.cdc"
+import NonFungibleToken from "./NonFungibleToken.cdc"
 
 pub contract EnglishAuction {
 
@@ -50,6 +50,12 @@ pub contract EnglishAuction {
         lotId: UInt64,
         bidder: Address,
         amount: UFix64
+    )
+
+    pub event IncreaseBid(
+        lotId: UInt64,
+        bidder: Address,
+        newAmount: UFix64
     )
 
     pub event CloseBid(
@@ -145,7 +151,7 @@ pub contract EnglishAuction {
         pub let duration: UFix64
 
         // State
-        access(self) let bids: @{Address: Bid}
+        access(contract) let bids: @{Address: Bid}
         pub var finishAt: UFix64
         pub var primaryBid: Address?
 
@@ -429,6 +435,29 @@ pub contract EnglishAuction {
                 lotRef.setFinishAt(timestamp: timestamp)
                 self.completeLot(lotId: lotId)
             }
+        }
+
+        pub fun increaseBid(
+            lotId: UInt64,
+            address: Address,
+            newVault: @FungibleToken.Vault,
+        ) {
+            let timestamp = getCurrentBlock().timestamp
+            let lotRef = self.borrowLot(lotId: lotId)
+            assert(timestamp >= lotRef.startAt, message: "AU02: The auction has not started yet")
+            assert(timestamp < lotRef.finishAt, message: "AU03: The auction is already finished")
+            assert(lotRef.primaryBid != nil, message: "AU20: Primary bid not found")
+
+            let bidRef = &lotRef.bids[lotRef.primaryBid!] as! &Bid
+            newVault.deposit(from: <- bidRef.vault.removeFirst())
+            let newPrice = newVault.balance
+            bidRef.vault.append(<- newVault)
+            
+            emit IncreaseBid(
+                lotId: lotId,
+                bidder: bidRef.reward.address,
+                newAmount: newPrice,
+            )
         }
     }
 

@@ -161,6 +161,28 @@ func EnglishAuctionAddBid(t *testing.T, b *emulator.Blockchain, contracts Contra
 	traceTxResult(result, "AddBid")
 }
 
+func EnglishAuctionIncBid(t *testing.T, b *emulator.Blockchain, contracts Contracts, address sdk.Address, signer crypto.Signer, lotId uint64, amount string, shouldRevert bool) {
+	script := EnglishAuctionGenerateIncBidScript(contracts)
+
+	tx := flow.NewTransaction().
+		SetScript(script).
+		SetGasLimit(300).
+		SetProposalKey(b.ServiceKey().Address, b.ServiceKey().Index, b.ServiceKey().SequenceNumber).
+		SetPayer(b.ServiceKey().Address).
+		AddAuthorizer(address)
+
+	_ = tx.AddArgument(cadence.NewUInt64(lotId))
+	_ = tx.AddArgument(cadenceUFix64(amount))
+
+	result := signAndSubmit(t, b, tx,
+		[]flow.Address{b.ServiceKey().Address, address},
+		[]crypto.Signer{b.ServiceKey().Signer(), signer},
+		shouldRevert,
+	)
+
+	traceTxResult(result, "IncBid")
+}
+
 func traceTxResult(result *types.TransactionResult, s string) {
 	fmt.Printf("\nTX:%s: %v\t\n", result.TransactionID, s)
 	for _, element := range result.Events {

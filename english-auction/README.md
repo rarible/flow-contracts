@@ -177,6 +177,8 @@ which the next bid must exceed the current highest bid.
 
 #### AU19: Destroy non-empty vault
 
+#### AU20: Primary bid not found
+
 #### AU21: lot: broken refund capability
 
 #### AU22: lot: broken reward capability

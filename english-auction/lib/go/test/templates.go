@@ -5,14 +5,15 @@ import (
 )
 
 const (
-	EnglishAuctionEnglishAuctionPath    = "../../../contracts/EnglishAuction.cdc"
-	EnglishAuctionRootPath              = "../../../transactions"
-	EnglishAuctionAddLotPath            = EnglishAuctionRootPath + "/add_lot.cdc"
-	EnglishAuctionCancelLotPath         = EnglishAuctionRootPath + "/cancel_lot.cdc"
-	EnglishAuctionCompleteLotPath       = EnglishAuctionRootPath + "/complete_lot.cdc"
-	EnglishAuctionAddBidPath            = EnglishAuctionRootPath + "/add_bid.cdc"
-	EnglishAuctionGetIDsPath            = EnglishAuctionRootPath + "/scripts/get_ids.cdc"
-	EnglishAuctionBorrowLotPath         = EnglishAuctionRootPath + "/scripts/borrow_lot.cdc"
+	EnglishAuctionEnglishAuctionPath = "../../../contracts/EnglishAuction.cdc"
+	EnglishAuctionRootPath           = "../../../transactions"
+	EnglishAuctionAddLotPath         = EnglishAuctionRootPath + "/add_lot.cdc"
+	EnglishAuctionCancelLotPath      = EnglishAuctionRootPath + "/cancel_lot.cdc"
+	EnglishAuctionCompleteLotPath    = EnglishAuctionRootPath + "/complete_lot.cdc"
+	EnglishAuctionAddBidPath         = EnglishAuctionRootPath + "/add_bid.cdc"
+	EnglishAuctionIncBidPath         = EnglishAuctionRootPath + "/inc_bid.cdc"
+	EnglishAuctionGetIDsPath         = EnglishAuctionRootPath + "/scripts/get_ids.cdc"
+	EnglishAuctionBorrowLotPath      = EnglishAuctionRootPath + "/scripts/borrow_lot.cdc"
 )
 
 func replaceAddresses(codeBytes []byte, contracts Contracts) []byte {
@@ -60,6 +61,13 @@ func EnglishAuctionGenerateCompleteLotScript(contracts Contracts) []byte {
 func EnglishAuctionGenerateAddBidScript(contracts Contracts) []byte {
 	return replaceAddresses(
 		readFile(EnglishAuctionAddBidPath),
+		contracts,
+	)
+}
+
+func EnglishAuctionGenerateIncBidScript(contracts Contracts) []byte {
+	return replaceAddresses(
+		readFile(EnglishAuctionIncBidPath),
 		contracts,
 	)
 }
