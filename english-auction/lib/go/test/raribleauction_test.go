@@ -63,6 +63,8 @@ func TestEnglishAuctionAddBidScript(t *testing.T) {
 		// Eve outbid Bob
 		EnglishAuctionAddBid(t, b, contracts, eveAddress, eveSigner, lotId, "0.15", false)
 
+		EnglishAuctionIncBid(t, b, contracts, eveAddress, eveSigner, lotId, "0.05", false)
+
 		EnglishAuctionCompleteLot(t, b, contracts, aliceAddress, aliceSigner, lotId, true)
 		//borrowLot(t, b, contracts, lotId)
 	})
