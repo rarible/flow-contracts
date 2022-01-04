@@ -84,6 +84,15 @@ pub contract RaribleNFT : NonFungibleToken, LicensedNFT {
             return &self.ownedNFTs[id] as &NonFungibleToken.NFT
         }
 
+        pub fun borrowRaribleNFT(id: UInt64): &RaribleNFT.NFT? {
+            if self.ownedNFTs[id] != nil {
+                let ref = &self.ownedNFTs[id] as auth &NonFungibleToken.NFT
+                return ref as! &RaribleNFT.NFT
+            } else {
+                return nil
+            }
+        }
+
         pub fun getMetadata(id: UInt64): {String:String} {
             let ref = &self.ownedNFTs[id] as auth &NonFungibleToken.NFT
             return (ref as! &RaribleNFT.NFT).getMetadata()
