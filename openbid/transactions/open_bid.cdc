@@ -8,7 +8,6 @@ transaction(nftId: UInt64, amount: UFix64) {
     let nftReceiver: Capability<&{NonFungibleToken.CollectionPublic}>
     let vaultRef: Capability<&{FungibleToken.Provider,FungibleToken.Balance,FungibleToken.Receiver}>
     let openBid: &RaribleOpenBid.OpenBid
-    let vault: @FungibleToken.Vault
 
     prepare(account: AuthAccount) {
         let vaultRefPrivatePath = /private/FlowTokenVaultRefForRaribleOpenBid
@@ -25,8 +24,6 @@ transaction(nftId: UInt64, amount: UFix64) {
 
         self.openBid = account.borrow<&RaribleOpenBid.OpenBid>(from: RaribleOpenBid.OpenBidStoragePath)
             ?? panic("Missing or mis-typed RaribleOpenBid OpenBid")
-
-        self.vault <- self.vaultRef.borrow()!.withdraw(amount: amount)
     }
 
     execute {
@@ -36,7 +33,7 @@ transaction(nftId: UInt64, amount: UFix64) {
         )
         self.openBid.createBid(
             vaultRefCapability: self.vaultRef,
-            testVault: <- self.vault,
+            offerPrice: amount,
             rewardCapability: self.nftReceiver,
             nftType: Type<@ExampleNFT.NFT>(),
             nftId: nftId,
