@@ -17,8 +17,9 @@ pub contract EnglishAuction {
         minimumBid: UFix64,
         buyoutPrice: UFix64?,
         increment: UFix64,
-        startAt: UFix64,
-        finishAt: UFix64
+        startAt: UFix64?,
+        finishAt: UFix64?
+        duration: UFix64
     )
 
     // LotCompleted
@@ -147,12 +148,12 @@ pub contract EnglishAuction {
         pub let minimumBid: UFix64
         pub let buyoutPrice: UFix64?
         pub let increment: UFix64
-        pub let startAt: UFix64
         pub let duration: UFix64
 
         // State
         access(contract) let bids: @{Address: Bid}
-        pub var finishAt: UFix64
+        pub var startAt: UFix64?
+        pub var finishAt: UFix64?
         pub var primaryBid: Address?
 
         init(
@@ -163,7 +164,7 @@ pub contract EnglishAuction {
             minimumBid: UFix64,
             buyoutPrice: UFix64?,
             increment: UFix64,
-            startAt: UFix64,
+            startAt: UFix64?,
             duration: UFix64,
             payouts: [Payout]
         ) {
@@ -187,7 +188,9 @@ pub contract EnglishAuction {
             self.payouts = payouts
 
             self.bids <- {}
-            self.finishAt = self.startAt + self.duration
+            if (self.startAt != nil) {
+                self.finishAt = self.startAt + duration
+            }
             self.primaryBid = nil
 
             emit LotAvailable(
@@ -199,7 +202,8 @@ pub contract EnglishAuction {
                 buyoutPrice: self.buyoutPrice,
                 increment: self.increment,
                 startAt: self.startAt,
-                finishAt: self.finishAt
+                finishAt: self.finishAt,
+                duration: self.duration
             )
         }
 
@@ -301,6 +305,14 @@ pub contract EnglishAuction {
                 amount: bid.price
             )
 
+            //Make lot started if not started yet
+            let timestamp = getCurrentBlock().timestamp
+
+            if (self.startAt == nil) {
+                self.startAt = timestamp
+                self.setFinishAt(self.startAt + timestamp)
+            }
+
             self.refundBids()
             self.primaryBid = bid.reward.address
             let dummy <- self.bids[bid.reward.address] <- bid
@@ -387,8 +399,7 @@ pub contract EnglishAuction {
         pub fun cancelLot(auth: AuthAccount, lotId: UInt64) {
             let lot <- self.lots.remove(key: lotId) ?? panic("AU08: lot not found")
             assert(auth.address == lot.reward.address, message: "AU07: Only lot owner can cancel it")
-            let timestamp = getCurrentBlock().timestamp
-            lot.refundLot(isCancelled: timestamp < lot.finishAt)
+            lot.refundLot(isCancelled: true)
             destroy lot
         }
 
@@ -413,8 +424,11 @@ pub contract EnglishAuction {
         ) {
             let lotRef = self.borrowLot(lotId: lotId)
             let timestamp = getCurrentBlock().timestamp
-            assert(timestamp >= lotRef.startAt, message: "AU02: The auction has not started yet")
-            assert(timestamp < lotRef.finishAt, message: "AU03: The auction is already finished")
+
+            if (lotRef.startAt != nil) {
+                assert(timestamp >= lotRef.startAt, message: "AU02: The auction has not started yet")
+                assert(timestamp < lotRef.finishAt, message: "AU03: The auction is already finished")
+            }
 
             let bid <- create Bid(
                 reward: reward,
