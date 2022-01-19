@@ -1,5 +1,5 @@
-import FungibleToken from "./FungibleToken.cdc"
-import NonFungibleToken from "./NonFungibleToken.cdc"
+import FungibleToken from "./core/FungibleToken.cdc"
+import NonFungibleToken from "./core/NonFungibleToken.cdc"
 
 pub contract RaribleOpenBid {
 
@@ -82,7 +82,7 @@ pub contract RaribleOpenBid {
 
         init(
             vaultRefCapability: Capability<&{FungibleToken.Receiver, FungibleToken.Balance, FungibleToken.Provider}>,
-            testVault: @FungibleToken.Vault,
+            offerPrice: UFix64,
             rewardCapability: Capability<&{NonFungibleToken.CollectionPublic}>,
             nftType: Type,
             nftId: UInt64,
@@ -94,7 +94,7 @@ pub contract RaribleOpenBid {
             self.vaultRefCapability = vaultRefCapability
             self.rewardCapability = rewardCapability
 
-            var price: UFix64 = testVault.balance
+            var price: UFix64 = offerPrice
             let cutsInfo: {Address:UFix64} = {}
 
             for cut in cuts {
@@ -104,13 +104,14 @@ pub contract RaribleOpenBid {
             }
             assert(price > 0.0, message: "price must be > 0")
 
+            let vaultRef = self.vaultRefCapability.borrow() ?? panic("cannot borrow vaultRefCapability")
             self.details = BidDetails(
                 bidId: self.uuid,
-                vaultType: testVault.getType(),
+                vaultType: vaultRef.getType(),
                 bidPrice: price,
                 nftType: nftType,
                 nftId: nftId,
-                brutto: testVault.balance,
+                brutto: offerPrice,
                 cuts: cuts
             )
 
@@ -124,10 +125,6 @@ pub contract RaribleOpenBid {
                 brutto: self.details.brutto,
                 cuts: cutsInfo,
             )
-
-            let vaultRef = self.vaultRefCapability.borrow()
-            assert(vaultRef != nil, message: "cannot borrow vaultRefCapability")
-            vaultRef!.deposit(from: <- testVault)
         }
 
         pub fun purchase(item: @NonFungibleToken.NFT): @FungibleToken.Vault {
@@ -174,7 +171,7 @@ pub contract RaribleOpenBid {
     pub resource interface OpenBidManager {
         pub fun createBid(
             vaultRefCapability: Capability<&{FungibleToken.Receiver, FungibleToken.Balance, FungibleToken.Provider}>,
-            testVault: @FungibleToken.Vault,
+            offerPrice: UFix64,
             rewardCapability: Capability<&{NonFungibleToken.CollectionPublic}>,
             nftType: Type,
             nftId: UInt64,
@@ -194,7 +191,7 @@ pub contract RaribleOpenBid {
 
         pub fun createBid(
             vaultRefCapability: Capability<&{FungibleToken.Receiver,FungibleToken.Balance,FungibleToken.Provider}>,
-            testVault: @FungibleToken.Vault,
+            offerPrice: UFix64,
             rewardCapability: Capability<&{NonFungibleToken.CollectionPublic}>,
             nftType: Type,
             nftId: UInt64,
@@ -202,7 +199,7 @@ pub contract RaribleOpenBid {
         ): UInt64 {
             let bid <- create Bid(
                 vaultRefCapability: vaultRefCapability,
-                testVault: <- testVault,
+                offerPrice: offerPrice,
                 rewardCapability: rewardCapability,
                 nftType: nftType,
                 nftId: nftId,
@@ -266,3 +263,4 @@ pub contract RaribleOpenBid {
         emit RaribleOpenBidInitialized()
     }
 }
+ 
